@@ -17,7 +17,7 @@
     "paths": {
       "components/*": ["components/*"],
       "hooks/*": ["shared/hooks/*"],
-      "ui/*": ["shared/ui/*"],
+      "layouts/*": ["shared/layouts/*"],
       "pages/*": ["pages/*"],
       "app/*": ["app/*"],
     },

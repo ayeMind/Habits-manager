@@ -8,7 +8,7 @@ export default defineConfig({
     alias: {
       "components": "/src/components",
       "hooks": "/src/shared/hooks",
-      "ui": "/src/shared/ui",
+      "layouts": "/src/shared/layouts",
       "pages": "/src/pages",
       "app": "/src/app",
     }

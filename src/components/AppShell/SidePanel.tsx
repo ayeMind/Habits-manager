@@ -23,9 +23,10 @@ const SidePanel: FC<Props> = ({ opened, toggle }) => {
             variant="pills" radius="xs"
             defaultValue={"/"}>
         <Tabs.List >
-          <Tabs.Tab value="/" >Список привычек</Tabs.Tab>
+          <Tabs.Tab value="/" >Свои привычек</Tabs.Tab>
+          <Tabs.Tab value="library" >Библиотека</Tabs.Tab>
           <Tabs.Tab value="statistics">Статистка</Tabs.Tab>
-          <Tabs.Tab value="themes">Темы</Tabs.Tab>
+          <Tabs.Tab value="store">Магазин</Tabs.Tab>
         </Tabs.List>
       </Tabs>
     </AppShellNavbar>

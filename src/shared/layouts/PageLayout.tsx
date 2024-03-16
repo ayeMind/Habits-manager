@@ -2,9 +2,9 @@ import { FC } from "react"
 import { AppShell, AppShellMain } from "@mantine/core";
 import { useDisclosure } from '@mantine/hooks';
 
-import Header from "components/header/Header";
-import SidePanel from "components/side-panel/SidePanel";
 
+import Header from "components/AppShell/Header";
+import SidePanel from "components/AppShell/SidePanel";
 
 interface Props {
     children: React.ReactNode;
@@ -14,6 +14,7 @@ const PageLayout:FC<Props> = ({children}) => {
 
     const [opened, { toggle }] = useDisclosure();
 
+  
    return (
     <AppShell layout="alt"
       navbar={{
