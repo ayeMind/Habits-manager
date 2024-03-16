@@ -7,6 +7,8 @@ import {
 
 import { MantineProvider } from '@mantine/core';
 
+
+
 import 'app/global.css';
 import '@mantine/core/styles.css';
 
@@ -19,11 +21,15 @@ const router = createBrowserRouter([
     element: <Home />,
     errorElement: <NotFound />,
   },
+  {
+    path: "/Home/",
+    element: <Home />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <MantineProvider>
+    <MantineProvider defaultColorScheme='dark'>
       <RouterProvider router={router} />
     </MantineProvider>
   </React.StrictMode>,

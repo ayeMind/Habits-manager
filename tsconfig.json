@@ -16,8 +16,8 @@
     "baseUrl": "src",
     "paths": {
       "components/*": ["components/*"],
-      "hooks/*": ["hooks/*"],
-      "ui/*": ["ui/*"],
+      "hooks/*": ["shared/hooks/*"],
+      "ui/*": ["shared/ui/*"],
       "pages/*": ["pages/*"],
       "app/*": ["app/*"],
     },
