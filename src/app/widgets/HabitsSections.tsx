@@ -1,6 +1,7 @@
 import { Button, Group, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import HabitsList from "components/Habit/HabitsList";
+import ModalCreate from "components/Habit/ModalCreate/ModalCreate";
 
 import { FC } from "react"
 
@@ -16,8 +17,8 @@ const HabitsSection:FC<Props> = ({period}) => {
   return (
     <>
 
-        <Modal opened={opened} onClose={close} title="Добавить привычку">
-            <p>Добавление привычки</p>
+        <Modal opened={opened} onClose={close} title="Добавление привычки">
+            <ModalCreate />
         </Modal>
 
 
@@ -26,9 +27,7 @@ const HabitsSection:FC<Props> = ({period}) => {
             <Button onClick={open} color="teal">
                 Добавить привычку
             </Button>
-            {/* <Button onClick={() => setHabitsList([])} color="red">
-                Очистить список
-            </Button> */}
+            
         </Group>
     </>
   );

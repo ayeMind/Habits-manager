@@ -1,7 +1,7 @@
 import { List, ThemeIcon, rem } from "@mantine/core";
 import { IconCircleCheck, IconCircleDashed } from "@tabler/icons-react";
+import { useGlobalStore } from "app/globalStore";
 import { Habit } from "app/interfaces";
-import { useState } from "react";
 
 import { FC } from "react";
 
@@ -11,35 +11,15 @@ interface Props {
 
 const HabitsList: FC<Props> = ({ period }) => {
 
-    // const [habitsList, setHabitsList] = useState([
-    //   {"id": 1, "title": "Пить воду 1", "category": "Здоровье", "addDate": new Date(), "period": "daily", "isCompleted": false},
-    //   {"id": 2, "title": "Пить воду 2", "category": "ЗОЖ", "addDate": new Date(), "period": "daily", "targetValue": 108, "isCompleted": false},
-    //   {"id": 3, "title": "Пить воду 3", "category": "Здоровый образ жизни", "addDate": new Date(), "period": "daily", "targetValue": 1000, "isCompleted": false},
-    //   {"id": 4, "title": "Пить воду 4", "category": "Здоровье", "addDate": new Date(), "period": "weekly", "isCompleted": true},
-    //   {"id": 5, "title": "Пить воду 5", "category": "Здоровье", "addDate": new Date(), "period": "monthly", "isCompleted": false},
-    //   {"id": 6, "title": "Пить воду 6", "category": "Здоровье", "addDate": new Date(), "period": "weekly", "isCompleted": false},
-    //   {"id": 7, "title": "Пить воду 7", "category": "Здоровье", "addDate": new Date(), "period": "daily", "isCompleted": true},
-
-    // ] as Habit[]);
-
-    // localStorage.setItem("habits", JSON.stringify(habitsList));
+  const habitsList = useGlobalStore((state) => state.habits);
+  const toggleHabit = useGlobalStore((state) => state.toggleHabit);
 
   let habits: Habit[] | null = JSON.parse(localStorage.getItem("habits") as string)
   if (!habits) {
     habits = []
   }
-  const [habitsList, setHabitsList] = useState(habits as Habit[]);
-
   const handleIconClick = (id: number) => {
-    const newHabitsList = habitsList.map((habit) => {
-      if (habit.id === id) {
-        return { ...habit, isCompleted: !habit.isCompleted };
-      }
-      return habit;
-    });
-
-    setHabitsList(newHabitsList);
-    localStorage.setItem("habits", JSON.stringify(newHabitsList));
+   toggleHabit(id);
   }
 
   return (

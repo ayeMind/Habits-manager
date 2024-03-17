@@ -2,6 +2,15 @@ export interface DataToUpload {
     habits: Habit[];
     actions: HabitAction[];
 }
+export interface GlobalState {
+    habits: Habit[];
+    addHabit: (habit: Habit) => void;
+    removeHabit: (habit: Habit) => void;
+    clearHabits: () => void;
+    getLastId: () => number;
+    toggleHabit: (id: number) => void;
+}
+  
 export interface Habit {
     id: number;
     title: string;
