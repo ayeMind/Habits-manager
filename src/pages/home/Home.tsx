@@ -1,7 +1,11 @@
-import { Group, Tabs } from "@mantine/core";
+import { Group, Tabs, Text } from "@mantine/core";
 import PageLayout from "layouts/PageLayout";
 
-import { IconCalendar, IconCalendarMonth, IconCalendarWeek } from "@tabler/icons-react"
+import {
+  IconCalendar,
+  IconCalendarMonth,
+  IconCalendarWeek,
+} from "@tabler/icons-react";
 import HabitsSection from "app/widgets/HabitsSections";
 
 function Home() {
@@ -10,13 +14,13 @@ function Home() {
       <Tabs variant="pills" defaultValue="daily">
         <Tabs.List>
           <Tabs.Tab value="daily" leftSection={<IconCalendar />}>
-            Ежедневные
+            <Text visibleFrom="sm">Ежедневные</Text>
           </Tabs.Tab>
           <Tabs.Tab value="weekly" leftSection={<IconCalendarWeek />}>
-            Еженедельные
+            <Text visibleFrom="sm">Еженедельные</Text>
           </Tabs.Tab>
           <Tabs.Tab value="monthly" leftSection={<IconCalendarMonth />}>
-            Ежемесячные
+            <Text visibleFrom="sm">Ежемесячные</Text>
           </Tabs.Tab>
         </Tabs.List>
 

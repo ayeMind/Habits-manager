@@ -27,8 +27,7 @@ const ModalCreate:FC<Props> = ({close}) => {
   const [categoryError, setCategoryError] = useState("");
   const [targetValueError, setTargetValueError] = useState("");
 
-  const getLastId = useGlobalStore((state) => state.getLastId);
-  const addHabit = useGlobalStore((state) => state.addHabit);
+  const { addHabit, getLastId } = useGlobalStore((state) => state);
 
   const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -62,6 +61,7 @@ const ModalCreate:FC<Props> = ({close}) => {
       addDate: new Date(),
       period: period as "daily" | "weekly" | "monthly",
       targetValue: checked ? +data.targetValue : undefined,
+      currentValue: 0,
     };
 
     addHabit(habit);

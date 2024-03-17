@@ -12,6 +12,8 @@ export const useGlobalStore = create<GlobalState>()(
       addHabit: (habit: Habit) => set((state) => ({ habits: [...state.habits, habit] })),
       removeHabit: (habit: Habit) => set((state) => ({ habits: state.habits.filter((h) => h !== habit) })),
       toggleHabit: (id: number) => set((state) => ({ habits: state.habits.map((habit) => (habit.id === id ? { ...habit, isCompleted: !habit.isCompleted } : habit) ) })),
+      completeHabit: (id: number) => set((state) => ({ habits: state.habits.map((habit) => (habit.id === id ? { ...habit, isCompleted: true } : habit) ) })),
+      changeTargetValue: (id: number, value: number) => set((state) => ({ habits: state.habits.map((habit) => (habit.id === id ? { ...habit, currentValue: value } : habit) ) })),
       clearHabits: () => set({ habits: [] }),
     }),
     {

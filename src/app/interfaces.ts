@@ -10,6 +10,8 @@ export interface GlobalState {
     getLastId: () => number;
     getHabitsWithPeriod: (period: 'daily' | 'weekly' | 'monthly') => Habit[];
     toggleHabit: (id: number) => void;
+    completeHabit: (id: number) => void;
+    changeTargetValue: (id: number, value: number) => void;
 }
   
 export interface Habit {
@@ -21,6 +23,8 @@ export interface Habit {
     period: 'daily' | 'weekly' | 'monthly';
     // необязательное поле – целевое значение для численных привычек
     targetValue?: number;
+    currentValue?: number;
+
     isCompleted?: boolean;
 }
 
