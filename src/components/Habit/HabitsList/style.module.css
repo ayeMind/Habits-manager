@@ -2,11 +2,6 @@
     width: 200px;
 }
 
-.text {
-    width: auto;
-    min-width: 200px;
-}
-
 @media (max-width: 768px) {
     .slider {
         width: 100px;

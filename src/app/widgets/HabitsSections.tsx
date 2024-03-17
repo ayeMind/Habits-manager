@@ -23,7 +23,7 @@ const HabitsSection:FC<Props> = ({period}) => {
 
 
         <HabitsList period={period} />
-        <Group mt="xl" align="center" justify="center">
+        <Group mt="xl" align="center">
             <Button onClick={open} color="teal">
                 Добавить привычку
             </Button>

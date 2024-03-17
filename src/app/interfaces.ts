@@ -5,7 +5,7 @@ export interface DataToUpload {
 export interface GlobalState {
     habits: Habit[];
     addHabit: (habit: Habit) => void;
-    removeHabit: (habit: Habit) => void;
+    removeHabit: (id: number) => void;
     clearHabits: () => void;
     getLastId: () => number;
     getHabitsWithPeriod: (period: 'daily' | 'weekly' | 'monthly') => Habit[];
