@@ -9,9 +9,16 @@ import {
   Modal,
   NumberInput,
   ActionIcon,
+  Popover,
+  Container,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconCircleCheck, IconCircleDashed, IconSquareRoundedMinus } from "@tabler/icons-react";
+import {
+  IconCircleCheck,
+  IconCircleDashed,
+  IconEdit,
+  IconSquareRoundedMinus,
+} from "@tabler/icons-react";
 import { useGlobalStore } from "app/globalStore";
 import { Habit, HabitAction } from "app/interfaces";
 
@@ -95,7 +102,7 @@ const HabitsList: FC<Props> = ({ period }) => {
     preHabitChange(habit);
 
     toggleHabit(id);
-    changeTargetValue(id, maxTargetValue);  
+    changeTargetValue(id, maxTargetValue);
   };
 
   const progressChange = (habit: Habit, value: number) => {
@@ -118,12 +125,17 @@ const HabitsList: FC<Props> = ({ period }) => {
     }
   };
 
-  const handleChangeProgress = (e: React.MouseEvent<HTMLButtonElement>, habit: Habit) => {
-    e.preventDefault()
+  const handleChangeProgress = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    habit: Habit
+  ) => {
+    const form = document.querySelector(".mobile-form");
+    e.preventDefault();
     const formData = new FormData(e.currentTarget.form as HTMLFormElement);
     const data = Object.fromEntries(formData.entries());
 
     const progress = +data.progress;
+
     if (progress < 0) return;
     if (habit.targetValue && progress > habit.targetValue) {
       progressChange(habit, habit.targetValue);
@@ -134,7 +146,7 @@ const HabitsList: FC<Props> = ({ period }) => {
     } else if (progress === 0) {
       progressChange(habit, 0);
     }
-  }
+  };
 
   const rows = habits.map((habit) => (
     <Table.Tr key={habit.id}>
@@ -169,37 +181,83 @@ const HabitsList: FC<Props> = ({ period }) => {
         </Flex>
       </Table.Td>
       <Table.Td>
-        <Progress 
+        <Progress
           className={classes.slider}
-          value={habit.targetValue ? (habit.currentValue / habit.targetValue * 100) : (habit.isCompleted ? 100 : 0)}
+          value={
+            habit.targetValue
+              ? (habit.currentValue / habit.targetValue) * 100
+              : habit.isCompleted
+              ? 100
+              : 0
+          }
           color={habit.isCompleted ? "teal" : "blue"}
         />
       </Table.Td>
       <Table.Td>
         <form>
-          <Flex align="center" gap="md">
+          <Flex align="center" gap="md" visibleFrom="sm">
             <NumberInput
               hideControls
               name="progress"
-              size='xs'
+              size="xs"
               placeholder="0"
               radius="md"
             />
-            <Button type="submit" variant="outline" onClick={(e) => handleChangeProgress(e, habit)}>
-                <Text visibleFrom="md">Изменить прогресс</Text>
-                <Text hiddenFrom="md">Изменить</Text>
+            <Button
+              type="submit"
+              variant="outline"
+              onClick={(e) => handleChangeProgress(e, habit)}
+            >
+              <Text visibleFrom="md">Изменить прогресс</Text>
+              <Text hiddenFrom="md">Изменить</Text>
             </Button>
           </Flex>
         </form>
+
+        <Container hiddenFrom="sm">
+          <Popover>
+            <Popover.Target>
+              <ActionIcon bg="none">
+                <IconEdit stroke={1} />
+              </ActionIcon>
+            </Popover.Target>
+            <Popover.Dropdown>
+              <form className={classes["mobile-form"]}>
+                <NumberInput
+                  hideControls
+                  name="progress"
+                  size="xs"
+                  placeholder="0"
+                  radius="md"
+                />
+                <Button
+                  type="submit"
+                  variant="outline"
+                  onClick={(e) => handleChangeProgress(e, habit)}
+                >
+                  <Text>Изменить прогресс</Text>
+                </Button>
+              </form>
+            </Popover.Dropdown>
+          </Popover>
+        </Container>
       </Table.Td>
       <Table.Td>
-        <Button color="red" variant="outline"
-                visibleFrom="md" onClick={() => handleOpen(habit.id)}>
+        <Button
+          color="red"
+          variant="outline"
+          visibleFrom="md"
+          onClick={() => handleOpen(habit.id)}
+        >
           Удалить
         </Button>
-        <ActionIcon type="submit" hiddenFrom="md" 
-                    bg="none"onClick={() => handleOpen(habit.id)}>
-          <IconSquareRoundedMinus color="pink" />
+        <ActionIcon
+          type="submit"
+          hiddenFrom="md"
+          bg="none"
+          onClick={() => handleOpen(habit.id)}
+        >
+          <IconSquareRoundedMinus stroke={1} color="pink" />
         </ActionIcon>
       </Table.Td>
     </Table.Tr>
