@@ -11,7 +11,7 @@ interface Props {
 
 const HabitsList: FC<Props> = ({ period }) => {
 
-  const habitsList = useGlobalStore((state) => state.habits);
+  const habitsList = useGlobalStore((state) => state.getHabitsWithPeriod(period));
   const toggleHabit = useGlobalStore((state) => state.toggleHabit);
 
   let habits: Habit[] | null = JSON.parse(localStorage.getItem("habits") as string)

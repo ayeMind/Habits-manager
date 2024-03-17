@@ -1,7 +1,7 @@
 import { Group, Tabs } from "@mantine/core";
 import PageLayout from "layouts/PageLayout";
 
-import { IconCheckbox } from "@tabler/icons-react"
+import { IconCalendar, IconCalendarMonth, IconCalendarWeek } from "@tabler/icons-react"
 import HabitsSection from "app/widgets/HabitsSections";
 
 function Home() {
@@ -9,13 +9,13 @@ function Home() {
     <PageLayout>
       <Tabs variant="pills" defaultValue="daily">
         <Tabs.List>
-          <Tabs.Tab value="daily" leftSection={<IconCheckbox />}>
+          <Tabs.Tab value="daily" leftSection={<IconCalendar />}>
             Ежедневные
           </Tabs.Tab>
-          <Tabs.Tab value="weekly" leftSection={<IconCheckbox />}>
+          <Tabs.Tab value="weekly" leftSection={<IconCalendarWeek />}>
             Еженедельные
           </Tabs.Tab>
-          <Tabs.Tab value="monthly" leftSection={<IconCheckbox />}>
+          <Tabs.Tab value="monthly" leftSection={<IconCalendarMonth />}>
             Ежемесячные
           </Tabs.Tab>
         </Tabs.List>

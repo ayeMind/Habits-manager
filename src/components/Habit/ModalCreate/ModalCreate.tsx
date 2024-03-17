@@ -12,7 +12,13 @@ import classes from "./style.module.css";
 
 import { useGlobalStore } from "app/globalStore";
 
-const ModalCreate = () => {
+import { FC } from "react"
+
+interface Props {
+  close: () => void;
+}
+
+const ModalCreate:FC<Props> = ({close}) => {
   const [period, setPeriod] = useState("daily");
   const [checked, setChecked] = useState(false);
   const [targetValue, setTargetValue] = useState<string | number>('');
@@ -54,12 +60,12 @@ const ModalCreate = () => {
       title: data.habit as string,
       category: data.category as string,
       addDate: new Date(),
-      period,
+      period: period as "daily" | "weekly" | "monthly",
       targetValue: checked ? +data.targetValue : undefined,
     };
 
     addHabit(habit);
-    console.log(habit);
+    close();
     
   }
 

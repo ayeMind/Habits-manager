@@ -8,6 +8,7 @@ export interface GlobalState {
     removeHabit: (habit: Habit) => void;
     clearHabits: () => void;
     getLastId: () => number;
+    getHabitsWithPeriod: (period: 'daily' | 'weekly' | 'monthly') => Habit[];
     toggleHabit: (id: number) => void;
 }
   
