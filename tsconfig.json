@@ -20,6 +20,7 @@
       "layouts/*": ["shared/layouts/*"],
       "pages/*": ["pages/*"],
       "app/*": ["app/*"],
+      "widgets/*": ["widgets/*"],
     },
 
     /* Linting */

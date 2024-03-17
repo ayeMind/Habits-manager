@@ -11,6 +11,7 @@ export default defineConfig({
       "layouts": "/src/shared/layouts",
       "pages": "/src/pages",
       "app": "/src/app",
+      "widgets": "/src/widgets",
     }
   }
 })
