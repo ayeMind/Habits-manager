@@ -129,7 +129,7 @@ const HabitsList: FC<Props> = ({ period }) => {
     e: React.MouseEvent<HTMLButtonElement>,
     habit: Habit
   ) => {
-    const form = document.querySelector(".mobile-form");
+
     e.preventDefault();
     const formData = new FormData(e.currentTarget.form as HTMLFormElement);
     const data = Object.fromEntries(formData.entries());
@@ -276,10 +276,16 @@ const HabitsList: FC<Props> = ({ period }) => {
         <ModalDelete close={close} />
       </Modal>
 
+    {habits.length === 0 ? (
+      <Text size="xl">
+        Нет привычек
+      </Text>
+    ) : (
       <Table withRowBorders={false} highlightOnHover>
         <Table.Thead>{ths}</Table.Thead>
         <Table.Tbody>{rows}</Table.Tbody>
       </Table>
+    )}
     </>
   );
 };
