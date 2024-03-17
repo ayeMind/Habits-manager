@@ -2,8 +2,22 @@
     width: 200px;
 }
 
+.habit-title {
+    font-size: 16px;
+}
+
+@media (max-width: 1024px) {
+    .slider {
+        width: 150px;
+    }
+
+}
+
 @media (max-width: 768px) {
     .slider {
         width: 100px;
     }
+
 }
+
+

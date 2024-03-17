@@ -1,4 +1,4 @@
-import { AppShell, Burger, Group } from "@mantine/core";
+import { AppShell, Burger, Group, Text } from "@mantine/core";
 import { FC } from "react";
 
 interface Props {
@@ -11,8 +11,8 @@ const Header: FC<Props> = ({ opened, toggle }) => {
     <>
       <AppShell.Header>
         <Group h="100%" px="md">
-          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <h1>Трекер привычек</h1>
+          <Burger opened={opened} onClick={toggle} hiddenFrom="md" size="sm" />
+          <Text size="xl">Трекер привычек</Text>
         </Group>
       </AppShell.Header>
     </>

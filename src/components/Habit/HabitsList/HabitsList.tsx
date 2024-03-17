@@ -1,22 +1,24 @@
 import {
   Text,
-  Slider,
+  Progress,
   ThemeIcon,
   rem,
   Flex,
   Table,
   Button,
   Modal,
-  Group,
+  NumberInput,
+  ActionIcon,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconCircleCheck, IconCircleDashed } from "@tabler/icons-react";
+import { IconCircleCheck, IconCircleDashed, IconSquareRoundedMinus } from "@tabler/icons-react";
 import { useGlobalStore } from "app/globalStore";
-import { Habit } from "app/interfaces";
+import { Habit, HabitAction } from "app/interfaces";
 
 import { FC } from "react";
 
 import classes from "./style.module.css";
+import ModalDelete from "../ModalDelete";
 
 interface Props {
   period: "daily" | "weekly" | "monthly";
@@ -28,7 +30,10 @@ const HabitsList: FC<Props> = ({ period }) => {
     toggleHabit,
     completeHabit,
     changeTargetValue,
-    removeHabit,
+    removeCurrentAction,
+    addAction,
+    getLastHistoryId,
+    history,
   } = useGlobalStore((state) => state);
 
   const habits = getHabitsWithPeriod(period) as Habit[];
@@ -38,21 +43,44 @@ const HabitsList: FC<Props> = ({ period }) => {
   const handleOpen = (id: number) => {
     localStorage.setItem("habitToDelete", JSON.stringify(id));
     open();
-  }
-
-  const handleDeleteWithHistory = () => {
-    const habitId = JSON.parse(localStorage.getItem("habitToDelete") as string);
-    removeHabit(habitId);
-    localStorage.removeItem("habitToDelete");
-    close();
   };
 
-  const handleDeleteWithoutHistory = () => {
-    const habitId = JSON.parse(localStorage.getItem("habitToDelete") as string);
-    removeHabit(habitId);
-    localStorage.removeItem("habitToDelete");
-    close();
-  }
+  const timeByPeriod = (period: "daily" | "weekly" | "monthly") => {
+    if (period === "daily") return 86400;
+    if (period === "weekly") return 604800;
+    if (period === "monthly") return 2592000;
+  };
+
+  const preHabitChange = (habit: Habit) => {
+    if (habit.isCompleted) {
+      const time = timeByPeriod(habit.period) as number;
+      removeCurrentAction(habit.id, time);
+    } else {
+      const lastHistoryId = getLastHistoryId();
+
+      let action = {} as HabitAction;
+      if (habit.targetValue) {
+        action = {
+          id: lastHistoryId + 1,
+          habit_id: habit.id,
+          date: new Date(),
+          isCompleted: true,
+          value: habit.currentValue,
+        };
+      } else {
+        action = {
+          id: lastHistoryId + 1,
+          habit_id: habit.id,
+          date: new Date(),
+          isCompleted: true,
+        };
+      }
+
+      addAction(action);
+
+      console.log(history);
+    }
+  };
 
   const handleIconClick = (habit: Habit) => {
     const id = habit.id;
@@ -64,21 +92,53 @@ const HabitsList: FC<Props> = ({ period }) => {
       maxTargetValue = 0;
     }
 
+    preHabitChange(habit);
+
     toggleHabit(id);
-    changeTargetValue(id, maxTargetValue);
+    changeTargetValue(id, maxTargetValue);  
   };
 
-  const onSliderChange = (habit: Habit, value: number) => {
+  const progressChange = (habit: Habit, value: number) => {
     const id = habit.id;
     changeTargetValue(id, value);
-    if (habit.targetValue === value) completeHabit(id);
-    else if (habit.isCompleted) toggleHabit(id);
+    if (habit.targetValue === value) {
+      completeHabit(id);
+      const action = {
+        id: getLastHistoryId() + 1,
+        habit_id: id,
+        date: new Date(),
+        isCompleted: true,
+        value: value,
+      };
+      addAction(action);
+    } else if (habit.isCompleted) {
+      toggleHabit(id);
+      const time = timeByPeriod(habit.period) as number;
+      removeCurrentAction(id, time);
+    }
   };
 
+  const handleChangeProgress = (e: React.MouseEvent<HTMLButtonElement>, habit: Habit) => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget.form as HTMLFormElement);
+    const data = Object.fromEntries(formData.entries());
+
+    const progress = +data.progress;
+    if (progress < 0) return;
+    if (habit.targetValue && progress > habit.targetValue) {
+      progressChange(habit, habit.targetValue);
+    } else if (habit.targetValue) {
+      progressChange(habit, progress);
+    } else if (!habit.targetValue && progress > 0) {
+      progressChange(habit, 1);
+    } else if (progress === 0) {
+      progressChange(habit, 0);
+    }
+  }
 
   const rows = habits.map((habit) => (
     <Table.Tr key={habit.id}>
-      <Table.Td maw={300}>
+      <Table.Td maw={200}>
         <Flex align="center" gap="sm">
           {habit.isCompleted ? (
             <ThemeIcon color="teal" size={24} radius="xl">
@@ -105,30 +165,42 @@ const HabitsList: FC<Props> = ({ period }) => {
               />
             </ThemeIcon>
           )}
-          <Text>{habit.title}</Text>
+          <p className={classes["habit-title"]}>{habit.title}</p>
         </Flex>
       </Table.Td>
       <Table.Td>
-        <Slider
+        <Progress 
           className={classes.slider}
-          onChange={(value) => onSliderChange(habit, value)}
-          step={1}
-          value={habit.currentValue ? habit.currentValue : 0}
-          min={0}
-          max={habit.targetValue ? habit.targetValue : 1}
-          disabled={!habit.targetValue && !habit.isCompleted}
+          value={habit.targetValue ? (habit.currentValue / habit.targetValue * 100) : (habit.isCompleted ? 100 : 0)}
           color={habit.isCompleted ? "teal" : "blue"}
-          thumbSize={12}
         />
       </Table.Td>
       <Table.Td>
-        <Button
-          color="red"
-          variant="outline"
-          onClick={() => handleOpen(habit.id)}
-        >
+        <form>
+          <Flex align="center" gap="md">
+            <NumberInput
+              hideControls
+              name="progress"
+              size='xs'
+              placeholder="0"
+              radius="md"
+            />
+            <Button type="submit" variant="outline" onClick={(e) => handleChangeProgress(e, habit)}>
+                <Text visibleFrom="md">Изменить прогресс</Text>
+                <Text hiddenFrom="md">Изменить</Text>
+            </Button>
+          </Flex>
+        </form>
+      </Table.Td>
+      <Table.Td>
+        <Button color="red" variant="outline"
+                visibleFrom="md" onClick={() => handleOpen(habit.id)}>
           Удалить
         </Button>
+        <ActionIcon type="submit" hiddenFrom="md" 
+                    bg="none"onClick={() => handleOpen(habit.id)}>
+          <IconSquareRoundedMinus color="pink" />
+        </ActionIcon>
       </Table.Td>
     </Table.Tr>
   ));
@@ -143,11 +215,7 @@ const HabitsList: FC<Props> = ({ period }) => {
   return (
     <>
       <Modal opened={opened} onClose={close} size="auto" title="Удаление">
-        <Text mb={16}>Вы хотите удалить эту привычку и из истории тоже?</Text>
-        <Group>
-          <Button variant="outline" onClick={() => {handleDeleteWithHistory()}}>Да</Button>
-          <Button color="red" variant="outline" onClick={() => {handleDeleteWithoutHistory()}}>Нет</Button>
-        </Group>
+        <ModalDelete close={close} />
       </Modal>
 
       <Table withRowBorders={false} highlightOnHover>

@@ -17,7 +17,7 @@ const SidePanel: FC<Props> = ({ opened, toggle }) => {
   return (
     <AppShellNavbar p="md">
       <Group>
-        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+        <Burger opened={opened} onClick={toggle} hiddenFrom="md" size="sm" />
       </Group>
       <Tabs onChange={(value) => navigate(`/${value}`)}
             orientation="vertical"

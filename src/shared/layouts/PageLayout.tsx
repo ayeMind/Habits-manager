@@ -19,7 +19,7 @@ const PageLayout:FC<Props> = ({children}) => {
     <AppShell layout="alt"
       navbar={{
         width: 200,
-        breakpoint: "sm",
+        breakpoint: "md",
         collapsed: { mobile: !opened },
       }}
       header={{ height: 65 }}

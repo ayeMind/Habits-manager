@@ -12,6 +12,12 @@ export interface GlobalState {
     toggleHabit: (id: number) => void;
     completeHabit: (id: number) => void;
     changeTargetValue: (id: number, value: number) => void;
+
+    history: HabitAction[];
+    addAction: (action: HabitAction) => void;
+    removeAllHabitHistroy: (habit_id: number) => void;
+    removeCurrentAction: (habit_id: number, seconds: number) => void;
+    getLastHistoryId: () => number;
 }
   
 export interface Habit {
@@ -22,17 +28,21 @@ export interface Habit {
     addDate: Date; 
     period: 'daily' | 'weekly' | 'monthly';
     // необязательное поле – целевое значение для численных привычек
-    targetValue?: number;
-    currentValue?: number;
+    targetValue: number;
+    currentValue: number;
 
     isCompleted?: boolean;
 }
 
 export interface HabitAction {
-    // id привычки, к которой относится это действие
     id: number;
+    // id привычки, к которой относится это действие
+    habit_id: number;
     // дата и время, когда это действие отмечено как выполненное
     date: Date;
+    isCompleted: boolean;
+
     // необязательное поле – значение для численных привычек
-    value: number;
+    value?: number;
+
 }

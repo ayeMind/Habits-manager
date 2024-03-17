@@ -60,7 +60,7 @@ const ModalCreate:FC<Props> = ({close}) => {
       category: data.category as string,
       addDate: new Date(),
       period: period as "daily" | "weekly" | "monthly",
-      targetValue: checked ? +data.targetValue : undefined,
+      targetValue: checked ? +data.targetValue : 1,
       currentValue: 0,
     };
 

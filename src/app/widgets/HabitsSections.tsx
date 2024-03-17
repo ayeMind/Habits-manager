@@ -13,7 +13,6 @@ const HabitsSection:FC<Props> = ({period}) => {
 
   const [opened, { open, close }] = useDisclosure(false);
 
-
   return (
     <>
 
@@ -21,13 +20,11 @@ const HabitsSection:FC<Props> = ({period}) => {
             <ModalCreate close={close} />
         </Modal>
 
-
         <HabitsList period={period} />
         <Group mt="xl" align="center">
             <Button onClick={open} color="teal">
                 Добавить привычку
             </Button>
-            
         </Group>
     </>
   );
