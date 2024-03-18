@@ -18,7 +18,7 @@ const PageLayout:FC<Props> = ({children, title, defaultTab}) => {
 
   
    return (
-    <AppShell layout="alt"
+    <AppShell layout="alt" w='auto'
       navbar={{
         width: 200,
         breakpoint: "md",

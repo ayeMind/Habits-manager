@@ -101,6 +101,7 @@ const ModalCreate:FC<Props> = ({defaultPeriod, close}) => {
         name="category"
         placeholder="Введи категорию"
         limit={5}
+        comboboxProps={{ position: 'top', middlewares: { flip: false, shift: false } }}
         data={categories}
         error={categoryError}
       />
