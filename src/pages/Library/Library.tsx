@@ -132,7 +132,9 @@ const Library = () => {
   return (
     <PageLayout title="Библиотека" defaultTab="library">
 
-      <Notifications w={500} />
+      <Notifications w={500} visibleFrom="sm" />
+      <Notifications w={300} hiddenFrom="sm" />
+
 
       <Modal opened={opened} onClose={close} title="Добавление в библиотеку">
         <ModalAdd close={close} />
