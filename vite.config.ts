@@ -12,6 +12,7 @@ export default defineConfig({
       "pages": "/src/pages",
       "app": "/src/app",
       "widgets": "/src/widgets",
+      "actions": "/src/shared/actions",
     }
   }
 })

@@ -21,6 +21,7 @@
       "pages/*": ["pages/*"],
       "app/*": ["app/*"],
       "widgets/*": ["widgets/*"],
+      "actions/*": ["shared/actions/*"],
     },
 
     /* Linting */

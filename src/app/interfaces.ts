@@ -29,7 +29,7 @@ export interface GlobalState {
 export interface LibraryStore {
     habits: LibraryHabit[];
     getLastHabitId: () => number;
-    addHabit: (habit: LibraryHabit) => void;
+    addHabit: (habit: LibraryHabitCreate) => void;
     removeHabit: (id: number) => void;
     addHabitToGlobalStore: (habit: LibraryHabit) => void;
 }
