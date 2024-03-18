@@ -19,7 +19,7 @@ export interface GlobalState {
     history: HabitAction[];
     addAction: (action: HabitAction) => void;
     removeAllHabitHistroy: (habit_id: number) => void;
-    removeCurrentAction: (habit_id: number, seconds: number) => void;
+    removeCurrentAction: (habit_id: number, habit_period: "daily" | "weekly" | "monthly") => void;
     getLastHistoryId: () => number;
 }
   

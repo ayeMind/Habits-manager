@@ -3,10 +3,15 @@ import { persist } from 'zustand/middleware'
 
 import { Habit, GlobalState, HabitAction  } from './interfaces';
 
+const countDaysDiff = (date1: Date, date2: Date) => {
+  const diffTime = Math.abs(date2.getTime() - date1.getTime());
+  return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+};
+
 export const useGlobalStore = create<GlobalState>()(
   persist(
     (set, get) => ({
-      habits: [],
+      habits: [] as Habit[],
       getLastId: () => 
         get().habits.reduce((acc, habit) => (habit.id > acc ? habit.id : acc), 0),
       
@@ -51,13 +56,17 @@ export const useGlobalStore = create<GlobalState>()(
 
         if (period === 'weekly') {
           const daysUntilMonday = (7 - lastActionDate.getDay()) % 7 + 1;
-          const daysPassed = (currentDate.getTime() - lastActionDate.getTime()) / (1000 * 60 * 60 * 24);
-          return daysPassed >= daysUntilMonday;
+          const daysDiff = countDaysDiff(lastActionDate, currentDate);
+
+          return daysDiff >= daysUntilMonday;
         }
 
         if (period === 'monthly') {
           return lastActionDate.getMonth() !== currentDate.getMonth()
         }
+
+        console.error("Некорректный период")
+        return false;
       },
 
       
@@ -70,11 +79,37 @@ export const useGlobalStore = create<GlobalState>()(
       addAction: (action: HabitAction) => set((state) => ({ history: [...state.history, action] })),
       removeAllHabitHistroy: (habit_id: number) => set((state) => ({ history: state.history.filter((action) => action.habit_id !== habit_id) })),
 
-      // Смотрит на дату, и если действие с habit_id  было совершено в течение последних X секунд, то удаляет его из истории
-      removeCurrentAction:
-       (habit_id: number, seconds: number) =>
-        set((state) => ({ history: state.history.filter(
-            (action) => action.habit_id !== habit_id || (new Date().getTime() - new Date(action.date).getTime()) / 1000 > seconds) })),
+      // Смотрит на дату, и если действие с habit_id  было совершено в течение последних X секунд, то удаляет это действие из истории
+      // Нужно для того, чтобы можно было отменить действие, если оно было совершено случайно
+      removeCurrentAction: (habit_id: number, habit_period: "daily" | "weekly" | "monthly") => {
+        const lastAction = get().history.filter((action) => {action.habit_id !== habit_id}).pop();
+        if (!lastAction) return;
+        const currentDate = new Date();
+        const lastActionDate = new Date(lastAction.date);
+
+        const allHistory = get().history;
+
+        if (habit_period === "daily") {
+          if (currentDate.getDate() === lastActionDate.getDate()) {
+            set({ history: allHistory.filter((action) => action.id !== lastAction.id) });
+          }
+        }
+
+        if (habit_period === "weekly") {
+          const daysUntilMonday = (7 - lastActionDate.getDay()) % 7 + 1;
+          const daysDiff = countDaysDiff(lastActionDate, currentDate);
+          if (daysDiff < daysUntilMonday) {
+            set({ history: allHistory.filter((action) => action.id !== lastAction.id) });
+          }
+        }
+
+        if (habit_period === "monthly") {
+          if (currentDate.getMonth() === lastActionDate.getMonth() && currentDate.getFullYear() === lastActionDate.getFullYear()){
+            set({ history: allHistory.filter((action) => action.id !== lastAction.id) });
+          }
+        }
+      },
+      
     }),
     {
       name: 'habits-storage',

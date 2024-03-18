@@ -74,7 +74,7 @@ const ModalCreate:FC<Props> = ({defaultPeriod, close}) => {
     <form className={classes["create-form"]}>
       <SegmentedControl
         value={period}
-        onChange={setPeriod}
+        onChange={(value) => setPeriod(value as "daily" | "weekly" | "monthly")}
         name="period"
         data={[
           { label: "Ежедневная", value: "daily" },
@@ -88,6 +88,7 @@ const ModalCreate:FC<Props> = ({defaultPeriod, close}) => {
         type="text"
         name="habit" label="Привычка" 
         placeholder="Пресс"
+        data-autofocus
         error={habitError} />
 
       <Autocomplete
