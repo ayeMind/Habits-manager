@@ -14,6 +14,7 @@ import '@mantine/core/styles.css';
 
 import Home from 'pages/home/Home.tsx';
 import NotFound from 'pages/not-found/NotFound';
+import Library from 'pages/Library/Library';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
     path: "/Home/",
     element: <Home />,
   },
+  {
+    path: "/library/",
+    element: <Library />,
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

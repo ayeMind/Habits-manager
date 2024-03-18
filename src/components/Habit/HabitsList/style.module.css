@@ -1,5 +1,6 @@
 .habit-title {
    font-size: 16px;
+   word-break: break-word;
 }
 
 .mobile-form {

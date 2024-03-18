@@ -10,7 +10,7 @@ import HabitsSection from "widgets/HabitsSections";
 
 function Home() {
   return (
-    <PageLayout>
+    <PageLayout title="Трекер привычек" defaultTab="home">
       <Tabs variant="pills" defaultValue="daily">
         <Tabs.List>
           <Tabs.Tab value="daily" leftSection={<IconCalendar />}>

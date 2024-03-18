@@ -5,11 +5,13 @@ import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
+  defaultTab: string;
+
   opened: boolean;
   toggle: () => void;
 }
 
-const SidePanel: FC<Props> = ({ opened, toggle }) => {
+const SidePanel: FC<Props> = ({ defaultTab, opened, toggle }) => {
   
 
   const navigate = useNavigate();
@@ -22,9 +24,10 @@ const SidePanel: FC<Props> = ({ opened, toggle }) => {
       <Tabs onChange={(value) => navigate(`/${value}`)}
             orientation="vertical"
             variant="pills" radius="xs"
-            defaultValue={"/"}>
-        <Tabs.List >
-          <Tabs.Tab value="/" leftSection={<IconList stroke={2} />} >Свои привычки</Tabs.Tab>
+            defaultValue={defaultTab}>
+          
+        <Tabs.List>
+          <Tabs.Tab value="home" leftSection={<IconList stroke={2} />} >Свои привычки</Tabs.Tab>
           <Tabs.Tab value="library" leftSection={<IconLibrary stroke={2} />}>Библиотека</Tabs.Tab>
           <Tabs.Tab value="statistics" leftSection={<IconChartHistogram stroke={2} />}>Статистка</Tabs.Tab>
           <Tabs.Tab value="store" leftSection={<IconBrandAppgallery stroke={2} />}>Магазин</Tabs.Tab>

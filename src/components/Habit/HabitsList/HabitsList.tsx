@@ -202,6 +202,7 @@ const HabitsList: FC<Props> = ({ period }) => {
               size="xs"
               placeholder="0"
               radius="md"
+              allowNegative={false}
             />
             <Button
               type="submit"
@@ -229,6 +230,7 @@ const HabitsList: FC<Props> = ({ period }) => {
                   size="xs"
                   placeholder="0"
                   radius="md"
+                  allowNegative={false}
                 />
                 <Button
                   type="submit"

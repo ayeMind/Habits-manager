@@ -8,9 +8,11 @@ import SidePanel from "components/AppShell/SidePanel";
 
 interface Props {
     children: React.ReactNode;
+    title: string;
+    defaultTab: string;
 }
 
-const PageLayout:FC<Props> = ({children}) => {
+const PageLayout:FC<Props> = ({children, title, defaultTab}) => {
 
     const [opened, { toggle }] = useDisclosure();
 
@@ -25,8 +27,8 @@ const PageLayout:FC<Props> = ({children}) => {
       header={{ height: 65 }}
       padding="md"
     >
-      <Header opened={opened} toggle={toggle} />
-      <SidePanel opened={opened} toggle={toggle} />
+      <Header title={title} opened={opened} toggle={toggle} />
+      <SidePanel defaultTab={defaultTab} opened={opened} toggle={toggle} />
       <AppShellMain>
         {children}
       </AppShellMain>
