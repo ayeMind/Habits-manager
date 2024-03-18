@@ -42,7 +42,7 @@ export interface LibraryHabit {
     category: string;
     period: 'daily' | 'weekly' | 'monthly';
     targetValue?: number;
-    added: boolean;
+    saved: boolean;
     selected: boolean;
 }
   

@@ -92,7 +92,7 @@ export const useLibraryStore = create<LibraryStore>()(
         set((state: LibraryStore) => ({
           habits: [
             ...state.habits,
-            { ...habit, id: lastHabitId + 1, selected: false, added: false },
+            { ...habit, id: lastHabitId + 1, selected: false, saved: false },
           ],
         }));
       },
@@ -117,6 +117,12 @@ export const useLibraryStore = create<LibraryStore>()(
           targetValue: habit.targetValue ? habit.targetValue : 1,
         };
         addHabit(habitToAdd);
+        
+        set((state: LibraryStore) => ({
+          habits: state.habits.map((h) =>
+            h.id === habit.id ? { ...h, saved: true } : h
+          ),
+        }));
       },
 
       saveAllSelectedHabits: (habits: LibraryHabit[]) => {
@@ -124,6 +130,7 @@ export const useLibraryStore = create<LibraryStore>()(
             get().addHabitToGlobalStore(habit);
         });
       }
+
     }),
     {
       name: "library-storage",

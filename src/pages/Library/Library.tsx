@@ -7,6 +7,7 @@ import {
   Modal,
   SegmentedControl,
   SimpleGrid,
+  Switch,
   Text,
 } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
@@ -14,7 +15,6 @@ import { useEffect, useState } from "react";
 import { IconCheck, IconSearch } from "@tabler/icons-react";
 import { useGlobalStore } from "app/globalStore";
 import { useLibraryStore } from "./libraryStore";
-import { LibraryHabit } from "app/interfaces";
 import { translatePeriod } from "actions/translatePeriod";
 import { useDisclosure } from "@mantine/hooks";
 
@@ -37,32 +37,20 @@ const Library = () => {
 
   const {habits, removeAllSelectedHabits, saveAllSelectedHabits } = useLibraryStore((state) => state);
   const [filteredHabits, setFilteredHabits] = useState(
-    habits as LibraryHabit[]
+    habits.filter((habit) => habit.saved !== true)
   );
 
-  useEffect(() => {
-    console.log(period, category, habits);
+  const [checked, setChecked] = useState(false);
 
-    if (period === "Все" && category === "") {
-      setFilteredHabits(habits);
-    } else if (period === "Все" && category !== "") {
-      setFilteredHabits(
-        habits.filter((habit) => habit.category.includes(category))
-      );
-    } else if (period !== "Все" && category === "") {
-      setFilteredHabits(
-        habits.filter((habit) => translatePeriod(habit.period) === period)
-      );
-    } else {
-      setFilteredHabits(
-        habits.filter(
-          (habit) =>
-            translatePeriod(habit.period) === period &&
-            habit.category.includes(category)
-        )
-      );
-    }
-  }, [period, category, habits]);
+  useEffect(() => {
+    
+    setFilteredHabits(habits.filter((habit) => {
+      return (habit.period === period || period === "Все") && 
+      (habit.category === category || category === "") && 
+      (checked ? habit.saved === true : habit.saved !== true)
+    }));
+      
+  }, [period, category, habits, checked]);
 
   const toggleCard = (id: number) => {
     const updatedHabits = filteredHabits.map((habit) => {
@@ -94,7 +82,7 @@ const Library = () => {
         return { ...habit, selected: false };
       })
     );
-      
+          
     notifications.show({
       color: "teal",
       title: 'Успех!',
@@ -102,10 +90,7 @@ const Library = () => {
       autoClose: 2000,
       icon: <IconCheck />,
     })
-    
-    
   }
-
 
   const habitsList = filteredHabits.map((habit) => {
     return (
@@ -135,7 +120,6 @@ const Library = () => {
       <Notifications w={500} visibleFrom="sm" />
       <Notifications w={300} hiddenFrom="sm" />
 
-
       <Modal opened={opened} onClose={close} title="Добавление в библиотеку">
         <ModalAdd close={close} />
       </Modal>
@@ -157,6 +141,8 @@ const Library = () => {
           data={categoires}
           leftSection={<IconSearch stroke={1} />}
         />
+        <Switch label="Показывать сохранённые" checked={checked} onChange={(event) => setChecked(event.currentTarget.checked)} />
+
         {checkHaveSelected() && (
           <Flex gap="md" visibleFrom="sm">
             <Button w={150} h={35} color="indigo" onClick={handleSaveAllSelected}>
