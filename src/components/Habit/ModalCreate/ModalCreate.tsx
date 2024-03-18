@@ -28,7 +28,10 @@ const ModalCreate:FC<Props> = ({defaultPeriod, close}) => {
   const [categoryError, setCategoryError] = useState("");
   const [targetValueError, setTargetValueError] = useState("");
 
-  const { addHabit, getLastId } = useGlobalStore((state) => state);
+  const { addHabit, categories, addCategory} = useGlobalStore((state) => state);
+
+  console.log(categories);
+  
 
   const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -56,16 +59,18 @@ const ModalCreate:FC<Props> = ({defaultPeriod, close}) => {
     }
 
     const habit = {
-      id: getLastId() + 1,
       title: data.habit as string,
       category: data.category as string,
-      addDate: new Date(),
       period: period as "daily" | "weekly" | "monthly",
       targetValue: checked ? +data.targetValue : 1,
-      currentValue: 0,
     };
 
     addHabit(habit);
+
+    if (!categories.includes(data.category as string)) {
+      addCategory(data.category as string);
+    }
+
     close();
     
   }
@@ -96,7 +101,7 @@ const ModalCreate:FC<Props> = ({defaultPeriod, close}) => {
         name="category"
         placeholder="Введи категорию"
         limit={5}
-        data={["Здоровье", "Работа", "Образование", "Дом", "Другое"]}
+        data={categories}
         error={categoryError}
       />
 

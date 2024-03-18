@@ -4,7 +4,7 @@ export interface DataToUpload {
 }
 export interface GlobalState {
     habits: Habit[];
-    addHabit: (habit: Habit) => void;
+    addHabit: (habit: CreateHabit) => void;
     removeHabit: (id: number) => void;
     clearHabits: () => void;
     getLastId: () => number;
@@ -17,10 +17,29 @@ export interface GlobalState {
     checkPeriod: (period: 'daily' | 'weekly' | 'monthly') => boolean;
 
     history: HabitAction[];
-    addAction: (action: HabitAction) => void;
+    addAction: (action: HabitActionCreate) => void;
     removeAllHabitHistroy: (habit_id: number) => void;
     removeCurrentAction: (habit_id: number, habit_period: "daily" | "weekly" | "monthly") => void;
     getLastHistoryId: () => number;
+
+    categories: string[];
+    addCategory: (category: string) => void;
+}
+
+export interface LibraryStore {
+    habits: LibraryHabit[];
+    getLastHabitId: () => number;
+    addHabit: (habit: LibraryHabit) => void;
+    removeHabit: (id: number) => void;
+    addHabitToGlobalStore: (habit: LibraryHabit) => void;
+}
+
+export interface LibraryHabit {
+    id: number;
+    title: string;
+    category: string;
+    period: 'daily' | 'weekly' | 'monthly';
+    targetValue?: number;
 }
   
 export interface Habit {
@@ -34,7 +53,14 @@ export interface Habit {
     targetValue: number;
     currentValue: number;
 
-    isCompleted?: boolean;
+    isCompleted: boolean;
+}
+
+export interface CreateHabit {
+    title: string;
+    category: string;
+    period: 'daily' | 'weekly' | 'monthly';
+    targetValue: number;
 }
 
 export interface HabitAction {
@@ -48,5 +74,12 @@ export interface HabitAction {
 
     // необязательное поле – значение для численных привычек
     value?: number;
+}
 
+export interface HabitActionCreate {
+    habit_id: number;
+    habit_period: 'daily' | 'weekly' | 'monthly';
+    date: Date;
+    isCompleted: boolean;
+    value?: number;
 }
