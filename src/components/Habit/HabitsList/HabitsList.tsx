@@ -11,6 +11,8 @@ import {
   ActionIcon,
   Popover,
   Container,
+  Loader,
+  Box,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
@@ -22,7 +24,7 @@ import {
 import { useGlobalStore } from "app/globalStore";
 import { Habit, HabitAction } from "app/interfaces";
 
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 
 import classes from "./style.module.css";
 import ModalDelete from "../ModalDelete";
@@ -32,6 +34,8 @@ interface Props {
 }
 
 const HabitsList: FC<Props> = ({ period }) => {
+  const [loading, setLoading] = useState(true);
+
   const {
     getHabitsWithPeriod,
     toggleHabit,
@@ -41,9 +45,18 @@ const HabitsList: FC<Props> = ({ period }) => {
     addAction,
     getLastHistoryId,
     history,
+    checkPeriod,
+    updateHabits,
   } = useGlobalStore((state) => state);
 
   const habits = getHabitsWithPeriod(period) as Habit[];
+
+  useEffect(() => {
+    if (checkPeriod(period)) {
+      updateHabits(period);
+    }
+    setLoading(false);
+  }, [period, checkPeriod, updateHabits]);
 
   const [opened, { open, close }] = useDisclosure(false);
 
@@ -70,6 +83,7 @@ const HabitsList: FC<Props> = ({ period }) => {
         action = {
           id: lastHistoryId + 1,
           habit_id: habit.id,
+          habit_period: habit.period,
           date: new Date(),
           isCompleted: true,
           value: habit.currentValue,
@@ -78,6 +92,7 @@ const HabitsList: FC<Props> = ({ period }) => {
         action = {
           id: lastHistoryId + 1,
           habit_id: habit.id,
+          habit_period: habit.period,
           date: new Date(),
           isCompleted: true,
         };
@@ -113,6 +128,7 @@ const HabitsList: FC<Props> = ({ period }) => {
       const action = {
         id: getLastHistoryId() + 1,
         habit_id: id,
+        habit_period: habit.period,
         date: new Date(),
         isCompleted: true,
         value: value,
@@ -129,7 +145,6 @@ const HabitsList: FC<Props> = ({ period }) => {
     e: React.MouseEvent<HTMLButtonElement>,
     habit: Habit
   ) => {
-
     e.preventDefault();
     const formData = new FormData(e.currentTarget.form as HTMLFormElement);
     const data = Object.fromEntries(formData.entries());
@@ -278,16 +293,18 @@ const HabitsList: FC<Props> = ({ period }) => {
         <ModalDelete close={close} />
       </Modal>
 
-    {habits.length === 0 ? (
-      <Text size="xl">
-        Нет привычек
-      </Text>
-    ) : (
-      <Table withRowBorders={false} highlightOnHover>
-        <Table.Thead>{ths}</Table.Thead>
-        <Table.Tbody>{rows}</Table.Tbody>
-      </Table>
-    )}
+      {loading ? (
+        <Box pos={"fixed"} top={"50%"} left={"50%"}>
+          <Loader  />
+        </Box>
+      ) : habits.length === 0 ? (
+        <Text size="xl">Нет привычек</Text>
+      ) : (
+        <Table withRowBorders={false} highlightOnHover>
+          <Table.Thead>{ths}</Table.Thead>
+          <Table.Tbody>{rows}</Table.Tbody>
+        </Table>
+      )}
     </>
   );
 };

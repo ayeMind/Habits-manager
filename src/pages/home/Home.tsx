@@ -9,6 +9,7 @@ import {
 import HabitsSection from "widgets/HabitsSections";
 
 function Home() {
+
   return (
     <PageLayout title="Трекер привычек" defaultTab="home">
       <Tabs variant="pills" defaultValue="daily">

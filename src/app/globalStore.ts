@@ -27,6 +27,39 @@ export const useGlobalStore = create<GlobalState>()(
       
       changeTargetValue: 
         (id: number, value: number) => set((state) => ({ habits: state.habits.map((habit) => (habit.id === id ? { ...habit, currentValue: value } : habit) ) })),
+
+      // Для обнуления прогресса всех привычек в начале нового периода
+      updateHabits: (period: 'daily' | 'weekly' | 'monthly') => {
+        const habits = get().habits.map((habit) => {
+          if (habit.period === period) {
+            return { ...habit, currentValue: 0, isCompleted: false };
+          }
+          return habit;
+        });
+        set({ habits });
+      },
+
+      // Для проверки, закончилось ли время предыдущего периода (смотрит на соответствущую часть даты (день, неделя, месяц))
+      checkPeriod(period: 'daily' | 'weekly' | 'monthly') {
+        const history = get().history.filter((action) => action.habit_period === period);
+        const lastActionDate = new Date(history[history.length - 1]?.date);
+        const currentDate = new Date();
+
+        if (period === 'daily') {
+          return lastActionDate.getDate() !== currentDate.getDate();
+        }
+
+        if (period === 'weekly') {
+          const daysUntilMonday = (7 - lastActionDate.getDay()) % 7 + 1;
+          const daysPassed = (currentDate.getTime() - lastActionDate.getTime()) / (1000 * 60 * 60 * 24);
+          return daysPassed >= daysUntilMonday;
+        }
+
+        if (period === 'monthly') {
+          return lastActionDate.getMonth() !== currentDate.getMonth()
+        }
+      },
+
       
       clearHabits: () => set({ habits: [] }),
 

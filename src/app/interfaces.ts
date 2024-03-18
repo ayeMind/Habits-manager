@@ -13,6 +13,9 @@ export interface GlobalState {
     completeHabit: (id: number) => void;
     changeTargetValue: (id: number, value: number) => void;
 
+    updateHabits: (period: 'daily' | 'weekly' | 'monthly') => void;
+    checkPeriod: (period: 'daily' | 'weekly' | 'monthly') => boolean;
+
     history: HabitAction[];
     addAction: (action: HabitAction) => void;
     removeAllHabitHistroy: (habit_id: number) => void;
@@ -37,7 +40,8 @@ export interface Habit {
 export interface HabitAction {
     id: number;
     // id привычки, к которой относится это действие
-    habit_id: number;
+    habit_id: number
+    habit_period: 'daily' | 'weekly' | 'monthly';
     // дата и время, когда это действие отмечено как выполненное
     date: Date;
     isCompleted: boolean;
