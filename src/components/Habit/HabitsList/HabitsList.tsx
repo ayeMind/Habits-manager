@@ -193,7 +193,7 @@ const HabitsList: FC<Props> = ({ period }) => {
               />
             </ThemeIcon>
           )}
-          <Tooltip label={habit.title} color="cyan" multiline maw={350} events={{ hover: true, focus: true, touch: true }}>
+          <Tooltip className={classes["title-tooltip"]} label={habit.title} color="cyan" multiline events={{ hover: true, focus: true, touch: true }}>
             <Text className={classes["habit-title"]} lineClamp={4}>
               {habit.title}
             </Text>
@@ -229,8 +229,8 @@ const HabitsList: FC<Props> = ({ period }) => {
               variant="outline"
               onClick={(e) => handleChangeProgress(e, habit)}
             >
-              <Text visibleFrom="md">Изменить прогресс</Text>
-              <Text hiddenFrom="md">Изменить</Text>
+              <Text visibleFrom="lg">Изменить прогресс</Text>
+              <Text hiddenFrom="lg">Изменить</Text>
             </Button>
           </Flex>
         </form>

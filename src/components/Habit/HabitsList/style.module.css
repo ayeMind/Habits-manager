@@ -9,3 +9,36 @@
     flex-direction: column;
     gap: 12px;
 }
+
+.title-tooltip {
+    max-width: 500px;
+}
+
+
+@media (max-width: 1440px) {
+
+    .title-tooltip {
+        max-width: 400px;
+    }
+}
+
+
+@media (max-width: 1024px) {
+    .title-tooltip {
+        max-width: 300px;
+    }
+
+    .habit-title {
+        max-width: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .title-tooltip {
+        max-width: 250px;
+    }
+}
+
+
+
+
