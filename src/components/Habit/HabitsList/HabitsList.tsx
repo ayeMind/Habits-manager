@@ -13,6 +13,7 @@ import {
   Container,
   Loader,
   Box,
+  Tooltip
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
@@ -65,16 +66,9 @@ const HabitsList: FC<Props> = ({ period }) => {
     open();
   };
 
-  const timeByPeriod = (period: "daily" | "weekly" | "monthly") => {
-    if (period === "daily") return 86400;
-    if (period === "weekly") return 604800;
-    if (period === "monthly") return 2592000;
-  };
-
   const preHabitChange = (habit: Habit) => {
     if (habit.isCompleted) {
-      const time = timeByPeriod(habit.period) as number;
-      removeCurrentAction(habit.id, time);
+      removeCurrentAction(habit.id, habit.period);
     } else {
       const lastHistoryId = getLastHistoryId();
 
@@ -136,8 +130,7 @@ const HabitsList: FC<Props> = ({ period }) => {
       addAction(action);
     } else if (habit.isCompleted) {
       toggleHabit(id);
-      const time = timeByPeriod(habit.period) as number;
-      removeCurrentAction(id, time);
+      removeCurrentAction(id, period);
     }
   };
 
@@ -163,9 +156,17 @@ const HabitsList: FC<Props> = ({ period }) => {
     }
   };
 
+  const calculateProgress = (habit: Habit) => {
+    if (habit.targetValue) {
+      return (habit.currentValue / habit.targetValue) * 100;
+    } else {
+      return habit.isCompleted ? 100 : 0;
+    }
+  }
+
   const rows = habits.map((habit) => (
     <Table.Tr key={habit.id}>
-      <Table.Td maw={200}>
+      <Table.Td maw={400}>
         <Flex align="center" gap="sm">
           {habit.isCompleted ? (
             <ThemeIcon color="teal" size={24} radius="xl">
@@ -192,33 +193,37 @@ const HabitsList: FC<Props> = ({ period }) => {
               />
             </ThemeIcon>
           )}
-          <p className={classes["habit-title"]}>{habit.title}</p>
+          <Tooltip label={habit.title} color="cyan" multiline maw={350} events={{ hover: true, focus: true, touch: true }}>
+            <Text className={classes["habit-title"]} lineClamp={4}>
+              {habit.title}
+            </Text>
+          </Tooltip>
         </Flex>
       </Table.Td>
       <Table.Td>
-        <Progress
-          className={classes.slider}
-          value={
-            habit.targetValue
-              ? (habit.currentValue / habit.targetValue) * 100
-              : habit.isCompleted
-              ? 100
-              : 0
-          }
-          color={habit.isCompleted ? "teal" : "blue"}
-        />
+        <Tooltip label={`Прогресс: ${habit.currentValue} из ${habit.targetValue} `}  
+                 color="cyan"
+                 events={{ hover: true, focus: true, touch: true }}>
+          <Progress
+            className={classes.slider}
+            value={calculateProgress(habit)}
+            color={habit.isCompleted ? "teal" : "blue"}
+          />
+        </Tooltip>
       </Table.Td>
       <Table.Td>
         <form>
           <Flex align="center" gap="md" visibleFrom="sm">
-            <NumberInput
-              hideControls
-              name="progress"
-              size="xs"
-              placeholder="0"
-              radius="md"
-              allowNegative={false}
-            />
+            <Tooltip label="Введите прогресс" color="cyan" events={{ hover: true, focus: true, touch: true }}>
+              <NumberInput
+                hideControls
+                name="progress"
+                size="xs"
+                placeholder="0"
+                radius="md"
+                allowNegative={false}
+              />
+            </Tooltip>
             <Button
               type="submit"
               variant="outline"
@@ -295,7 +300,7 @@ const HabitsList: FC<Props> = ({ period }) => {
 
       {loading ? (
         <Box pos={"fixed"} top={"50%"} left={"50%"}>
-          <Loader  />
+          <Loader />
         </Box>
       ) : habits.length === 0 ? (
         <Text size="xl">Нет привычек</Text>
