@@ -41,7 +41,7 @@ export const useGlobalStore = create<GlobalState>()(
       removeCurrentAction:
        (habit_id: number, seconds: number) =>
         set((state) => ({ history: state.history.filter(
-            (action) => action.habit_id !== habit_id || (new Date().getTime() - action.date.getTime()) / 1000 > seconds) })),
+            (action) => action.habit_id !== habit_id || (new Date().getTime() - new Date(action.date).getTime()) / 1000 > seconds) })),
     }),
     {
       name: 'habits-storage',
