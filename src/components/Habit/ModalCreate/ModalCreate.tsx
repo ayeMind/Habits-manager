@@ -13,6 +13,7 @@ import classes from "./style.module.css";
 import { useGlobalStore } from "app/globalStore";
 
 import { FC } from "react"
+import { IconCalendar, IconCalendarMonth, IconCalendarWeek } from "@tabler/icons-react";
 
 interface Props {
   defaultPeriod: "daily" | "weekly" | "monthly";
@@ -77,7 +78,7 @@ const ModalCreate:FC<Props> = ({defaultPeriod, close}) => {
 
   return (
     <form className={classes["create-form"]}>
-      <SegmentedControl
+      <SegmentedControl visibleFrom="sm"
         value={period}
         onChange={(value) => setPeriod(value as "daily" | "weekly" | "monthly")}
         name="period"
@@ -85,6 +86,18 @@ const ModalCreate:FC<Props> = ({defaultPeriod, close}) => {
           { label: "Ежедневная", value: "daily" },
           { label: "Еженедельная", value: "weekly" },
           { label: "Ежемесечная", value: "monthly" },
+        ]}
+        fullWidth
+      />
+
+<SegmentedControl hiddenFrom="sm"
+        value={period}
+        onChange={(value) => setPeriod(value as "daily" | "weekly" | "monthly")}
+        name="period"
+        data={[
+          { label: <IconCalendar />, value: "daily" },
+          { label: <IconCalendarWeek />, value: "weekly" },
+          { label: <IconCalendarMonth />, value: "monthly" },
         ]}
         fullWidth
       />
