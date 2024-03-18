@@ -15,11 +15,12 @@ import { useGlobalStore } from "app/globalStore";
 import { FC } from "react"
 
 interface Props {
+  defaultPeriod: "daily" | "weekly" | "monthly";
   close: () => void;
 }
 
-const ModalCreate:FC<Props> = ({close}) => {
-  const [period, setPeriod] = useState("daily");
+const ModalCreate:FC<Props> = ({defaultPeriod, close}) => {
+  const [period, setPeriod] = useState(defaultPeriod);
   const [checked, setChecked] = useState(false);
   const [targetValue, setTargetValue] = useState<string | number>('');
 

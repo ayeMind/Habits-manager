@@ -17,7 +17,7 @@ const HabitsSection:FC<Props> = ({period}) => {
     <>
 
         <Modal opened={opened} onClose={close} title="Добавление привычки">
-            <ModalCreate close={close} />
+            <ModalCreate defaultPeriod={period} close={close} />
         </Modal>
 
         <HabitsList period={period} />
