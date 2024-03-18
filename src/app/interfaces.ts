@@ -40,8 +40,17 @@ export interface LibraryHabit {
     category: string;
     period: 'daily' | 'weekly' | 'monthly';
     targetValue?: number;
+    added: boolean;
+    selected: boolean;
 }
   
+
+export interface LibraryHabitCreate {
+    title: string;
+    category: string;
+    period: 'daily' | 'weekly' | 'monthly';
+    targetValue?: number;
+}
 export interface Habit {
     id: number;
     title: string;

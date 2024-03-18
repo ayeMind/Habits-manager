@@ -1,0 +1,13 @@
+.card {
+    cursor: pointer;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    opacity: 0.8;
+}
+
+.active-card {
+    cursor: pointer;
+    background-color: #44639f;
+}

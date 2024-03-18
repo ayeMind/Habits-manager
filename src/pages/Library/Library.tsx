@@ -15,6 +15,8 @@ import { useLibraryStore } from "./libraryStore";
 import { useEffect, useState } from "react";
 import { LibraryHabit } from "app/interfaces";
 
+import classes from "./style.module.css";
+
 const Library = () => {
   const categoires = useGlobalStore((state) => state.categories);
 
@@ -24,7 +26,9 @@ const Library = () => {
   const [category, setCategory] = useState("");
 
   const habits = useLibraryStore((state) => state.habits);
-  const [filteredHabits, setFilteredHabits] = useState(habits as LibraryHabit[]);
+  const [filteredHabits, setFilteredHabits] = useState(
+    habits as LibraryHabit[]
+  );
 
   const translatePeriod = (period: "daily" | "weekly" | "monthly") => {
     if (period === "daily") return "День";
@@ -34,24 +38,45 @@ const Library = () => {
 
   useEffect(() => {
     console.log(period, category, habits);
-    
+
     if (period === "Все" && category === "") {
       setFilteredHabits(habits);
     } else if (period === "Все" && category !== "") {
-      setFilteredHabits(habits.filter((habit) => habit.category.includes(category)));
+      setFilteredHabits(
+        habits.filter((habit) => habit.category.includes(category))
+      );
     } else if (period !== "Все" && category === "") {
-      setFilteredHabits(habits.filter((habit) => translatePeriod(habit.period) === period));
+      setFilteredHabits(
+        habits.filter((habit) => translatePeriod(habit.period) === period)
+      );
     } else {
       setFilteredHabits(
         habits.filter(
-          (habit) => translatePeriod(habit.period) === period && habit.category.includes(category))
-        );
+          (habit) =>
+            translatePeriod(habit.period) === period &&
+            habit.category.includes(category)
+        )
+      );
     }
   }, [period, category, habits]);
 
+  const toggleCard = (id: number) => {
+    const updatedHabits = filteredHabits.map((habit) => {
+      if (habit.id === id) {
+        return { ...habit, selected: !habit.selected };
+      }
+      return habit;
+    });
+    setFilteredHabits(updatedHabits);
+  }
+
+  const checkHaveSelected = () => {
+    return filteredHabits.some((habit) => habit.selected);
+  }
+
   const habitsList = filteredHabits.map((habit) => {
     return (
-      <Card key={habit.id} shadow="xs" radius="md" padding="md" role="button">
+      <Card onClick={() => toggleCard(habit.id)} className={!habit.selected ? classes["card"] : classes["active-card"]} key={habit.id} shadow="xs" radius="md" padding="md" role="checkbox">
         <Text size="md" mb={5}>
           {habit.title}
         </Text>
@@ -62,7 +87,6 @@ const Library = () => {
       </Card>
     );
   });
-
 
   return (
     <PageLayout title="Библиотека" defaultTab="library">
@@ -83,11 +107,19 @@ const Library = () => {
           data={categoires}
           leftSection={<IconSearch stroke={1} />}
         />
+        {checkHaveSelected() && <Button w={200} visibleFrom="sm">Добавить выбранные</Button>}
       </Group>
-      <SimpleGrid mt={30} cols={{ base: 1, xs: 2, lg: 3, xl: 4, xxxl: 6 }}>
-        {habitsList}
-      </SimpleGrid>
-      <Button mt={20}>Добавить из своих прывычек</Button>
+      {filteredHabits.length === 0 ? (
+        <Text mt={20}>Ничего не найдено</Text>
+      ) : (
+        <SimpleGrid mt={30} cols={{ base: 1, xs: 2, lg: 3, xl: 4, xxxl: 6 }}>
+          {habitsList}
+        </SimpleGrid>
+      )}
+      <Flex direction="column">
+        {checkHaveSelected() && <Button mt={20} w={200} hiddenFrom="sm">Добавить выбранные</Button>}
+        <Button mt={20} w={250}>Пополнить библиотеку</Button>
+      </Flex>
     </PageLayout>
   );
 };
