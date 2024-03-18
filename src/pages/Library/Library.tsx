@@ -9,13 +9,16 @@ import {
   SimpleGrid,
   Text,
 } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
 import { useEffect, useState } from "react";
-import { IconSearch } from "@tabler/icons-react";
+import { IconCheck, IconSearch } from "@tabler/icons-react";
 import { useGlobalStore } from "app/globalStore";
 import { useLibraryStore } from "./libraryStore";
 import { LibraryHabit } from "app/interfaces";
 import { translatePeriod } from "actions/translatePeriod";
 import { useDisclosure } from "@mantine/hooks";
+
+import { notifications } from "@mantine/notifications";
 
 import PageLayout from "layouts/PageLayout";
 import ModalAdd from "./ModalAdd";
@@ -32,7 +35,7 @@ const Library = () => {
   const [period, setPeriod] = useState("Все");
   const [category, setCategory] = useState("");
 
-  const habits = useLibraryStore((state) => state.habits);
+  const {habits, removeAllSelectedHabits, saveAllSelectedHabits } = useLibraryStore((state) => state);
   const [filteredHabits, setFilteredHabits] = useState(
     habits as LibraryHabit[]
   );
@@ -75,6 +78,35 @@ const Library = () => {
     return filteredHabits.some((habit) => habit.selected);
   };
 
+  const handleRemoveAllSelected = () => {
+    const habits_id = filteredHabits
+      .filter((habit) => habit.selected)
+      .map((habit) => habit.id);
+    removeAllSelectedHabits(habits_id);
+  }
+
+  const handleSaveAllSelected = () => {
+
+    const habitsToSave = filteredHabits.filter((habit) => habit.selected);
+    saveAllSelectedHabits(habitsToSave);
+    setFilteredHabits(
+      filteredHabits.map((habit) => {
+        return { ...habit, selected: false };
+      })
+    );
+      
+    notifications.show({
+      color: "teal",
+      title: 'Успех!',
+      message: 'Выбранные привычки успешно добавлены в ваш список привычек',
+      autoClose: 2000,
+      icon: <IconCheck />,
+    })
+    
+    
+  }
+
+
   const habitsList = filteredHabits.map((habit) => {
     return (
       <Card
@@ -99,6 +131,9 @@ const Library = () => {
 
   return (
     <PageLayout title="Библиотека" defaultTab="library">
+
+      <Notifications w={500} />
+
       <Modal opened={opened} onClose={close} title="Добавление в библиотеку">
         <ModalAdd close={close} />
       </Modal>
@@ -121,9 +156,14 @@ const Library = () => {
           leftSection={<IconSearch stroke={1} />}
         />
         {checkHaveSelected() && (
-          <Button w={200} h={35} visibleFrom="sm">
-            Добавить выбранные
-          </Button>
+          <Flex gap="md" visibleFrom="sm">
+            <Button w={150} h={35} color="indigo" onClick={handleSaveAllSelected}>
+              Сохранить себе
+            </Button>
+            <Button w={100} h={35} color="pink" onClick={handleRemoveAllSelected}>
+              Удалить
+            </Button>
+          </Flex>
         )}
       </Group>
       {filteredHabits.length === 0 ? (
@@ -135,9 +175,14 @@ const Library = () => {
       )}
       <Flex direction="column" align="center">
         {checkHaveSelected() && (
-          <Button mt={20} w={250} hiddenFrom="sm">
-            Добавить выбранные
-          </Button>
+          <Flex mt={20} gap="md" hiddenFrom="sm">
+            <Button w={150} h={35} color="indigo" onClick={handleSaveAllSelected}>
+              Сохранить себе
+            </Button>
+            <Button w={95} h={35} color="pink" onClick={handleRemoveAllSelected}>
+              Удалить
+            </Button>
+          </Flex>
         )}
         <Button mt={20} w={250} onClick={open}>
           Пополнить библиотеку

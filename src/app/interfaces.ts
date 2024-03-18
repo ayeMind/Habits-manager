@@ -31,7 +31,9 @@ export interface LibraryStore {
     getLastHabitId: () => number;
     addHabit: (habit: LibraryHabitCreate) => void;
     removeHabit: (id: number) => void;
+    removeAllSelectedHabits: (habits_id: number[]) => void;
     addHabitToGlobalStore: (habit: LibraryHabit) => void;
+    saveAllSelectedHabits: (habits: LibraryHabit[]) => void;
 }
 
 export interface LibraryHabit {

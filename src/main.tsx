@@ -11,6 +11,7 @@ import { createTheme, MantineProvider } from '@mantine/core';
 
 import 'app/global.css';
 import '@mantine/core/styles.css';
+import '@mantine/notifications/styles.css';
 
 import Home from 'pages/home/Home.tsx';
 import NotFound from 'pages/not-found/NotFound';

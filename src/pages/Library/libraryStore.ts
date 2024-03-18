@@ -30,7 +30,7 @@ const habitsList = [
     title: "Работа над проектом на 2 часа",
     category: "Работа",
     period: "daily",
-    targetValue: 3,
+    targetValue: 2,
   },
   {
     id: 5,
@@ -92,7 +92,7 @@ export const useLibraryStore = create<LibraryStore>()(
         set((state: LibraryStore) => ({
           habits: [
             ...state.habits,
-            { ...habit, id: lastHabitId, selected: false, added: false },
+            { ...habit, id: lastHabitId + 1, selected: false, added: false },
           ],
         }));
       },
@@ -100,6 +100,13 @@ export const useLibraryStore = create<LibraryStore>()(
       removeHabit: (id: number) =>
         set((state: LibraryStore) => ({
           habits: state.habits.filter((habit: LibraryHabit) => habit.id !== id),
+        })),
+
+      removeAllSelectedHabits: (habits_id: number[]) =>
+        set((state: LibraryStore) => ({
+          habits: state.habits.filter(
+            (habit: LibraryHabit) => !habits_id.includes(habit.id)
+          ),
         })),
 
       addHabitToGlobalStore: (habit: LibraryHabit) => {
@@ -111,6 +118,12 @@ export const useLibraryStore = create<LibraryStore>()(
         };
         addHabit(habitToAdd);
       },
+
+      saveAllSelectedHabits: (habits: LibraryHabit[]) => {
+        habits.forEach((habit) => {
+            get().addHabitToGlobalStore(habit);
+        });
+      }
     }),
     {
       name: "library-storage",
