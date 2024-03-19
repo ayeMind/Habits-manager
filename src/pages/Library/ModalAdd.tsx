@@ -34,7 +34,8 @@ const ModalAdd:FC<Props> = ({close}) => {
     }
 
     const filteredHabits = habits.filter((habit) => habit.title.toLowerCase().includes(search.toLowerCase()) 
-                           || habit.category.toLowerCase().includes(search.toLowerCase()));
+                           || habit.category.toLowerCase().includes(search.toLowerCase())
+                           || translatePeriod(habit.period).toLowerCase().includes(search.toLowerCase()));
 
     const displayedHabits = filteredHabits.map((habit) => 
         <Card onClick={() => {handleAddHabit(habit)}} key={habit.id} className={classes["card"]} shadow="xs" radius="md" padding="md">

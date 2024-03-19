@@ -20,14 +20,19 @@ const Statistics = () => {
 
         <Flex direction="column" gap="xs">
           <Text>Уровень: 1</Text>
-          <Progress color="teal" value={40} w={400} visibleFrom="xs" />
-          <Progress color="teal" value={40} w={200} hiddenFrom="xs" />
+          <Tooltip label="Опыт: 0/100" position="top" events={{ hover: true, focus: true, touch: true }}>
+            <Progress color="teal" value={0} w={200} />
+          </Tooltip>
+    
+      
 
-          <Text size="xs">Осталось опыта до следующего уровня: 100</Text>
+          <Text size="xs">Осталось следующего уровня: 100</Text>
           <Text size="sm">Получено достижений: 0</Text>
         </Flex>
       </Flex>
-      <Heatmap />
+      <div className={classes["heatmap-container"]}>
+        <Heatmap />
+      </div>
     </PageLayout>
   );
 };

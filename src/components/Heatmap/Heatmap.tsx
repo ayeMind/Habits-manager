@@ -1,5 +1,5 @@
 import HeatMap from '@uiw/react-heat-map';
-import { Tooltip } from '@mantine/core';
+import { Tooltip, Text } from '@mantine/core';
 import { useGlobalStore } from 'app/globalStore';
 
 import classes from './style.module.css';
@@ -32,28 +32,44 @@ const Heatmap = () => {
       return new Date(+year, +month, +day).toLocaleDateString();
     }
 
+    const getLastYearDate = () => {
+      const currentDate = new Date();
+      const lastYear = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), currentDate.getDate());
+      const startLastYear = `${lastYear.getFullYear()}/${lastYear.getMonth()}/${lastYear.getDate()}`;
+      const endLastYear = `${currentDate.getFullYear()}/${currentDate.getMonth()}/${currentDate.getDate()}`;
+      return [startLastYear, endLastYear]
+    
+    }
+
+    const [startDate, endDate] = getLastYearDate();
+
   return (
-    <HeatMap className={classes.heatmap}
-      value={value}
-      width={600}
-      startDate={new Date('2024/01/01')}
-      style={{color: 'white'}}
-      panelColors={{
-        0: '#ebedf0',
-        1: '#9be9a8',
-        4: '#40c463',
-        10: '#30a14e',
-        15: '#216e39',
-      }}
-      rectRender={(props, data) => {
+    <>
+      <Text ml={50}>{} выполнено за последний год</Text>
+      <HeatMap className={classes.heatmap}
+        value={value}
         
-        return (
-          <Tooltip position="top" events={{ hover: true, focus: true, touch: true }} label={`За ${toLocalDate(data.date)} выполнено: ${data.count || 0}`}>
-            <rect {...props} />
-          </Tooltip>
-        );
-      }}
-    />
+        startDate={new Date(startDate)}
+        endDate={new Date(endDate)}
+        width={725}
+        style={{color: 'white'}}
+        panelColors={{
+          0: '#fdfdfd', 
+          1: '#9be9a8',
+          4: '#40c463',
+          10: '#30a14e',
+          15: '#216e39',
+        }}
+        rectRender={(props, data) => {
+          
+          return (
+            <Tooltip position="top" events={{ hover: true, focus: true, touch: true }} label={`За ${toLocalDate(data.date)} выполнено: ${data.count || 0}`}>
+              <rect {...props} />
+            </Tooltip>
+          );
+        }}
+      />
+    </>
   )
 };
 export default Heatmap
