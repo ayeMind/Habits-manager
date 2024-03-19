@@ -11,6 +11,46 @@ const countDaysDiff = (date1: Date, date2: Date) => {
 export const useGlobalStore = create<GlobalState>()(
   persist(
     (set, get) => ({
+
+      experience: 0,
+      level: 1,
+      gold: 0,
+      earned: 0,
+      spent: 0,
+    
+      increaseExperienceAndGold: (value: number) => {
+        const newExperience = get().experience + value;
+        const currentLevel = get().level;
+
+        set((state) => ({ experience: state.experience + value }));
+        set((state) => ({ gold: state.gold + value / 10 }));
+        set((state) => ({ earned: state.earned + value / 10 }));
+
+        if (newExperience >= currentLevel * (200 + (currentLevel-1) * 50) / 2) {
+          set((state) => ({ level: state.level + 1 }));
+          return true;
+        } else if (newExperience < (currentLevel-1) * (200 + (currentLevel-2) * 50) / 2) {
+          set((state) => ({ level: state.level - 1 }));
+          return false;
+        }
+        
+        return false;
+      },
+
+      getCurrentLevelExperience: () => {
+        const currentLevel = get().level;
+        const currentExperience = get().experience;
+        return currentExperience - (currentLevel-1) * (200 + (currentLevel-2) * 50) / 2;
+      },
+      
+      daysStrick: 0,
+      maxDaysStrick: 0,
+
+      increaseDaysStrick: () => {
+        set((state) => ({ daysStrick: state.daysStrick + 1 }));
+        set((state) => ({ maxDaysStrick: Math.max(state.daysStrick, state.maxDaysStrick) }));
+      },
+
       habits: [] as Habit[],
       getLastId: () =>
         get().habits.reduce(
@@ -41,21 +81,33 @@ export const useGlobalStore = create<GlobalState>()(
           habits: state.habits.filter((habit) => habit.id !== id),
         })),
 
-      toggleHabit: (id: number) =>
-        set((state) => ({
-          habits: state.habits.map((habit) =>
-            habit.id === id
-              ? { ...habit, isCompleted: !habit.isCompleted }
-              : habit
-          ),
-        })),
+      toggleHabit: (habit: Habit) => {
+        let isNextLevel = false;
 
-      completeHabit: (id: number) =>
+        if (!habit.isCompleted) {
+          isNextLevel = get().increaseExperienceAndGold(10);
+        }
+
+        set((state) => ({
+          habits: state.habits.map((h) =>
+            h.id === habit.id ? { ...h, isCompleted: !h.isCompleted } : h
+          ),
+        }));
+
+        return isNextLevel;
+      },
+
+
+      completeHabit: (id: number) => {
+        const daysStrick = get().daysStrick;
+        const isNextLevel = get().increaseExperienceAndGold((daysStrick + 1) * 10);
         set((state) => ({
           habits: state.habits.map((habit) =>
             habit.id === id ? { ...habit, isCompleted: true } : habit
           ),
-        })),
+        }))
+        return isNextLevel;
+      },
 
       changeTargetValue: (id: number, value: number) =>
         set((state) => ({
@@ -143,6 +195,10 @@ export const useGlobalStore = create<GlobalState>()(
         if (habit_period === "daily") {
           
           if (currentDate.getDate() === lastActionDate.getDate()) {
+
+            const daysStrick = get().daysStrick;
+            get().increaseExperienceAndGold(-(daysStrick + 1) * 10);
+            
             set({
               history: allHistory.filter(
                 (action) => action.id !== lastAction.id
@@ -184,8 +240,10 @@ export const useGlobalStore = create<GlobalState>()(
         "Работа",
         "Отказ от вредной привычки",
       ] as string[],
+
       addCategory: (category: string) =>
         set((state) => ({ categories: [...state.categories, category] })),
+
     }),
     {
       name: "habits-storage",

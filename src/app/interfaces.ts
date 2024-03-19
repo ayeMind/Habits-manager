@@ -9,8 +9,8 @@ export interface GlobalState {
     clearHabits: () => void;
     getLastId: () => number;
     getHabitsWithPeriod: (period: 'daily' | 'weekly' | 'monthly') => Habit[];
-    toggleHabit: (id: number) => void;
-    completeHabit: (id: number) => void;
+    toggleHabit: (habit: Habit) => boolean; // Возвращает, происходит ли переход на новый уровень
+    completeHabit: (id: number) => boolean // Возвращает, происходит ли переход на новый уровень
     changeTargetValue: (id: number, value: number) => void;
 
     updateHabits: (period: 'daily' | 'weekly' | 'monthly') => void;
@@ -24,6 +24,21 @@ export interface GlobalState {
 
     categories: string[];
     addCategory: (category: string) => void;
+
+    experience: number;
+    level: number;
+    gold: number;
+    earned: number;
+    spent: number;
+
+    increaseExperienceAndGold: (value: number) => boolean; // Возвращает, происходит ли переход на новый уровень
+
+    getCurrentLevelExperience: () => number;
+
+    daysStrick: number;
+    maxDaysStrick: number;
+
+    increaseDaysStrick: () => void;
 }
 
 export interface LibraryStore {

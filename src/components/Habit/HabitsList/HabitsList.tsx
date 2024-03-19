@@ -15,6 +15,7 @@ import {
   Box,
   Tooltip
 } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
 import {
   IconCircleCheck,
@@ -24,11 +25,10 @@ import {
 } from "@tabler/icons-react";
 import { useGlobalStore } from "app/globalStore";
 import { Habit, HabitAction } from "app/interfaces";
-
 import { FC, useEffect, useState } from "react";
-
 import classes from "./style.module.css";
 import ModalDelete from "../ModalDelete";
+
 
 interface Props {
   period: "daily" | "weekly" | "monthly";
@@ -47,6 +47,7 @@ const HabitsList: FC<Props> = ({ period }) => {
     getLastHistoryId,
     checkPeriod,
     updateHabits,
+    level,
   } = useGlobalStore((state) => state);
 
   const habits = getHabitsWithPeriod(period) as Habit[];
@@ -110,15 +111,24 @@ const HabitsList: FC<Props> = ({ period }) => {
 
     preHabitChange(habit);
 
-    toggleHabit(id);
+    if (toggleHabit(habit)) {
+      notifications.show({
+        color: "teal",
+        title: 'Поздравляю!',
+        message: `Вы достигли уровня ${level+1}`,
+        autoClose: 5000,
+      })
+    }
+
     changeTargetValue(id, maxTargetValue);
   };
 
   const progressChange = (habit: Habit, value: number) => {
     const id = habit.id;
     changeTargetValue(id, value);
+    
     if (habit.targetValue === value) {
-      completeHabit(id);
+      const isNextLevel = completeHabit(id);
       const action = {
         id: getLastHistoryId() + 1,
         habit_id: id,
@@ -128,8 +138,16 @@ const HabitsList: FC<Props> = ({ period }) => {
         value: value,
       };
       addAction(action);
+      if (isNextLevel) {
+        notifications.show({
+          color: "teal",
+          title: 'Поздравляю!',
+          message: `Вы достигли уровня ${level+1}`,
+          autoClose: 5000,
+        })
+      }
     } else if (habit.isCompleted) {
-      toggleHabit(id);
+      toggleHabit(habit);
       removeCurrentAction(id, period);
     }
   };
