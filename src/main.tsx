@@ -13,12 +13,13 @@ import 'app/global.css';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 
-import Home from 'pages/home/Home.tsx';
-import NotFound from 'pages/not-found/NotFound';
+import Home from 'pages/Home/Home';
+import NotFound from 'pages/Not-found/NotFound';
 import Library from 'pages/Library/Library';
 import Statistics from 'pages/Statistics/Statistics';
 import Store from 'pages/Store/Store';
 import Themes from 'pages/Themes/Themes';
+import Settings from 'pages/Settings/Settings';
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
     path: "/themes/",
     element: <Themes />,
   },
+  {
+    path: "/settings/",
+    element: <Settings />,
+  }
 ]);
 
 

@@ -28,6 +28,18 @@
     overflow-x: scroll;
 }
 
+.text-container {
+    margin-top: 15px;
+    padding: 0 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.text-container > p {
+    font-size: 1rem;
+}
+
 @media (max-width: 768px) {
     .avatar-container {
         width: 100px;
@@ -36,5 +48,9 @@
 
     .heatmap-container {
         height: 150px;
+    }
+
+    .text-container > p {
+        font-size: 0.9rem;
     }
 }

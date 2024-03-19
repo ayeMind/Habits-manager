@@ -33,6 +33,17 @@ const Statistics = () => {
       <div className={classes["heatmap-container"]}>
         <Heatmap />
       </div>
+      <div className={classes["text-container"]}>
+        <Text>Количество дней с выполнением всех привычек до конца периода</Text>
+        <Text>Текущий стрик: 0</Text>
+        <Text mb="md">Максимальный стрик: 0</Text>
+        <Text>Заработано монет: 0</Text>
+        <Text mb="md">Потрачено монет: 0</Text>
+        <Text>Количество выполненных привычек: 0</Text>
+        <Text>Количество пропущенных привычек: 0</Text>
+
+
+      </div>
     </PageLayout>
   );
 };

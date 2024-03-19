@@ -1,5 +1,5 @@
 import { AppShellNavbar, Burger, Group, Tabs } from "@mantine/core";
-import { IconBrandAppgallery, IconChartHistogram, IconList, IconLibrary, IconBrush } from "@tabler/icons-react";
+import { IconBrandAppgallery, IconChartHistogram, IconList, IconLibrary, IconBrush, IconSettings } from "@tabler/icons-react";
 
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
@@ -32,8 +32,7 @@ const SidePanel: FC<Props> = ({ defaultTab, opened, toggle }) => {
           <Tabs.Tab value="statistics" leftSection={<IconChartHistogram />}>Статистка</Tabs.Tab>
           <Tabs.Tab value="store" leftSection={<IconBrandAppgallery />}>Магазин</Tabs.Tab>
           <Tabs.Tab value="themes" leftSection={<IconBrush />}>Темы</Tabs.Tab>
-      
-
+          <Tabs.Tab value="settings" leftSection={<IconSettings />}>Настройки</Tabs.Tab>
         </Tabs.List>
       </Tabs>
     </AppShellNavbar>
