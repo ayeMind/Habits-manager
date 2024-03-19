@@ -131,18 +131,17 @@ export const useGlobalStore = create<GlobalState>()(
         habit_id: number,
         habit_period: "daily" | "weekly" | "monthly"
       ) => {
-        const lastAction = get()
-          .history.filter((action) => {
-            action.habit_id !== habit_id;
-          })
-          .pop();
+
+        const lastAction = get().history.filter((action) => action.habit_id !== habit_id).pop()
+
         if (!lastAction) return;
         const currentDate = new Date();
         const lastActionDate = new Date(lastAction.date);
-
+        
         const allHistory = get().history;
-
+        
         if (habit_period === "daily") {
+          
           if (currentDate.getDate() === lastActionDate.getDate()) {
             set({
               history: allHistory.filter(

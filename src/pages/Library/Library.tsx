@@ -141,7 +141,7 @@ const Library = () => {
           data={categoires}
           leftSection={<IconSearch stroke={1} />}
         />
-        <Switch label="Показывать сохранённые" checked={checked} onChange={(event) => setChecked(event.currentTarget.checked)} />
+        <Switch label={checked ? "Сохранённые" : "Не сохранённые"} checked={checked} onChange={(event) => setChecked(event.currentTarget.checked)} />
 
         {checkHaveSelected() && (
           <Flex gap="md" visibleFrom="sm">

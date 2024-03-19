@@ -67,6 +67,8 @@ const HabitsList: FC<Props> = ({ period }) => {
   };
 
   const preHabitChange = (habit: Habit) => {
+    console.log(habit);
+
     if (habit.isCompleted) {
       removeCurrentAction(habit.id, habit.period);
     } else {
