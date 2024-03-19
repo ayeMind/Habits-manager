@@ -27,7 +27,6 @@ const Statistics = () => {
           <Text size="sm">Получено достижений: 0</Text>
         </Flex>
       </Flex>
-
       <Heatmap />
     </PageLayout>
   );

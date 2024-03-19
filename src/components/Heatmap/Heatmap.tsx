@@ -2,6 +2,7 @@ import HeatMap from '@uiw/react-heat-map';
 import { Tooltip } from '@mantine/core';
 import { useGlobalStore } from 'app/globalStore';
 
+import classes from './style.module.css';
 
 interface Value {
   date: string;
@@ -32,7 +33,7 @@ const Heatmap = () => {
     }
 
   return (
-    <HeatMap
+    <HeatMap className={classes.heatmap}
       value={value}
       width={600}
       startDate={new Date('2024/01/01')}

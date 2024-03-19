@@ -1,0 +1,12 @@
+@media (max-width: 768px) {
+  .heatmap {
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .heatmap > * {
+    display: inline-block;
+    white-space: normal;
+  }
+}
