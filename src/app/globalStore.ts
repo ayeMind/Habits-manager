@@ -12,6 +12,12 @@ export const useGlobalStore = create<GlobalState>()(
   persist(
     (set, get) => ({
 
+      userName: "",
+      setUserName: (name: string) => set({ userName: name }),
+
+      avatar: {} as string,
+      setAvatar: (file: string) => set({ avatar: file }),
+
       experience: 0,
       level: 1,
       gold: 0,

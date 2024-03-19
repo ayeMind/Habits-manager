@@ -107,6 +107,7 @@ const ModalCreate:FC<Props> = ({defaultPeriod, close}) => {
         name="habit" label="Привычка" 
         placeholder="Пресс"
         data-autofocus
+        onChange={() => setHabitError("")}
         error={habitError} />
 
       <Autocomplete
@@ -116,7 +117,9 @@ const ModalCreate:FC<Props> = ({defaultPeriod, close}) => {
         limit={5}
         comboboxProps={{ position: 'top', middlewares: { flip: false, shift: false } }}
         data={categories}
+        onChange={() => setCategoryError("")}
         error={categoryError}
+        
       />
 
       <Switch
@@ -127,7 +130,10 @@ const ModalCreate:FC<Props> = ({defaultPeriod, close}) => {
       {checked && (
         <NumberInput
           value={targetValue}
-          onChange={setTargetValue}
+          onChange={(value) => {
+            setTargetValue(value)
+            setTargetValueError("")
+          }}
           min={1}
           name="targetValue"
           label="Введите цель привычки"

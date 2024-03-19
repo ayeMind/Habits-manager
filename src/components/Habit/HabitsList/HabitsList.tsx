@@ -13,7 +13,7 @@ import {
   Container,
   Loader,
   Box,
-  Tooltip
+  Tooltip,
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
@@ -28,7 +28,6 @@ import { GlobalState, Habit, HabitAction } from "app/interfaces";
 import { FC, useEffect, useState } from "react";
 import classes from "./style.module.css";
 import ModalDelete from "../ModalDelete";
-
 
 interface Props {
   period: "daily" | "weekly" | "monthly";
@@ -48,7 +47,6 @@ const HabitsList: FC<Props> = ({ period }) => {
     checkPeriod,
     updateHabits,
     level,
-    history
   } = useGlobalStore((state: GlobalState) => state);
 
   const habits = getHabitsWithPeriod(period) as Habit[];
@@ -68,8 +66,6 @@ const HabitsList: FC<Props> = ({ period }) => {
   };
 
   const preHabitChange = (habit: Habit) => {
-
-    
     if (habit.isCompleted) {
       removeCurrentAction(habit.id);
     } else {
@@ -96,15 +92,11 @@ const HabitsList: FC<Props> = ({ period }) => {
       }
 
       addAction(action);
-
     }
   };
 
   const handleIconClick = (habit: Habit) => {
     const id = habit.id;
-
-    console.log(history);
-    
 
     let maxTargetValue = habit.targetValue;
     if (!habit.isCompleted) {
@@ -118,10 +110,10 @@ const HabitsList: FC<Props> = ({ period }) => {
     if (toggleHabit(habit)) {
       notifications.show({
         color: "teal",
-        title: 'Поздравляю!',
-        message: `Вы достигли уровня ${level+1}`,
+        title: "Поздравляю!",
+        message: `Вы достигли уровня ${level + 1}`,
         autoClose: 5000,
-      })
+      });
     }
 
     changeTargetValue(id, maxTargetValue);
@@ -130,7 +122,7 @@ const HabitsList: FC<Props> = ({ period }) => {
   const progressChange = (habit: Habit, value: number) => {
     const id = habit.id;
     changeTargetValue(id, value);
-    
+
     if (habit.targetValue === value) {
       const isNextLevel = completeHabit(id);
       const action = {
@@ -145,10 +137,10 @@ const HabitsList: FC<Props> = ({ period }) => {
       if (isNextLevel) {
         notifications.show({
           color: "teal",
-          title: 'Поздравляю!',
-          message: `Вы достигли уровня ${level+1}`,
+          title: "Поздравляю!",
+          message: `Вы достигли уровня ${level + 1}`,
           autoClose: 5000,
-        })
+        });
       }
     } else if (habit.isCompleted) {
       toggleHabit(habit);
@@ -184,7 +176,7 @@ const HabitsList: FC<Props> = ({ period }) => {
     } else {
       return habit.isCompleted ? 100 : 0;
     }
-  }
+  };
 
   const rows = habits.map((habit) => (
     <Table.Tr key={habit.id}>
@@ -215,7 +207,13 @@ const HabitsList: FC<Props> = ({ period }) => {
               />
             </ThemeIcon>
           )}
-          <Tooltip className={classes["title-tooltip"]} label={habit.title} color="cyan" multiline events={{ hover: true, focus: true, touch: true }}>
+          <Tooltip
+            className={classes["title-tooltip"]}
+            label={habit.title}
+            color="cyan"
+            multiline
+            events={{ hover: true, focus: true, touch: true }}
+          >
             <Text className={classes["habit-title"]} lineClamp={4}>
               {habit.title}
             </Text>
@@ -223,9 +221,11 @@ const HabitsList: FC<Props> = ({ period }) => {
         </Flex>
       </Table.Td>
       <Table.Td>
-        <Tooltip label={`Прогресс: ${habit.currentValue} из ${habit.targetValue} `}  
-                 color="cyan"
-                 events={{ hover: true, focus: true, touch: true }}>
+        <Tooltip
+          label={`Прогресс: ${habit.currentValue} из ${habit.targetValue} `}
+          color="cyan"
+          events={{ hover: true, focus: true, touch: true }}
+        >
           <Progress
             className={classes.slider}
             value={calculateProgress(habit)}
@@ -236,7 +236,11 @@ const HabitsList: FC<Props> = ({ period }) => {
       <Table.Td>
         <form>
           <Flex align="center" gap="md" visibleFrom="sm">
-            <Tooltip label="Введите прогресс" color="cyan" events={{ hover: true, focus: true, touch: true }}>
+            <Tooltip
+              label="Введите прогресс"
+              color="cyan"
+              events={{ hover: true, focus: true, touch: true }}
+            >
               <NumberInput
                 hideControls
                 name="progress"

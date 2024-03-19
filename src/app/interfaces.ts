@@ -3,6 +3,13 @@ export interface DataToUpload {
     actions: HabitAction[];
 }
 export interface GlobalState {
+
+    userName: string;
+    setUserName: (name: string) => void;
+
+    avatar: string;
+    setAvatar: (file: string) => void;
+
     habits: Habit[];
     addHabit: (habit: CreateHabit) => void;
     removeHabit: (id: number) => void;

@@ -1,10 +1,12 @@
-import { FC } from "react";
-import { AppShell, AppShellMain } from "@mantine/core";
+import { FC, useEffect } from "react";
+import { AppShell, AppShellMain, Modal, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Notifications } from "@mantine/notifications";
 
 import Header from "components/AppShell/Header";
 import SidePanel from "components/AppShell/SidePanel";
+import { useGlobalStore } from "app/globalStore";
+import UserNameInput from "components/UserNameInput";
 
 interface Props {
   children: React.ReactNode;
@@ -13,25 +15,38 @@ interface Props {
 }
 
 const PageLayout: FC<Props> = ({ children, title, defaultTab }) => {
-  const [opened, { toggle }] = useDisclosure();
+  const [navBarOpened, { toggle }] = useDisclosure();
+  const [modalOpened, { open, close }] = useDisclosure();
+
+  const {userName } = useGlobalStore((state) => state);
+
+  useEffect(() => {
+    if (!userName) {
+      open();
+    }
+  }, [userName]);
 
   return (
     <>
       <Notifications w={500} visibleFrom="sm" />
       <Notifications w={300} hiddenFrom="sm" />
+      <Modal opened={modalOpened} onClose={close} centered withCloseButton={false} closeOnClickOutside={false} closeOnEscape={false} title="Добро пожаловать в менеджер привычек!  ">
+        <UserNameInput placeholder="Введите своё имя" close={close} />
+        <Text size="sm" mt="xs">Сменить имя можно будет в настройках</Text>
+      </Modal>
       <AppShell
         layout="alt"
         w="auto"
         navbar={{
           width: 200,
           breakpoint: "md",
-          collapsed: { mobile: !opened },
+          collapsed: { mobile: !navBarOpened },
         }}
         header={{ height: 65 }}
         padding="md"
       >
-        <Header title={title} opened={opened} toggle={toggle} />
-        <SidePanel defaultTab={defaultTab} opened={opened} toggle={toggle} />
+        <Header title={title} opened={navBarOpened} toggle={toggle} />
+        <SidePanel defaultTab={defaultTab} opened={navBarOpened} toggle={toggle} />
         <AppShellMain>{children}</AppShellMain>
       </AppShell>
     </>
@@ -39,3 +54,4 @@ const PageLayout: FC<Props> = ({ children, title, defaultTab }) => {
 };
 
 export default PageLayout;
+ 
