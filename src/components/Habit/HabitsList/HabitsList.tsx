@@ -45,7 +45,6 @@ const HabitsList: FC<Props> = ({ period }) => {
     removeCurrentAction,
     addAction,
     getLastHistoryId,
-    history,
     checkPeriod,
     updateHabits,
   } = useGlobalStore((state) => state);
@@ -67,8 +66,8 @@ const HabitsList: FC<Props> = ({ period }) => {
   };
 
   const preHabitChange = (habit: Habit) => {
-    console.log(habit);
 
+    
     if (habit.isCompleted) {
       removeCurrentAction(habit.id, habit.period);
     } else {
@@ -96,7 +95,6 @@ const HabitsList: FC<Props> = ({ period }) => {
 
       addAction(action);
 
-      console.log(history);
     }
   };
 
