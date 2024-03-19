@@ -24,7 +24,7 @@ import {
   IconSquareRoundedMinus,
 } from "@tabler/icons-react";
 import { useGlobalStore } from "app/globalStore";
-import { Habit, HabitAction } from "app/interfaces";
+import { GlobalState, Habit, HabitAction } from "app/interfaces";
 import { FC, useEffect, useState } from "react";
 import classes from "./style.module.css";
 import ModalDelete from "../ModalDelete";
@@ -48,7 +48,8 @@ const HabitsList: FC<Props> = ({ period }) => {
     checkPeriod,
     updateHabits,
     level,
-  } = useGlobalStore((state) => state);
+    history
+  } = useGlobalStore((state: GlobalState) => state);
 
   const habits = getHabitsWithPeriod(period) as Habit[];
 
@@ -70,7 +71,7 @@ const HabitsList: FC<Props> = ({ period }) => {
 
     
     if (habit.isCompleted) {
-      removeCurrentAction(habit.id, habit.period);
+      removeCurrentAction(habit.id);
     } else {
       const lastHistoryId = getLastHistoryId();
 
@@ -101,6 +102,9 @@ const HabitsList: FC<Props> = ({ period }) => {
 
   const handleIconClick = (habit: Habit) => {
     const id = habit.id;
+
+    console.log(history);
+    
 
     let maxTargetValue = habit.targetValue;
     if (!habit.isCompleted) {
@@ -148,7 +152,7 @@ const HabitsList: FC<Props> = ({ period }) => {
       }
     } else if (habit.isCompleted) {
       toggleHabit(habit);
-      removeCurrentAction(id, period);
+      removeCurrentAction(id);
     }
   };
 

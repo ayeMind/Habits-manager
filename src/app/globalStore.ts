@@ -84,8 +84,10 @@ export const useGlobalStore = create<GlobalState>()(
       toggleHabit: (habit: Habit) => {
         let isNextLevel = false;
 
+        const daysStrick = get().daysStrick;
+
         if (!habit.isCompleted) {
-          isNextLevel = get().increaseExperienceAndGold(10);
+          isNextLevel = get().increaseExperienceAndGold((daysStrick + 1) * 10);
         }
 
         set((state) => ({
@@ -177,60 +179,22 @@ export const useGlobalStore = create<GlobalState>()(
           ),
         })),
 
-      // Смотрит на дату, и если действие с habit_id  было совершено в течение последних X секунд, то удаляет это действие из истории
-      // Нужно для того, чтобы можно было отменить действие, если оно было совершено случайно
       removeCurrentAction: (
         habit_id: number,
-        habit_period: "daily" | "weekly" | "monthly"
       ) => {
-
         const lastAction = get().history.filter((action) => action.habit_id !== habit_id).pop()
+        if (!lastAction) return false;
 
-        if (!lastAction) return;
-        const currentDate = new Date();
-        const lastActionDate = new Date(lastAction.date);
-        
-        const allHistory = get().history;
-        
-        if (habit_period === "daily") {
-          
-          if (currentDate.getDate() === lastActionDate.getDate()) {
+        set((state) => ({
+          history: state.history.filter(
+            (action) => action.id !== lastAction.id
+          ),
+        }));
 
-            const daysStrick = get().daysStrick;
-            get().increaseExperienceAndGold(-(daysStrick + 1) * 10);
-            
-            set({
-              history: allHistory.filter(
-                (action) => action.id !== lastAction.id
-              ),
-            });
-          }
-        }
+        const daysStrick = get().daysStrick;
+        const isNextLevel = get().increaseExperienceAndGold(-(daysStrick + 1) * 10);
 
-        if (habit_period === "weekly") {
-          const daysUntilMonday = ((7 - lastActionDate.getDay()) % 7) + 1;
-          const daysDiff = countDaysDiff(lastActionDate, currentDate);
-          if (daysDiff < daysUntilMonday) {
-            set({
-              history: allHistory.filter(
-                (action) => action.id !== lastAction.id
-              ),
-            });
-          }
-        }
-
-        if (habit_period === "monthly") {
-          if (
-            currentDate.getMonth() === lastActionDate.getMonth() &&
-            currentDate.getFullYear() === lastActionDate.getFullYear()
-          ) {
-            set({
-              history: allHistory.filter(
-                (action) => action.id !== lastAction.id
-              ),
-            });
-          }
-        }
+        return isNextLevel;
       },
 
       categories: [

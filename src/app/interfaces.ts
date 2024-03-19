@@ -19,7 +19,7 @@ export interface GlobalState {
     history: HabitAction[];
     addAction: (action: HabitActionCreate) => void;
     removeAllHabitHistroy: (habit_id: number) => void;
-    removeCurrentAction: (habit_id: number, habit_period: "daily" | "weekly" | "monthly") => void;
+    removeCurrentAction: (habit_id: number) => boolean; // Возвращает, происходит ли переход на новый уровеньs
     getLastHistoryId: () => number;
 
     categories: string[];
