@@ -68,12 +68,12 @@ export const useGlobalStore = create<GlobalState>()(
         return currentExperience - (currentLevel-1) * (200 + (currentLevel-2) * 50) / 2;
       },
       
-      daysStrick: 0,
-      maxDaysStrick: 0,
+      daysStreak: 0,
+      maxDaysStreak: 0,
 
-      increaseDaysStrick: () => {
-        set((state) => ({ daysStrick: state.daysStrick + 1 }));
-        set((state) => ({ maxDaysStrick: Math.max(state.daysStrick, state.maxDaysStrick) }));
+      increaseDaysStreak: () => {
+        set((state) => ({ daysStreak: state.daysStreak + 1 }));
+        set((state) => ({ maxDaysStreak: Math.max(state.daysStreak, state.maxDaysStreak) }));
       },
 
       habits: [] as Habit[],
@@ -109,10 +109,10 @@ export const useGlobalStore = create<GlobalState>()(
       toggleHabit: (habit: Habit) => {
         let isNextLevel = false;
 
-        const daysStrick = get().daysStrick;
+        const daysStreak = get().daysStreak;
 
         if (!habit.isCompleted) {
-          isNextLevel = get().increaseExperienceAndGold((daysStrick + 1) * 10);
+          isNextLevel = get().increaseExperienceAndGold((daysStreak + 1) * 10);
         }
 
         set((state) => ({
@@ -126,8 +126,8 @@ export const useGlobalStore = create<GlobalState>()(
 
 
       completeHabit: (id: number) => {
-        const daysStrick = get().daysStrick;
-        const isNextLevel = get().increaseExperienceAndGold((daysStrick + 1) * 10);
+        const daysStreak = get().daysStreak;
+        const isNextLevel = get().increaseExperienceAndGold((daysStreak + 1) * 10);
         set((state) => ({
           habits: state.habits.map((habit) =>
             habit.id === id ? { ...habit, isCompleted: true } : habit
@@ -144,21 +144,25 @@ export const useGlobalStore = create<GlobalState>()(
         })),
 
 
-      lastStrickUpdateDate: new Date(),
-      setLastStrickUpdateDate: (date: Date) => set({ lastStrickUpdateDate: date }),
+      lastStreakUpdateDate: new Date(),
+      setLastStreakUpdateDate: (date: Date) => set({ lastStreakUpdateDate: date }),
 
-      updateStrick: () => {
-
+      updateStreak: () => {
         const currentDate = new Date(get().currentDateCorrection + new Date().getTime());
-       
-        if (!isDayChanged(currentDate, new Date(get().lastStrickUpdateDate))) return;
-      
+        const lastDate = new Date(get().lastStreakUpdateDate);
+
+        if (!isDayChanged(lastDate, currentDate)) return;
         const habits = get().habits;
-
         const periodIsOk = (period: "daily" | "weekly" | "monthly") => {
+          if (period === "weekly" && !isWeekChanged(lastDate, currentDate)) {
+            return true;
+          }
 
+          if (period === "monthly" && !isMonthChanged(lastDate, currentDate)) {
+            return true;
+          }
+                  
           const periodHabits = habits.filter((habit) => habit.period === period);
-
           if (periodHabits.every((habit) => habit.isCompleted)) {
             return true;
           } else {
@@ -166,14 +170,12 @@ export const useGlobalStore = create<GlobalState>()(
           }
         }
 
-        console.log(periodIsOk("daily"), periodIsOk("weekly"), periodIsOk("monthly"));
-        
         if (periodIsOk("daily") && periodIsOk("weekly") && periodIsOk("monthly")) {
-          get().increaseDaysStrick();
+          get().increaseDaysStreak();
         } else {
-          set({ daysStrick: 0 });
+          set({ daysStreak: 0 });
         }
-          get().setLastStrickUpdateDate(currentDate);
+          get().setLastStreakUpdateDate(currentDate);
       },
 
       // Для обнуления прогресса всех привычек в начале нового периода
@@ -249,8 +251,8 @@ export const useGlobalStore = create<GlobalState>()(
           ),
         }));
 
-        const daysStrick = get().daysStrick;
-        const isNextLevel = get().increaseExperienceAndGold(-(daysStrick + 1) * 10);
+        const daysStreak = get().daysStreak;
+        const isNextLevel = get().increaseExperienceAndGold(-(daysStreak + 1) * 10);
 
         return isNextLevel;
       },

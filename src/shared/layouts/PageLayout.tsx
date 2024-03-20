@@ -18,7 +18,7 @@ const PageLayout: FC<Props> = ({ children, title, defaultTab }) => {
   const [navBarOpened, { toggle }] = useDisclosure();
   const [modalOpened, { open, close }] = useDisclosure();
 
-  const {userName, isNewPeriod, updateHabits, updateStrick } = useGlobalStore((state) => state);
+  const {userName, isNewPeriod, updateHabits, updateStreak, currentDateCorrection } = useGlobalStore((state) => state);
 
   useEffect(() => {
     if (!userName) {
@@ -28,7 +28,7 @@ const PageLayout: FC<Props> = ({ children, title, defaultTab }) => {
 
   useEffect(() => {
     if (isNewPeriod("daily")) {
-      updateStrick();
+      updateStreak();
       updateHabits("daily");
     }
     if (isNewPeriod("weekly")) {
@@ -37,7 +37,7 @@ const PageLayout: FC<Props> = ({ children, title, defaultTab }) => {
     if (isNewPeriod("monthly")) {
       updateHabits("monthly");
     }
-  }, []);
+  }, [currentDateCorrection]);
 
   return (
     <>

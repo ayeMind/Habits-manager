@@ -22,10 +22,10 @@ export interface GlobalState {
     completeHabit: (id: number) => boolean // Возвращает, происходит ли переход на новый уровень
     changeTargetValue: (id: number, value: number) => void;
 
-    lastStrickUpdateDate: Date;
-    setLastStrickUpdateDate: (date: Date) => void;
+    lastStreakUpdateDate: Date;
+    setLastStreakUpdateDate: (date: Date) => void;
 
-    updateStrick: () => void;
+    updateStreak: () => void;
     updateHabits: (period: 'daily' | 'weekly' | 'monthly') => void;
     isNewPeriod: (period: 'daily' | 'weekly' | 'monthly') => boolean;
 
@@ -48,10 +48,10 @@ export interface GlobalState {
 
     getCurrentLevelExperience: () => number;
 
-    daysStrick: number;
-    maxDaysStrick: number;
+    daysStreak: number;
+    maxDaysStreak: number;
 
-    increaseDaysStrick: () => void;
+    increaseDaysStreak: () => void;
 }
 
 export interface LibraryStore {

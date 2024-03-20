@@ -10,7 +10,7 @@ const Statistics = () => {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const { getCurrentLevelExperience, userName, level, daysStrick, maxDaysStrick, earned, spent, avatar, setAvatar} = useGlobalStore((state) => state);
+  const { getCurrentLevelExperience, userName, level, daysStreak, maxDaysStreak, earned, spent, avatar, setAvatar} = useGlobalStore((state) => state);
 
   const experience = getCurrentLevelExperience();
   const maxExperience = (level-1) * 50 + 100;
@@ -61,11 +61,11 @@ const Statistics = () => {
           <Heatmap />
           <Skeleton className={isLoading ? classes["skeleton-heatmap"] : classes["skeleton-hidden"]} visible={isLoading} />
         </div>
-        
+
         <div className={classes["text-container"]}>
           <Text>Количество дней с выполнением всех привычек до конца периода</Text>
-          <Text>Текущий стрик: {daysStrick}</Text>
-          <Text mb="md">Максимальный стрик: {maxDaysStrick}</Text>
+          <Text>Текущий стрик: {daysStreak}</Text>
+          <Text mb="md">Максимальный стрик: {maxDaysStreak}</Text>
           <Text>Заработано монет: {earned}</Text>
           <Text mb="md">Потрачено монет: {spent}</Text>
           <Text>Количество выполненных привычек: 0</Text>
