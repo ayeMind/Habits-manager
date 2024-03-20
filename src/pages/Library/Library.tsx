@@ -44,8 +44,8 @@ const Library = () => {
   useEffect(() => {
     
     setFilteredHabits(habits.filter((habit) => {
-      return (habit.period === period || period === "Все") && 
-      (habit.category === category || category === "") && 
+      return (translatePeriod(habit.period) === period || period === "Все") && 
+      (habit.category.toLowerCase().includes(category.toLowerCase()) || category === "") && 
       (checked ? habit.saved === true : habit.saved !== true)
     }));
       

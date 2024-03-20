@@ -33,7 +33,7 @@ const UserNameInput:FC<Props> = ({close}) => {
             setValue(event.currentTarget.value)
             setError("");
           }}
-          w={225}
+          w={200}
           placeholder="Гигачад2018"
           title="userName"
           className="input"
