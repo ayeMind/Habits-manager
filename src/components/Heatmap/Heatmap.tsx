@@ -6,6 +6,8 @@ interface Value {
   count: number;
 }
 
+import classes from './style.module.css'
+
 const Heatmap = () => {
   const history = useGlobalStore((state) => state.history);
   const historyCompleted = history.filter((action) => action.isCompleted);
@@ -54,7 +56,7 @@ const Heatmap = () => {
   }, 0);
 
   return (
-    <>
+    <div className={classes["heatmap"]}>
       <Text ml={50}>{countForLastYear} выполнено за последний год</Text>
       <HeatMap
         value={value}
@@ -85,7 +87,7 @@ const Heatmap = () => {
           );
         }}
       />
-    </>
+    </div>
   );
 };
 export default Heatmap;

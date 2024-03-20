@@ -34,7 +34,7 @@ interface Props {
 }
 
 const HabitsList: FC<Props> = ({ period }) => {
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   const {
     getHabitsWithPeriod,
@@ -55,7 +55,7 @@ const HabitsList: FC<Props> = ({ period }) => {
     if (checkPeriod(period)) {
       updateHabits(period);
     }
-    setLoading(false);
+    setIsLoading(false);
   }, [period, checkPeriod, updateHabits]);
 
   const [opened, { open, close }] = useDisclosure(false);
@@ -324,11 +324,13 @@ const HabitsList: FC<Props> = ({ period }) => {
         <ModalDelete close={close} />
       </Modal>
 
-      {loading ? (
+      {isLoading && (
         <Box pos={"fixed"} top={"50%"} left={"50%"}>
           <Loader />
         </Box>
-      ) : habits.length === 0 ? (
+      )}
+      
+      {!isLoading && habits.length === 0 ? (
         <Text size="xl">Нет привычек</Text>
       ) : (
         <Table withRowBorders={false} highlightOnHover>
