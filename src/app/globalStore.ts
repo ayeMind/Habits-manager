@@ -28,6 +28,7 @@ export const useGlobalStore = create<GlobalState>()(
       spent: 0,
     
       increaseExperienceAndGold: (value: number) => {
+
         const newExperience = get().experience + value;
         const currentLevel = get().level;
 
@@ -189,7 +190,10 @@ export const useGlobalStore = create<GlobalState>()(
       removeCurrentAction: (
         habit_id: number,
       ) => {
-        const lastAction = get().history.filter((action) => action.habit_id !== habit_id).pop()
+        
+        const history = get().history
+        const lastAction = history.filter((action) => action.habit_id === habit_id).pop()
+        
         if (!lastAction) return false;
 
         set((state) => ({

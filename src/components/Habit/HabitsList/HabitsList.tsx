@@ -51,10 +51,12 @@ const HabitsList: FC<Props> = ({ period }) => {
 
   const habits = getHabitsWithPeriod(period) as Habit[];
 
+  
   useEffect(() => {
     if (checkPeriod(period)) {
       updateHabits(period);
     }
+
     setIsLoading(false);
   }, [period, checkPeriod, updateHabits]);
 
@@ -65,10 +67,13 @@ const HabitsList: FC<Props> = ({ period }) => {
     open();
   };
 
-  const preHabitChange = (habit: Habit) => {
+  const preHabitChange = (habit: Habit) => {    
+
     if (habit.isCompleted) {
+
       removeCurrentAction(habit.id);
     } else {
+
       const lastHistoryId = getLastHistoryId();
 
       let action = {} as HabitAction;
