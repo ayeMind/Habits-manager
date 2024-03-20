@@ -5,6 +5,7 @@ import ModalCreate from "components/Habit/ModalCreate/ModalCreate";
 
 import { FC } from "react"
 
+
 interface Props {
     period: "daily" | "weekly" | "monthly";
 }
@@ -15,12 +16,12 @@ const HabitsSection:FC<Props> = ({period}) => {
 
   return (
     <>
-
         <Modal opened={opened} onClose={close} title="Добавление привычки">
             <ModalCreate defaultPeriod={period} close={close} />
         </Modal>
 
         <HabitsList period={period} />
+        
         <Group mt="xl" align="center">
             <Button onClick={open} color="teal">
                 Добавить привычку

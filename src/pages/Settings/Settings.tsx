@@ -48,7 +48,7 @@ const Settings = () => {
           <DateTimePicker
             value={date}
             placeholder="Pick a Date"
-            w={250}
+            w={225}
             name="date"
             onChange={(date) => setDate(date as Date)}
           />

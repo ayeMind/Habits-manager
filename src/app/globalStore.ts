@@ -9,10 +9,25 @@ const countDaysDiff = (date1: Date, date2: Date) => {
   return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 };
 
+const isDayChanged = (date1: Date, date2: Date) => {
+  return date1.getDate() !== date2.getDate() 
+        || date1.getMonth() !== date2.getMonth()
+        || date1.getFullYear() !== date2.getFullYear();
+}
+
+const isWeekChanged = (date1: Date, date2: Date) => {
+  const daysUntilMonday = ((7 - date1.getDay()) % 7) + 1;
+  const daysDiff = countDaysDiff(date1, date2);
+  return daysDiff >= daysUntilMonday;
+}
+
+const isMonthChanged = (date1: Date, date2: Date) => {
+  return date1.getMonth() !== date2.getMonth() || date1.getFullYear() !== date2.getFullYear();
+}
+
 export const useGlobalStore = create<GlobalState>()(
   persist(
     (set, get) => ({
-
       userName: "",
       setUserName: (name: string) => set({ userName: name }),
       avatar: defaultBase64Avatar(),
@@ -128,9 +143,43 @@ export const useGlobalStore = create<GlobalState>()(
           ),
         })),
 
+
+      lastStrickUpdateDate: new Date(),
+      setLastStrickUpdateDate: (date: Date) => set({ lastStrickUpdateDate: date }),
+
+      updateStrick: () => {
+
+        const currentDate = new Date(get().currentDateCorrection + new Date().getTime());
+       
+        if (!isDayChanged(currentDate, new Date(get().lastStrickUpdateDate))) return;
+      
+        const habits = get().habits;
+
+        const periodIsOk = (period: "daily" | "weekly" | "monthly") => {
+
+          const periodHabits = habits.filter((habit) => habit.period === period);
+
+          if (periodHabits.every((habit) => habit.isCompleted)) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+
+        console.log(periodIsOk("daily"), periodIsOk("weekly"), periodIsOk("monthly"));
+        
+        if (periodIsOk("daily") && periodIsOk("weekly") && periodIsOk("monthly")) {
+          get().increaseDaysStrick();
+        } else {
+          set({ daysStrick: 0 });
+        }
+          get().setLastStrickUpdateDate(currentDate);
+      },
+
       // Для обнуления прогресса всех привычек в начале нового периода
       updateHabits: (period: "daily" | "weekly" | "monthly") => {
-        const habits = get().habits.map((habit) => {
+        const allHabits = get().habits;
+        const habits = allHabits.map((habit) => {
           if (habit.period === period) {
             return { ...habit, currentValue: 0, isCompleted: false };
           }
@@ -140,7 +189,8 @@ export const useGlobalStore = create<GlobalState>()(
       },
 
       // Для проверки, закончилось ли время предыдущего периода (смотрит на соответствущую часть даты (день, неделя, месяц))
-      checkPeriod(period: "daily" | "weekly" | "monthly") {
+      isNewPeriod(period: "daily" | "weekly" | "monthly") {
+        
         const history = get().history.filter(
           (action) => action.habit_period === period
         );
@@ -148,18 +198,15 @@ export const useGlobalStore = create<GlobalState>()(
         const currentDate = new Date(new Date().getTime() + get().currentDateCorrection);
 
         if (period === "daily") {
-          return lastActionDate.getDate() !== currentDate.getDate();
+          return isDayChanged(lastActionDate, currentDate)
         }
 
         if (period === "weekly") {
-          const daysUntilMonday = ((7 - lastActionDate.getDay()) % 7) + 1;
-          const daysDiff = countDaysDiff(lastActionDate, currentDate);
-
-          return daysDiff >= daysUntilMonday;
+          return isWeekChanged(lastActionDate, currentDate);
         }
 
         if (period === "monthly") {
-          return lastActionDate.getMonth() !== currentDate.getMonth();
+          return isMonthChanged(lastActionDate, currentDate);
         }
 
         console.error("Некорректный период");

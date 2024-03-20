@@ -22,13 +22,17 @@ export interface GlobalState {
     completeHabit: (id: number) => boolean // Возвращает, происходит ли переход на новый уровень
     changeTargetValue: (id: number, value: number) => void;
 
+    lastStrickUpdateDate: Date;
+    setLastStrickUpdateDate: (date: Date) => void;
+
+    updateStrick: () => void;
     updateHabits: (period: 'daily' | 'weekly' | 'monthly') => void;
-    checkPeriod: (period: 'daily' | 'weekly' | 'monthly') => boolean;
+    isNewPeriod: (period: 'daily' | 'weekly' | 'monthly') => boolean;
 
     history: HabitAction[];
-    addAction: (action: HabitActionCreate) => void;
+    addAction: (action:     HabitActionCreate) => void;
     removeAllHabitHistroy: (habit_id: number) => void;
-    removeCurrentAction: (habit_id: number) => boolean; // Возвращает, происходит ли переход на новый уровеньs
+    removeCurrentAction: (habit_id: number) => boolean; // Возвращает, происходит ли переход на новый уровень
     getLastHistoryId: () => number;
 
     categories: string[];

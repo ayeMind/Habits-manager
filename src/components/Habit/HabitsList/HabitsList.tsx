@@ -11,8 +11,6 @@ import {
   ActionIcon,
   Popover,
   Container,
-  Loader,
-  Box,
   Tooltip,
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
@@ -25,7 +23,7 @@ import {
 } from "@tabler/icons-react";
 import { useGlobalStore } from "app/globalStore";
 import { GlobalState, Habit, HabitAction } from "app/interfaces";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import classes from "./style.module.css";
 import ModalDelete from "../ModalDelete";
 
@@ -34,7 +32,7 @@ interface Props {
 }
 
 const HabitsList: FC<Props> = ({ period }) => {
-  const [isLoading, setIsLoading] = useState(true);
+
   const {
     getHabitsWithPeriod,
     toggleHabit,
@@ -43,22 +41,11 @@ const HabitsList: FC<Props> = ({ period }) => {
     removeCurrentAction,
     addAction,
     getLastHistoryId,
-    checkPeriod,
-    updateHabits,
     level,
     currentDateCorrection,
   } = useGlobalStore((state: GlobalState) => state);
 
   const habits = getHabitsWithPeriod(period) as Habit[];
-
-  
-  useEffect(() => {
-    if (checkPeriod(period)) {
-      updateHabits(period);
-    }
-
-    setIsLoading(false);
-  }, [period, checkPeriod, updateHabits]);
 
   const [opened, { open, close }] = useDisclosure(false);
 
@@ -329,13 +316,7 @@ const HabitsList: FC<Props> = ({ period }) => {
         <ModalDelete close={close} />
       </Modal>
 
-      {isLoading && (
-        <Box pos={"fixed"} top={"50%"} left={"50%"}>
-          <Loader />
-        </Box>
-      )}
-      
-      {!isLoading && habits.length === 0 ? (
+      {(habits.length === 0) ? (
         <Text size="xl">Нет привычек</Text>
       ) : (
         <Table withRowBorders={false} highlightOnHover>
