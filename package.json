@@ -11,10 +11,12 @@
   },
   "dependencies": {
     "@mantine/core": "^7.6.2",
+    "@mantine/dates": "^7.6.2",
     "@mantine/hooks": "^7.6.2",
     "@mantine/notifications": "^7.6.2",
     "@tabler/icons-react": "^3.1.0",
     "@uiw/react-heat-map": "^2.2.2",
+    "dayjs": "^1.11.10",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",
     "normalize.css": "^8.0.1",

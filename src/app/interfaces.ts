@@ -10,6 +10,9 @@ export interface GlobalState {
     avatar: string;
     setAvatar: (file: string) => void;
 
+    currentDate: Date;
+    setCurrentDate: (date: Date) => void;
+
     habits: Habit[];
     addHabit: (habit: CreateHabit) => void;
     removeHabit: (id: number) => void;

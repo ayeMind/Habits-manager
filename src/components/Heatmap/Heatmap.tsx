@@ -9,7 +9,9 @@ interface Value {
 import classes from './style.module.css'
 
 const Heatmap = () => {
-  const history = useGlobalStore((state) => state.history);
+  const {history} = useGlobalStore((state) => state);
+  const currDay = useGlobalStore((state) => state.currentDate);
+  const currentDate = new Date(currDay);
   const historyCompleted = history.filter((action) => action.isCompleted);
 
   // Group by date and formatting
@@ -34,7 +36,6 @@ const Heatmap = () => {
   };
 
   const getLastYearDate = () => {
-    const currentDate = new Date();
     const lastYear = new Date(
       currentDate.getFullYear() - 1,
       currentDate.getMonth(),
@@ -63,7 +64,7 @@ const Heatmap = () => {
         startDate={new Date(startDate)}
         endDate={new Date(endDate)}
         weekLabels={["", "Mon", "", "Wed", "", "Fri", ""]}
-        monthLabels={['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']}
+        monthLabels={['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan']}
         width={725}
         style={{ color: "white" }}
         panelColors={{

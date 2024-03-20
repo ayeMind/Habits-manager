@@ -31,7 +31,7 @@ const PageLayout: FC<Props> = ({ children, title, defaultTab }) => {
       <Notifications w={500} visibleFrom="sm" />
       <Notifications w={300} hiddenFrom="sm" />
       <Modal opened={modalOpened} onClose={close} centered withCloseButton={false} closeOnClickOutside={false} closeOnEscape={false} title="Добро пожаловать в менеджер привычек!  ">
-        <UserNameInput placeholder="Введите своё имя" close={close} />
+        <UserNameInput close={close} />
         <Text size="sm" mt="xs">Сменить имя можно будет в настройках</Text>
       </Modal>
       <AppShell

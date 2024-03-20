@@ -47,6 +47,7 @@ const HabitsList: FC<Props> = ({ period }) => {
     checkPeriod,
     updateHabits,
     level,
+    currentDate,
   } = useGlobalStore((state: GlobalState) => state);
 
   const habits = getHabitsWithPeriod(period) as Habit[];
@@ -77,7 +78,7 @@ const HabitsList: FC<Props> = ({ period }) => {
           id: lastHistoryId + 1,
           habit_id: habit.id,
           habit_period: habit.period,
-          date: new Date(),
+          date: new Date(currentDate),
           isCompleted: true,
           value: habit.currentValue,
         };
@@ -86,7 +87,7 @@ const HabitsList: FC<Props> = ({ period }) => {
           id: lastHistoryId + 1,
           habit_id: habit.id,
           habit_period: habit.period,
-          date: new Date(),
+          date: new Date(currentDate),
           isCompleted: true,
         };
       }
@@ -129,7 +130,7 @@ const HabitsList: FC<Props> = ({ period }) => {
         id: getLastHistoryId() + 1,
         habit_id: id,
         habit_period: habit.period,
-        date: new Date(),
+        date: new Date(currentDate),
         isCompleted: true,
         value: value,
       };

@@ -58,7 +58,7 @@ const Statistics = () => {
         </Flex>
         <div className={classes["heatmap-container"]}>
           <Heatmap />
-          <Skeleton className={classes["skeleton-heatmap"]} visible={isLoading} />
+          <Skeleton className={isLoading ? classes["skeleton-heatmap"] : classes["skeleton-hidden"]} visible={isLoading} />
         </div>
         <div className={classes["text-container"]}>
           <Text>Количество дней с выполнением всех привычек до конца периода</Text>

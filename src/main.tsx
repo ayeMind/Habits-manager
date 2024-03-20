@@ -12,6 +12,7 @@ import { createTheme, MantineProvider } from '@mantine/core';
 import 'app/global.css';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
+import '@mantine/dates/styles.css';
 
 import Home from 'pages/Home/Home';
 import NotFound from 'pages/Not-found/NotFound';

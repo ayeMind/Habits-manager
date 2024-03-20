@@ -4,11 +4,10 @@ import { useState } from "react";
 import { useGlobalStore } from "app/globalStore";
 
 interface Props {
-    placeholder: string;
     close?: () => void;
 }
 
-const UserNameInput:FC<Props> = ({placeholder, close}) => {
+const UserNameInput:FC<Props> = ({close}) => {
   const [value, setValue] = useState("");
   const [error, setError] = useState("");
 
@@ -26,7 +25,8 @@ const UserNameInput:FC<Props> = ({placeholder, close}) => {
 
   return (
     <>
-      <Flex gap="sm">
+      <label htmlFor="userName">Имя:</label>
+      <Flex mt={5} gap="sm" align="center">
         <TextInput
           value={value}
           onChange={(event) => {
@@ -34,7 +34,7 @@ const UserNameInput:FC<Props> = ({placeholder, close}) => {
             setError("");
           }}
           w={250}
-          placeholder={placeholder}
+          placeholder="Гигачад2018"
           title="userName"
           className="input"
           error={error}

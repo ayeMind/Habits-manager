@@ -22,6 +22,7 @@ export default defineConfig({
       app: "/src/app",
       widgets: "/src/widgets",
       actions: "/src/shared/actions",
+      src: "/src",
     },
   },
 });
