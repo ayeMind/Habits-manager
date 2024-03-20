@@ -31,8 +31,8 @@ const Heatmap = () => {
   }));
 
   const toLocalDate = (date: string) => {
-    const [year, month, day] = date.split("/");
-    return new Date(+year, +month, +day).toLocaleDateString();
+    const dateObj = new Date(date);
+    return dateObj.toLocaleDateString();
   };
 
   const getLastYearDate = () => {
@@ -64,7 +64,7 @@ const Heatmap = () => {
         startDate={new Date(startDate)}
         endDate={new Date(endDate)}
         weekLabels={["", "Mon", "", "Wed", "", "Fri", ""]}
-        monthLabels={['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan']}
+        monthLabels={['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']}
         width={725}
         style={{ color: "white" }}
         panelColors={{

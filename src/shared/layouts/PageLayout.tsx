@@ -2,10 +2,10 @@ import { FC, useEffect } from "react";
 import { AppShell, AppShellMain, Modal, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Notifications } from "@mantine/notifications";
+import { useGlobalStore } from "app/globalStore";
 
 import Header from "components/AppShell/Header";
 import SidePanel from "components/AppShell/SidePanel";
-import { useGlobalStore } from "app/globalStore";
 import UserNameInput from "components/UserNameInput";
 
 interface Props {
