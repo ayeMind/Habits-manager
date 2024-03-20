@@ -10,8 +10,8 @@ import classes from './style.module.css'
 
 const Heatmap = () => {
   const {history} = useGlobalStore((state) => state);
-  const currDay = useGlobalStore((state) => state.currentDate);
-  const currentDate = new Date(currDay);
+  const diffDates = useGlobalStore((state) => state.currentDateCorrection);
+  const currentDate = new Date(new Date().getTime() + diffDates);
   const historyCompleted = history.filter((action) => action.isCompleted);
 
   // Group by date and formatting

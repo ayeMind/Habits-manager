@@ -18,8 +18,8 @@ export const useGlobalStore = create<GlobalState>()(
       avatar: defaultBase64Avatar(),
       setAvatar: (file: string) => set({ avatar: file }),
 
-      currentDate: new Date(),
-      setCurrentDate: (date: Date) => set({ currentDate: date }),
+      currentDateCorrection: 0,
+      setCurrentDateCorrection: (date: Date) => set({ currentDateCorrection: date.getTime() - new Date().getTime()}),
 
       experience: 0,
       level: 1,
@@ -78,7 +78,7 @@ export const useGlobalStore = create<GlobalState>()(
               ...habit,
               id: get().getLastId() + 1,
               currentValue: 0,
-              addDate: new Date(get().currentDate),
+              addDate: new Date(new Date().getTime() + get().currentDateCorrection),
               isCompleted: false,
             },
           ],
@@ -144,7 +144,7 @@ export const useGlobalStore = create<GlobalState>()(
           (action) => action.habit_period === period
         );
         const lastActionDate = new Date(history[history.length - 1]?.date);
-        const currentDate = new Date(get().currentDate);
+        const currentDate = new Date(new Date().getTime() + get().currentDateCorrection);
 
         if (period === "daily") {
           return lastActionDate.getDate() !== currentDate.getDate();
@@ -164,8 +164,6 @@ export const useGlobalStore = create<GlobalState>()(
         console.error("Некорректный период");
         return false;
       },
-
-      clearHabits: () => set({ habits: [] }),
 
       history: [],
       getLastHistoryId: () =>

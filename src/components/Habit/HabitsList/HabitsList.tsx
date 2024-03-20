@@ -35,7 +35,6 @@ interface Props {
 
 const HabitsList: FC<Props> = ({ period }) => {
   const [isLoading, setIsLoading] = useState(true);
-
   const {
     getHabitsWithPeriod,
     toggleHabit,
@@ -47,7 +46,7 @@ const HabitsList: FC<Props> = ({ period }) => {
     checkPeriod,
     updateHabits,
     level,
-    currentDate,
+    currentDateCorrection,
   } = useGlobalStore((state: GlobalState) => state);
 
   const habits = getHabitsWithPeriod(period) as Habit[];
@@ -78,7 +77,7 @@ const HabitsList: FC<Props> = ({ period }) => {
           id: lastHistoryId + 1,
           habit_id: habit.id,
           habit_period: habit.period,
-          date: new Date(currentDate),
+          date: new Date(new Date().getTime() + currentDateCorrection),
           isCompleted: true,
           value: habit.currentValue,
         };
@@ -87,7 +86,7 @@ const HabitsList: FC<Props> = ({ period }) => {
           id: lastHistoryId + 1,
           habit_id: habit.id,
           habit_period: habit.period,
-          date: new Date(currentDate),
+          date: new Date(new Date().getTime() + currentDateCorrection),
           isCompleted: true,
         };
       }
@@ -130,7 +129,7 @@ const HabitsList: FC<Props> = ({ period }) => {
         id: getLastHistoryId() + 1,
         habit_id: id,
         habit_period: habit.period,
-        date: new Date(currentDate),
+        date: new Date(new Date().getTime() + currentDateCorrection),
         isCompleted: true,
         value: value,
       };

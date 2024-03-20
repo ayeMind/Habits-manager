@@ -10,13 +10,12 @@ export interface GlobalState {
     avatar: string;
     setAvatar: (file: string) => void;
 
-    currentDate: Date;
-    setCurrentDate: (date: Date) => void;
+    currentDateCorrection: number;
+    setCurrentDateCorrection: (date: Date) => void;
 
     habits: Habit[];
     addHabit: (habit: CreateHabit) => void;
     removeHabit: (id: number) => void;
-    clearHabits: () => void;
     getLastId: () => number;
     getHabitsWithPeriod: (period: 'daily' | 'weekly' | 'monthly') => Habit[];
     toggleHabit: (habit: Habit) => boolean; // Возвращает, происходит ли переход на новый уровень

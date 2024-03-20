@@ -31,10 +31,7 @@ const ModalCreate:FC<Props> = ({defaultPeriod, close}) => {
 
   const { addHabit, categories, addCategory} = useGlobalStore((state) => state);
 
-  console.log(categories);
-  
-
-  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
     setHabitError("");
