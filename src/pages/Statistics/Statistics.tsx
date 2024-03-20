@@ -40,10 +40,7 @@ const Statistics = () => {
         <Flex gap={20} align="center">
           <Flex direction="column" align="center">
               <div className={classes["avatar-container"]}>
-                <Avatar className={classes['avatar']} src={avatar} onLoad={() => {
-                  setIsLoading(false)
-                  console.log('loaded');
-                }} />
+                <Avatar className={classes['avatar']} src={avatar} onLoad={() => setIsLoading(false)} />
                 <Skeleton className={classes["skeleton-avatar"]} circle visible={isLoading} />
                 <input type="file" title="Выбери новую аватарку" className={classes["file-input"]} onChange={handleUploadAvatar} accept="image/*" />
               </div>
