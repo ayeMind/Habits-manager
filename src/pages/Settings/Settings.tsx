@@ -18,7 +18,7 @@ const Settings = () => {
     <PageLayout title="Настройки" defaultTab="settings">
       <Modal opened={opened} onClose={close} title="Удаление">
         <Text>Вы уверены, что хотите удалить все данные?</Text>
-        <Flex mt="md" gap="md">
+        <Flex mt="md" gap="sm">
           <Button onClick={close} variant="light">
             Отмена
           </Button>

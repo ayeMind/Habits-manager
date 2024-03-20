@@ -44,7 +44,7 @@ const Statistics = () => {
                 <Skeleton className={classes["skeleton-avatar"]} circle visible={isLoading} />
                 <input type="file" title="Выбери новую аватарку" className={classes["file-input"]} onChange={handleUploadAvatar} accept="image/*" />
               </div>
-            <Text size="xl">{userName}</Text>
+            <Text className={classes["user-name"]}>{userName}</Text>
           </Flex>
 
           <Flex direction="column" gap="xs">
@@ -56,10 +56,12 @@ const Statistics = () => {
             <Text size="sm">Получено достижений: 0</Text>
           </Flex>
         </Flex>
+
         <div className={classes["heatmap-container"]}>
           <Heatmap />
           <Skeleton className={isLoading ? classes["skeleton-heatmap"] : classes["skeleton-hidden"]} visible={isLoading} />
         </div>
+        
         <div className={classes["text-container"]}>
           <Text>Количество дней с выполнением всех привычек до конца периода</Text>
           <Text>Текущий стрик: {daysStrick}</Text>

@@ -3,3 +3,7 @@
     width: 100%;
     position: absolute;
 }
+
+.title {
+    font-style: italic;
+}

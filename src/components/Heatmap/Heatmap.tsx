@@ -58,7 +58,7 @@ const Heatmap = () => {
 
   return (
     <div className={classes["heatmap"]}>
-      <Text ml={50}>{countForLastYear} выполнено за последний год</Text>
+      <Text className={classes["title"]} ml={50} size='sm'>{countForLastYear} выполнено за последний год</Text>
       <HeatMap
         value={value}
         startDate={new Date(startDate)}

@@ -15,8 +15,8 @@ const UserNameInput:FC<Props> = ({close}) => {
 
   const handleChangeName = (value: string) => {
     setError("");
-    if (!value) {
-      setError("Введите имя");
+    if (value.length < 1 || value.length > 16) {
+      setError("Имя пользователя не может быть пустым и быть длиннее 16 символов");
         return;
     }
     setUserName(value);
@@ -25,7 +25,7 @@ const UserNameInput:FC<Props> = ({close}) => {
 
   return (
     <>
-      <label htmlFor="userName">Имя:</label>
+      <label htmlFor="userName">Имя пользователя:</label>
       <Flex mt={5} gap="sm" align="center">
         <TextInput
           value={value}
