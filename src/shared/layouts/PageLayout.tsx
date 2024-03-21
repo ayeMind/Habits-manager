@@ -18,7 +18,7 @@ const PageLayout: FC<Props> = ({ children, title, defaultTab }) => {
   const [navBarOpened, { toggle }] = useDisclosure();
   const [modalOpened, { open, close }] = useDisclosure();
 
-  const {userName, isNewPeriod, updateHabits, updateStreak, currentDateCorrection } = useGlobalStore((state) => state);
+  const {userName, isNewPeriod, updateHabits, currentDateCorrection, setLastUpdateHabitsDate, updateStreak, getDate } = useGlobalStore((state) => state);
 
   useEffect(() => {
     if (!userName) {
@@ -27,23 +27,29 @@ const PageLayout: FC<Props> = ({ children, title, defaultTab }) => {
   }, [userName]);
 
   useEffect(() => {
+    
     if (isNewPeriod("daily")) {
       updateStreak();
       updateHabits("daily");
     }
     if (isNewPeriod("weekly")) {
       updateHabits("weekly");
+      console.log("Схуяли?");
+      
     }
     if (isNewPeriod("monthly")) {
       updateHabits("monthly");
     }
+
+    setLastUpdateHabitsDate(getDate());
+
   }, [currentDateCorrection]);
 
   return (
     <>
       <Notifications w={500} visibleFrom="sm" />
       <Notifications w={300} hiddenFrom="sm" />
-      <Modal opened={modalOpened} onClose={close} centered withCloseButton={false} closeOnClickOutside={false} closeOnEscape={false} title="Добро пожаловать в менеджер привычек!  ">
+      <Modal opened={modalOpened} onClose={close} centered withCloseButton={false} closeOnClickOutside={false} closeOnEscape={false} title="Добро пожаловать в менеджер привычек!">
         <UserNameInput close={close} />
         <Text size="sm" mt="xs">Сменить имя можно будет в настройках</Text>
       </Modal>

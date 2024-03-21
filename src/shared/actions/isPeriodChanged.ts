@@ -1,4 +1,5 @@
 const isDayChanged = (date1: Date, date2: Date) => {
+  
   return (
     date1.getDate() !== date2.getDate() ||
     date1.getMonth() !== date2.getMonth() ||
@@ -8,12 +9,14 @@ const isDayChanged = (date1: Date, date2: Date) => {
 
 const countDaysDiff = (date1: Date, date2: Date) => {
   const diffTime = Math.abs(date2.getTime() - date1.getTime());
-  return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  return Math.round(diffTime / (1000 * 60 * 60 * 24));
 };
 
 const isWeekChanged = (date1: Date, date2: Date) => {
+
   const daysUntilMonday = ((7 - date1.getDay()) % 7) + 1;
   const daysDiff = countDaysDiff(date1, date2);
+
   return daysDiff >= daysUntilMonday;
 };
 

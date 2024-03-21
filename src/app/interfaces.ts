@@ -51,6 +51,7 @@ export interface GlobalState {
 
     currentDateCorrection: number;
     setCurrentDateCorrection: (date: Date) => void;
+    getDate: () => Date;
 
     habits: Habit[];
     addHabit: (habit: CreateHabit) => void;
@@ -60,6 +61,16 @@ export interface GlobalState {
     toggleHabit: (habit: Habit) => boolean; // Возвращает, происходит ли переход на новый уровень
     completeHabit: (id: number) => boolean // Возвращает, происходит ли переход на новый уровень
     changeTargetValue: (id: number, value: number) => void;
+
+
+    completedHabits: number;
+    increaseCompletedHabits: () => void;
+    decreaseCompletedHabits: () => void;
+    
+    lastUpdateHabitsDate: Date;
+    setLastUpdateHabitsDate: (date: Date) => void;
+
+    countMissingHabits: () => number;
 
     lastStreakUpdateDate: Date;
     setLastStreakUpdateDate: (date: Date) => void;
@@ -91,6 +102,17 @@ export interface GlobalState {
     maxDaysStreak: number;
 
     increaseDaysStreak: () => void;
+
+    achievements: Achievement[];
+    completeAchievement: (id: number) => void;
+}
+
+export interface Achievement {
+    id: number;
+    title: string;
+    description: string;
+    rewardGold: number;
+    isCompleted: boolean;
 }
 
 export interface LibraryStore {

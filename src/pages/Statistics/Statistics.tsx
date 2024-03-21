@@ -10,7 +10,9 @@ const Statistics = () => {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const { getCurrentLevelExperience, userName, level, daysStreak, maxDaysStreak, earned, spent, avatar, setAvatar} = useGlobalStore((state) => state);
+  const { getCurrentLevelExperience, userName, level,
+   daysStreak, maxDaysStreak, earned, spent, avatar, setAvatar,
+   completedHabits, countMissingHabits} = useGlobalStore((state) => state);
 
   const experience = getCurrentLevelExperience();
   const maxExperience = (level-1) * 50 + 100;
@@ -68,8 +70,8 @@ const Statistics = () => {
           <Text mb="md">Максимальный стрик: {maxDaysStreak}</Text>
           <Text>Заработано монет: {earned}</Text>
           <Text mb="md">Потрачено монет: {spent}</Text>
-          <Text>Количество выполненных привычек: 0</Text>
-          <Text>Количество пропущенных привычек: 0</Text>
+          <Text>Количество выполненных привычек: {completedHabits}</Text>
+          <Text>Количество пропущенных привычек: {countMissingHabits()}</Text>
         </div>
     </PageLayout>
   );

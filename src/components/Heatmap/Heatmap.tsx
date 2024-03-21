@@ -9,9 +9,8 @@ interface Value {
 import classes from './style.module.css'
 
 const Heatmap = () => {
-  const {history} = useGlobalStore((state) => state);
-  const diffDates = useGlobalStore((state) => state.currentDateCorrection);
-  const currentDate = new Date(new Date().getTime() + diffDates);
+  const {history, getDate} = useGlobalStore((state) => state);
+  const currentDate = getDate()
   const historyCompleted = history.filter((action) => action.isCompleted);
 
   // Group by date and formatting
@@ -74,7 +73,7 @@ const Heatmap = () => {
           10: "#30a14e",
           15: "#216e39",
         }}
-        rectRender={(props, data) => {
+        rectRender={(props: React.SVGProps<SVGRectElement>, data: Value) => {
           return (
             <Tooltip
               position="top"

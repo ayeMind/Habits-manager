@@ -16,6 +16,7 @@ export const useGlobalStore = create<GlobalState>()(
       setAvatar: (file: string) => set({ avatar: file }),
 
       currentDateCorrection: 0,
+      getDate: () => new Date(new Date().getTime() + get().currentDateCorrection),
       setCurrentDateCorrection: (date: Date) => set({ currentDateCorrection: date.getTime() - new Date().getTime()}),
 
       experience: 0,
@@ -76,7 +77,7 @@ export const useGlobalStore = create<GlobalState>()(
               ...habit,
               id: get().getLastId() + 1,
               currentValue: 0,
-              addDate: new Date(new Date().getTime() + get().currentDateCorrection),
+              addDate: get().getDate(),
               isCompleted: false,
             },
           ],
@@ -95,6 +96,7 @@ export const useGlobalStore = create<GlobalState>()(
 
         if (!habit.isCompleted) {
           isNextLevel = get().increaseExperienceAndGold((daysStreak + 1) * 10);
+          get().increaseCompletedHabits();
         }
 
         set((state) => ({
@@ -106,10 +108,57 @@ export const useGlobalStore = create<GlobalState>()(
         return isNextLevel;
       },
 
+      completedHabits: 0,
+      increaseCompletedHabits: () => set((state) => ({ completedHabits: state.completedHabits + 1 })),
+      decreaseCompletedHabits: () => set((state) => ({ completedHabits: state.completedHabits - 1 })),
+
+      countMissingHabits: () => {
+
+        const periodChangeCount = (addDate: Date, period: "daily" | "weekly" | "monthly") => {
+
+          const firstDate = new Date(addDate);
+          const lastDate = get().getDate();
+
+          if (period === "daily") {
+            return Math.floor((lastDate.getTime() - firstDate.getTime()) / (1000 * 60 * 60 * 24));
+          }
+
+          if (period === "weekly") {
+            const daysUntilMonday = ((7 - firstDate.getDay()) % 7) + 1;
+            const daysDiff = Math.round((lastDate.getTime() - firstDate.getTime()) / (1000 * 60 * 60 * 24));
+            return Math.floor(daysDiff / 7) + (daysDiff % 7 >= daysUntilMonday ? 1 : 0);
+          }
+
+          if (period === "monthly") {
+            return lastDate.getMonth() - firstDate.getMonth() + (12 * (lastDate.getFullYear() - firstDate.getFullYear()));
+          }
+
+          return 0;
+        }
+
+        const habits = get().habits;
+        const history = get().history;
+
+        let count = 0;
+
+        habits.forEach((habit) => {
+          const addDate = new Date(habit.addDate);
+          const period = habit.period;
+          const periodChange = periodChangeCount(addDate, period);
+
+          const realCompleteCount = history.filter((action) => action.habit_id === habit.id && action.isCompleted).length;
+
+          count += Math.max(0, periodChange - realCompleteCount);
+        });
+          
+        return count;
+      },
+
 
       completeHabit: (id: number) => {
         const daysStreak = get().daysStreak;
         const isNextLevel = get().increaseExperienceAndGold((daysStreak + 1) * 10);
+        get().increaseCompletedHabits();
         set((state) => ({
           habits: state.habits.map((habit) =>
             habit.id === id ? { ...habit, isCompleted: true } : habit
@@ -130,7 +179,7 @@ export const useGlobalStore = create<GlobalState>()(
       setLastStreakUpdateDate: (date: Date) => set({ lastStreakUpdateDate: date }),
 
       updateStreak: () => {
-        const currentDate = new Date(get().currentDateCorrection + new Date().getTime());
+        const currentDate = get().getDate();
         const lastDate = new Date(get().lastStreakUpdateDate);
 
         if (!isPeriodChanged(lastDate, currentDate, "daily")) return;
@@ -152,11 +201,19 @@ export const useGlobalStore = create<GlobalState>()(
         } else {
           set({ daysStreak: 0 });
         }
-          get().setLastStreakUpdateDate(currentDate);
+        
+        get().setLastStreakUpdateDate(currentDate);
+
       },
 
+      lastUpdateHabitsDate: new Date(),
+      setLastUpdateHabitsDate: (date: Date) => set({ lastUpdateHabitsDate: date }),
+
       // Для обнуления прогресса всех привычек в начале нового периода
-      updateHabits: (period: "daily" | "weekly" | "monthly") => {
+      updateHabits: (period: "daily" | "weekly" | "monthly") => {        
+
+        if (!isPeriodChanged(new Date(get().lastUpdateHabitsDate), get().getDate(), "daily")) return;
+                
         const allHabits = get().habits;
         const habits = allHabits.map((habit) => {
           if (habit.period === period) {
@@ -170,11 +227,9 @@ export const useGlobalStore = create<GlobalState>()(
       // Для проверки, закончилось ли время предыдущего периода (смотрит на соответствущую часть даты (день, неделя, месяц))
       isNewPeriod(period: "daily" | "weekly" | "monthly") {
         
-        const history = get().history.filter(
-          (action) => action.habit_period === period
-        );
+        const history = get().history;
         const lastActionDate = new Date(history[history.length - 1]?.date);
-        const currentDate = new Date(new Date().getTime() + get().currentDateCorrection);
+        const currentDate = get().getDate();
 
         return isPeriodChanged(lastActionDate, currentDate, period);
       
@@ -218,8 +273,39 @@ export const useGlobalStore = create<GlobalState>()(
 
         const daysStreak = get().daysStreak;
         const isNextLevel = get().increaseExperienceAndGold(-(daysStreak + 1) * 10);
+        
+        get().decreaseCompletedHabits();
 
         return isNextLevel;
+      },
+
+      achievements: [
+        {id: 1, title: "Первый шаг", description: "Выполнить первую привычку", rewardGold: 10, isCompleted: false},
+        {id: 2, title: "Полный день", description: "Выполнить все привычки за текущий период", rewardGold: 10, isCompleted: false},
+        {id: 3, title: "Мастер привычек", description: "Выполнить 5 прывычек за сутки", rewardGold: 20, isCompleted: false},
+        {id: 4, title: "Легенда", description: "Выполнить 10 привычек за сутки", rewardGold: 30, isCompleted: false},
+        {id: 5, title: "Привыкающий", description: "Стрик 5 дней", rewardGold: 30, isCompleted: false},
+        {id: 6, title: "Уже бывалый", description: "Стрик 10 дней", rewardGold: 40, isCompleted: false},
+        {id: 7, title: "Распродажа в Steam", description: "Потратить 100 золота", rewardGold: 20, isCompleted: false},
+        {id: 8, title: "Покупатель", description: "Потратить 500 золота", rewardGold: 30, isCompleted: false},
+        {id: 9, title: "Шопоголик", description: "Потратить 1000 золота", rewardGold: 40, isCompleted: false},
+        {id: 10, title: "Сберегатель", description: "Накопить 5000 золота", rewardGold: 20, isCompleted: false},
+        {id: 11, title: "КМС по привычкам", description: "Выполнить 100 привычек", rewardGold: 30, isCompleted: false},
+        {id: 12, title: "Не гитхаб, но тоже пойдет", description: "Проявлять активность на протяжении 365 дней подряд", rewardGold: 1000, isCompleted: false},
+      ],
+
+     completeAchievement: (id: number) => {
+        const achievement = get().achievements.find((achievement) => achievement.id === id);
+        if (!achievement) return;
+        set((state) => ({
+          achievements: state.achievements.map((a) =>
+            a.id === id ? { ...a, isCompleted: true } : a
+          ),
+        }));
+        set((state) => ({
+          gold: state.gold + achievement.rewardGold,
+          earned: state.earned + achievement.rewardGold,
+        }));
       },
 
       importStorage: (habits: Habit[], actions: HabitAction[]) => {
