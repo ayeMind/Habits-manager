@@ -77,8 +77,8 @@ const extendedJSON = `
             "spent":0,
             "daysStreak":0,
             "maxDaysStreak":0,
-            "habits":[
-                {"title":"Прогулка на свежем воздухе",
+            "habits":
+                [{"title":"Прогулка на свежем воздухе",
                      "category":"Здоровье","period":"daily",
                      "targetValue":1,
                      "id":1,
@@ -133,8 +133,8 @@ const extendedJSON = `
                     "addDate":"2024-03-21T10:32:07.234Z",
                     "isCompleted":true}],
                 "lastStreakUpdateDate":"2024-03-21T10:31:54.630Z",
-                "history":[
-                        {"id":1,
+                "history": 
+                        [{"id":1,
                         "habit_id":1,
                         "habit_period":"daily",
                         "date":"2024-03-21T10:32:08.981Z",
@@ -166,11 +166,76 @@ const extendedJSON = `
                 "version":0}}
 `;
 
+const standardExample = `
+{
+    "habits": [
+        {
+            "id": 1,
+            "title": "Качать пресс",
+            "category": "Физическая активность",
+            "addDate": "2024-03-01T00:00:00Z",
+            "period": "daily"
+        },
+        {
+            "id": 2,
+            "title": "Читать 10 страниц книги",
+            "category": "Саморазвитие",
+            "addDate": "2024-02-15T00:00:00Z",
+            "period": "weekly"
+        },
+        {
+            "id": 3,
+            "title": "Учить новое слово в немецком",
+            "category": "Языки",
+            "addDate": "2024-03-10T00:00:00Z",
+            "period": "daily"
+        },
+        {
+            "id": 4,
+            "title": "Смотреть одно видео про финансы",
+            "category": "Финансовая грамотность",
+            "addDate": "2024-02-20T00:00:00Z",
+            "period": "daily"
+        }
+    ],
+    "actions": [
+        {
+            "id": 1,
+            "date": "2024-03-13T08:30:00Z"
+        },
+        {
+            "id": 1,
+            "date": "2024-03-14T09:00:00Z"
+        },
+        {
+            "id": 2,
+            "date": "2024-03-12T20:00:00Z"
+        },
+        {
+            "id": 2,
+            "date": "2024-03-14T18:30:00Z"
+        },
+        {
+            "id": 3,
+            "date": "2024-03-14T10:15:00Z"
+        },
+        {
+            "id": 4,
+            "date": "2024-03-14T07:45:00Z"
+        }
+    ]
+ }
+ `
+
 const formats = [
     {
         "value": "Стандартный",
-        "description": <CodeHighlight code={standardJSON} language="json" />
+        "description": <CodeHighlight code={standardJSON} language="ts" />
     }, 
+    {
+        "value": "Стандартный (пример)",
+        "description": <CodeHighlight code={standardExample} language="json" />
+    },
     {
         "value": "Расширенный (пример)",
         "description": <CodeHighlight code={extendedJSON} language="json" />
