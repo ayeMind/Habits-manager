@@ -1,29 +1,11 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-import { Habit, GlobalState, HabitActionCreate, CreateHabit } from "./interfaces";
+import { Habit, GlobalState, HabitActionCreate, CreateHabit, HabitAction } from "./interfaces";
+
+import { isPeriodChanged } from "actions/isPeriodChanged";
 import { defaultBase64Avatar } from "src/defaultBase64Avatar";
 
-const countDaysDiff = (date1: Date, date2: Date) => {
-  const diffTime = Math.abs(date2.getTime() - date1.getTime());
-  return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-};
-
-const isDayChanged = (date1: Date, date2: Date) => {
-  return date1.getDate() !== date2.getDate() 
-        || date1.getMonth() !== date2.getMonth()
-        || date1.getFullYear() !== date2.getFullYear();
-}
-
-const isWeekChanged = (date1: Date, date2: Date) => {
-  const daysUntilMonday = ((7 - date1.getDay()) % 7) + 1;
-  const daysDiff = countDaysDiff(date1, date2);
-  return daysDiff >= daysUntilMonday;
-}
-
-const isMonthChanged = (date1: Date, date2: Date) => {
-  return date1.getMonth() !== date2.getMonth() || date1.getFullYear() !== date2.getFullYear();
-}
 
 export const useGlobalStore = create<GlobalState>()(
   persist(
@@ -151,16 +133,11 @@ export const useGlobalStore = create<GlobalState>()(
         const currentDate = new Date(get().currentDateCorrection + new Date().getTime());
         const lastDate = new Date(get().lastStreakUpdateDate);
 
-        if (!isDayChanged(lastDate, currentDate)) return;
+        if (!isPeriodChanged(lastDate, currentDate, "daily")) return;
         const habits = get().habits;
         const periodIsOk = (period: "daily" | "weekly" | "monthly") => {
-          if (period === "weekly" && !isWeekChanged(lastDate, currentDate)) {
-            return true;
-          }
-
-          if (period === "monthly" && !isMonthChanged(lastDate, currentDate)) {
-            return true;
-          }
+         
+          if (!isPeriodChanged(lastDate, currentDate, period)) return true;
                   
           const periodHabits = habits.filter((habit) => habit.period === period);
           if (periodHabits.every((habit) => habit.isCompleted)) {
@@ -199,20 +176,8 @@ export const useGlobalStore = create<GlobalState>()(
         const lastActionDate = new Date(history[history.length - 1]?.date);
         const currentDate = new Date(new Date().getTime() + get().currentDateCorrection);
 
-        if (period === "daily") {
-          return isDayChanged(lastActionDate, currentDate)
-        }
-
-        if (period === "weekly") {
-          return isWeekChanged(lastActionDate, currentDate);
-        }
-
-        if (period === "monthly") {
-          return isMonthChanged(lastActionDate, currentDate);
-        }
-
-        console.error("Некорректный период");
-        return false;
+        return isPeriodChanged(lastActionDate, currentDate, period);
+      
       },
 
       history: [],
@@ -255,6 +220,11 @@ export const useGlobalStore = create<GlobalState>()(
         const isNextLevel = get().increaseExperienceAndGold(-(daysStreak + 1) * 10);
 
         return isNextLevel;
+      },
+
+      importStorage: (habits: Habit[], actions: HabitAction[]) => {
+        set({ habits });
+        set({ history: actions });
       },
 
       categories: [

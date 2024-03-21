@@ -1,8 +1,47 @@
+export interface HabitToUpload {
+    // у каждой привычки уникальный id
+    id: number;
+
+    title: string;
+
+    category: string;
+
+    // дата, начиная с которой Вася трекает эту привычку
+    addDate: Date; 
+
+    period: 'daily' | 'weekly' | 'monthly';
+    
+    // необязательное поле – целевое значение для численных привычек,
+    // например, пройти 10000 шагов
+    targetValue?: number;
+}
+
+export interface HabitActionToUpload {
+    // id привычки, чтобы связать с объектами Habit
+    id: number;
+
+    // дата и время, когда это действие отмечено как выполненное
+    date: Date;
+    
+    // необязательное поле – значение для численных привычек,
+    // например, 12000 для привычки "пройти 10000 шагов"
+    value?: number;
+}
+
 export interface DataToUpload {
+    habits: HabitToUpload[];
+    actions: HabitActionToUpload[];
+}
+
+export interface DataToUploadExtended {
     habits: Habit[];
     actions: HabitAction[];
+    library: LibraryHabit[];
 }
+
 export interface GlobalState {
+
+    importStorage: (habits: Habit[], actions: HabitAction[]) => void;
 
     userName: string;
     setUserName: (name: string) => void;
@@ -104,14 +143,12 @@ export interface CreateHabit {
 
 export interface HabitAction {
     id: number;
-    // id привычки, к которой относится это действие
+
     habit_id: number
     habit_period: 'daily' | 'weekly' | 'monthly';
-    // дата и время, когда это действие отмечено как выполненное
     date: Date;
     isCompleted: boolean;
 
-    // необязательное поле – значение для численных привычек
     value?: number;
 }
 

@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@mantine/code-highlight':
+    specifier: ^7.6.2
+    version: 7.6.2(@mantine/core@7.6.2)(@mantine/hooks@7.6.2)(react-dom@18.2.0)(react@18.2.0)
   '@mantine/core':
     specifier: ^7.6.2
     version: 7.6.2(@mantine/hooks@7.6.2)(@types/react@18.2.66)(react-dom@18.2.0)(react@18.2.0)
@@ -1643,6 +1646,22 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: true
 
+  /@mantine/code-highlight@7.6.2(@mantine/core@7.6.2)(@mantine/hooks@7.6.2)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-5JrCpONCdgrBfASQS5a7ZFrLD9e4uvjJDET10UX6ZS4dMPRqZZCYweJFUwaxhvRoIctpQeN5+Fuh95PVcZ5NXw==}
+    peerDependencies:
+      '@mantine/core': 7.6.2
+      '@mantine/hooks': 7.6.2
+      react: ^18.2.0
+      react-dom: ^18.2.0
+    dependencies:
+      '@mantine/core': 7.6.2(@mantine/hooks@7.6.2)(@types/react@18.2.66)(react-dom@18.2.0)(react@18.2.0)
+      '@mantine/hooks': 7.6.2(react@18.2.0)
+      clsx: 2.1.0
+      highlight.js: 11.9.0
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /@mantine/core@7.6.2(@mantine/hooks@7.6.2)(@types/react@18.2.66)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-qmZhmQVc7ZZ8EKKhPkGuZbfBnLXR0xE45ikxfx+1E6/8hLY5Ypr4nWqh5Pk6p3b+K71yYnBqlbNXbtHLQH0h3g==}
     peerDependencies:
@@ -3209,6 +3228,11 @@ packages:
     dependencies:
       function-bind: 1.1.2
     dev: true
+
+  /highlight.js@11.9.0:
+    resolution: {integrity: sha512-fJ7cW7fQGCYAkgv4CPfwFHrfd/cLS4Hau96JuJ+ZTOWhjnhoeN1ub1tFmALm/+lW5z4WCAuAV9bm05AP0mS6Gw==}
+    engines: {node: '>=12.0.0'}
+    dev: false
 
   /idb@7.1.1:
     resolution: {integrity: sha512-gchesWBzyvGHRO9W8tzUWFDycow5gwjvFKfyV9FF32Y7F50yZMp7mP+T2mJIWFx49zicqyC4uefHM17o6xKIVQ==}

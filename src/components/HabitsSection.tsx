@@ -1,7 +1,7 @@
 import { Button, Group, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import HabitsList from "components/Habit/HabitsList/HabitsList";
-import ModalCreate from "components/Habit/ModalCreate/ModalCreate";
+import ModalCreate from "components/Modals/ModalCreate/ModalCreate";
 
 import { FC } from "react"
 

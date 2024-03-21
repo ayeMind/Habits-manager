@@ -12,26 +12,32 @@ import classes from "./style.module.css";
 
 import { useGlobalStore } from "app/globalStore";
 
-import { FC } from "react"
-import { IconCalendar, IconCalendarMonth, IconCalendarWeek } from "@tabler/icons-react";
+import { FC } from "react";
+import {
+  IconCalendar,
+  IconCalendarMonth,
+  IconCalendarWeek,
+} from "@tabler/icons-react";
 
 interface Props {
   defaultPeriod: "daily" | "weekly" | "monthly";
   close: () => void;
 }
 
-const ModalCreate:FC<Props> = ({defaultPeriod, close}) => {
+const ModalCreate: FC<Props> = ({ defaultPeriod, close }) => {
   const [period, setPeriod] = useState(defaultPeriod);
   const [checked, setChecked] = useState(false);
-  const [targetValue, setTargetValue] = useState<string | number>('');
+  const [targetValue, setTargetValue] = useState<string | number>("");
 
   const [habitError, setHabitError] = useState("");
   const [categoryError, setCategoryError] = useState("");
   const [targetValueError, setTargetValueError] = useState("");
 
-  const { addHabit, categories, addCategory} = useGlobalStore((state) => state);
+  const { addHabit, categories, addCategory } = useGlobalStore(
+    (state) => state
+  );
 
-    const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
     setHabitError("");
@@ -70,12 +76,12 @@ const ModalCreate:FC<Props> = ({defaultPeriod, close}) => {
     }
 
     close();
-    
-  }
+  };
 
   return (
     <form className={classes["create-form"]}>
-      <SegmentedControl visibleFrom="sm"
+      <SegmentedControl
+        visibleFrom="sm"
         value={period}
         onChange={(value) => setPeriod(value as "daily" | "weekly" | "monthly")}
         name="period"
@@ -87,7 +93,8 @@ const ModalCreate:FC<Props> = ({defaultPeriod, close}) => {
         fullWidth
       />
 
-<SegmentedControl hiddenFrom="sm"
+      <SegmentedControl
+        hiddenFrom="sm"
         value={period}
         onChange={(value) => setPeriod(value as "daily" | "weekly" | "monthly")}
         name="period"
@@ -99,24 +106,28 @@ const ModalCreate:FC<Props> = ({defaultPeriod, close}) => {
         fullWidth
       />
 
-      <TextInput 
+      <TextInput
         type="text"
-        name="habit" label="Привычка" 
+        name="habit"
+        label="Привычка"
         placeholder="Пресс"
         data-autofocus
         onChange={() => setHabitError("")}
-        error={habitError} />
+        error={habitError}
+      />
 
       <Autocomplete
         label="Категория"
         name="category"
         placeholder="Введи категорию"
         limit={5}
-        comboboxProps={{ position: 'top', middlewares: { flip: false, shift: false } }}
+        comboboxProps={{
+          position: "top",
+          middlewares: { flip: false, shift: false },
+        }}
         data={categories}
         onChange={() => setCategoryError("")}
         error={categoryError}
-        
       />
 
       <Switch
@@ -128,8 +139,8 @@ const ModalCreate:FC<Props> = ({defaultPeriod, close}) => {
         <NumberInput
           value={targetValue}
           onChange={(value) => {
-            setTargetValue(value)
-            setTargetValueError("")
+            setTargetValue(value);
+            setTargetValueError("");
           }}
           min={1}
           name="targetValue"
