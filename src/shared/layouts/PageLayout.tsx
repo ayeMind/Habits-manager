@@ -1,12 +1,14 @@
 import { FC, useEffect } from "react";
 import { AppShell, AppShellMain, Modal, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { Notifications } from "@mantine/notifications";
+import { Notifications, notifications } from "@mantine/notifications";
 import { useGlobalStore } from "app/globalStore";
 
 import Header from "components/AppShell/Header";
 import SidePanel from "components/AppShell/SidePanel";
 import UserNameInput from "components/UserNameInput";
+import { checkAchievements } from "actions/checkAchievements";
+import { IconTrophy } from "@tabler/icons-react";
 
 interface Props {
   children: React.ReactNode;
@@ -18,7 +20,10 @@ const PageLayout: FC<Props> = ({ children, title, defaultTab }) => {
   const [navBarOpened, { toggle }] = useDisclosure();
   const [modalOpened, { open, close }] = useDisclosure();
 
-  const {userName, isNewPeriod, updateHabits, currentDateCorrection, setLastUpdateHabitsDate, updateStreak, getDate } = useGlobalStore((state) => state);
+
+  const {userName, isNewPeriod, updateHabits,
+     setLastUpdateHabitsDate, updateStreak, getDate,
+     gold, spent, completedHabits, daysStreak, achievements, completeAchievement } = useGlobalStore((state) => state);
 
   useEffect(() => {
     if (!userName) {
@@ -27,23 +32,32 @@ const PageLayout: FC<Props> = ({ children, title, defaultTab }) => {
   }, [userName]);
 
   useEffect(() => {
-    
     if (isNewPeriod("daily")) {
       updateStreak();
       updateHabits("daily");
     }
     if (isNewPeriod("weekly")) {
-      updateHabits("weekly");
-      console.log("Схуяли?");
-      
+      updateHabits("weekly");      
     }
     if (isNewPeriod("monthly")) {
       updateHabits("monthly");
     }
-
     setLastUpdateHabitsDate(getDate());
+  }, []);
 
-  }, [currentDateCorrection]);
+  const completed = checkAchievements(achievements, completedHabits, daysStreak, gold, spent);
+
+  useEffect(() => {
+    completed.forEach(achievement => {
+      completeAchievement(achievement.id);
+      notifications.show({
+        title: achievement.title,
+        message: achievement.description,
+        icon: <IconTrophy />,
+        color: "yellow",
+      });
+    });
+  }, [completed]);
 
   return (
     <>

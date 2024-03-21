@@ -12,10 +12,12 @@ const Statistics = () => {
 
   const { getCurrentLevelExperience, userName, level,
    daysStreak, maxDaysStreak, earned, spent, avatar, setAvatar,
-   completedHabits, countMissingHabits} = useGlobalStore((state) => state);
+   completedHabits, countMissingHabits, achievements} = useGlobalStore((state) => state);
 
   const experience = getCurrentLevelExperience();
   const maxExperience = (level-1) * 50 + 100;
+
+  const completedAchievements = achievements.filter((achievement) => achievement.isCompleted).length;
 
   const convertToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -55,7 +57,7 @@ const Statistics = () => {
               <Progress color="teal" value={experience / maxExperience * 100} w={200} />
             </Tooltip>
             <Text size="xs">Осталось следующего уровня: {maxExperience - experience}</Text>
-            <Text size="sm">Получено достижений: 0</Text>
+            <Text size="sm">Получено достижений: {completedAchievements} </Text>
           </Flex>
         </Flex>
 

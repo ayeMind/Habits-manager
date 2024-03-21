@@ -213,7 +213,7 @@ export const useGlobalStore = create<GlobalState>()(
       updateHabits: (period: "daily" | "weekly" | "monthly") => {        
 
         if (!isPeriodChanged(new Date(get().lastUpdateHabitsDate), get().getDate(), "daily")) return;
-                
+
         const allHabits = get().habits;
         const habits = allHabits.map((habit) => {
           if (habit.period === period) {
@@ -280,18 +280,18 @@ export const useGlobalStore = create<GlobalState>()(
       },
 
       achievements: [
-        {id: 1, title: "Первый шаг", description: "Выполнить первую привычку", rewardGold: 10, isCompleted: false},
-        {id: 2, title: "Полный день", description: "Выполнить все привычки за текущий период", rewardGold: 10, isCompleted: false},
-        {id: 3, title: "Мастер привычек", description: "Выполнить 5 прывычек за сутки", rewardGold: 20, isCompleted: false},
-        {id: 4, title: "Легенда", description: "Выполнить 10 привычек за сутки", rewardGold: 30, isCompleted: false},
-        {id: 5, title: "Привыкающий", description: "Стрик 5 дней", rewardGold: 30, isCompleted: false},
-        {id: 6, title: "Уже бывалый", description: "Стрик 10 дней", rewardGold: 40, isCompleted: false},
-        {id: 7, title: "Распродажа в Steam", description: "Потратить 100 золота", rewardGold: 20, isCompleted: false},
-        {id: 8, title: "Покупатель", description: "Потратить 500 золота", rewardGold: 30, isCompleted: false},
-        {id: 9, title: "Шопоголик", description: "Потратить 1000 золота", rewardGold: 40, isCompleted: false},
-        {id: 10, title: "Сберегатель", description: "Накопить 5000 золота", rewardGold: 20, isCompleted: false},
-        {id: 11, title: "КМС по привычкам", description: "Выполнить 100 привычек", rewardGold: 30, isCompleted: false},
-        {id: 12, title: "Не гитхаб, но тоже пойдет", description: "Проявлять активность на протяжении 365 дней подряд", rewardGold: 1000, isCompleted: false},
+        {id: 1, title: "Первый шаг", description: "Выполнить первую привычку", isCompleted: false},
+        {id: 2, title: "Полный день", description: "Выполнить все привычки за текущий период", isCompleted: false},
+        {id: 3, title: "Подающий надежды", description: "Выполнить 5 прывычек", isCompleted: false},
+        {id: 4, title: "Знающий толк в привычках", description: "Выполнить 10 привычек", isCompleted: false},
+        {id: 5, title: "Привыкающий", description: "Стрик 5 дней", isCompleted: false},
+        {id: 6, title: "Уже бывалый", description: "Стрик 10 дней", isCompleted: false},
+        {id: 7, title: "Распродажа в Steam", description: "Потратить 100 золота", isCompleted: false},
+        {id: 8, title: "Постоянный покупатель", description: "Потратить 500 золота", isCompleted: false},
+        {id: 9, title: "Шопоголик", description: "Потратить 1000 золота", isCompleted: false},
+        {id: 10, title: "Сберегатель", description: "Накопить 5000 золота", isCompleted: false},
+        {id: 11, title: "КМС по привычкам", description: "Выполнить 100 привычек", isCompleted: false},
+        {id: 12, title: "Не гитхаб, но тоже пойдет", description: "Выполнять все привычки на протяжении года", isCompleted: false},
       ],
 
      completeAchievement: (id: number) => {
@@ -301,10 +301,6 @@ export const useGlobalStore = create<GlobalState>()(
           achievements: state.achievements.map((a) =>
             a.id === id ? { ...a, isCompleted: true } : a
           ),
-        }));
-        set((state) => ({
-          gold: state.gold + achievement.rewardGold,
-          earned: state.earned + achievement.rewardGold,
         }));
       },
 

@@ -83,7 +83,7 @@ const Library = () => {
     );
           
     notifications.show({
-      color: "teal",
+      color: 'teal',
       title: 'Успех!',
       message: 'Выбранные привычки успешно добавлены в ваш список привычек',
       autoClose: 2000,
