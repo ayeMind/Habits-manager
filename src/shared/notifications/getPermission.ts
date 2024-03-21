@@ -5,7 +5,7 @@ export function getPermission() {
     }
 
     if (Notification.permission === "granted") {
-        const notification = new Notification("ТЫ ПОЧЕМУ НЕ СДЕЛАЛ ВСЕ ПРИВЫЧКИ ЗА СЕГОДНЯ?");
+        new Notification("ТЫ ПОЧЕМУ НЕ СДЕЛАЛ ВСЕ ПРИВЫЧКИ ЗА СЕГОДНЯ?");
         
     } else if (Notification.permission !== 'denied') {
         Notification.requestPermission(permission => {
