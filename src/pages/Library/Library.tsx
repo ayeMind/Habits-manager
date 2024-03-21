@@ -102,13 +102,13 @@ const Library = () => {
         padding="md"
         role="checkbox"
       >
-        <Text size="md" mb={5}>
-          {habit.title}
-        </Text>
-        <Flex justify="space-between">
-          <Text size="sm">{translatePeriod(habit.period)}</Text>
-          <Text size="sm">{habit.category}</Text>
-        </Flex>
+          <Text size="md" mb={5}>
+            {habit.title}
+          </Text>
+          <Flex justify="space-between">
+            <Text size="sm">{translatePeriod(habit.period)}</Text>
+            <Text size="sm">{habit.category}</Text>
+          </Flex>
       </Card>
     );
   });

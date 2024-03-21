@@ -26,6 +26,7 @@ import { GlobalState, Habit, HabitAction } from "app/interfaces";
 import { FC } from "react";
 import classes from "./style.module.css";
 import ModalDelete from "../ModalDelete";
+import { getPermission } from "src/shared/notifications/getPermission";
 
 interface Props {
   period: "daily" | "weekly" | "monthly";
@@ -89,6 +90,8 @@ const HabitsList: FC<Props> = ({ period }) => {
 
   const handleIconClick = (habit: Habit) => {
     const id = habit.id;
+
+    getPermission()
 
     let maxTargetValue = habit.targetValue;
     if (!habit.isCompleted) {

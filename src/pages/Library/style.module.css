@@ -1,10 +1,14 @@
 .card {
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .card:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     opacity: 0.8;
+   
 }
 
 .card:active {
@@ -15,5 +19,8 @@
 
 .active-card {
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     background-color: #0088e4;
 }
