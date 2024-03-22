@@ -18,8 +18,7 @@ interface Props {
 
 const PageLayout: FC<Props> = ({ children, title, defaultTab }) => {
   const [navBarOpened, { toggle }] = useDisclosure();
-  const [modalOpened, { open, close }] = useDisclosure();
-
+  const [modalOpened, { open, close }] = useDisclosure();  
 
   const {userName, isNewPeriod, updateHabits,
      setLastUpdateHabitsDate, updateStreak, getDate,

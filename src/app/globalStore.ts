@@ -116,16 +116,18 @@ export const useGlobalStore = create<GlobalState>()(
 
         const periodChangeCount = (addDate: Date, period: "daily" | "weekly" | "monthly") => {
 
+          const msOnDay = 1000 * 60 * 60 * 24;
+
           const firstDate = new Date(addDate);
           const lastDate = get().getDate();
 
           if (period === "daily") {
-            return Math.floor((lastDate.getTime() - firstDate.getTime()) / (1000 * 60 * 60 * 24));
+            return Math.floor((lastDate.getTime() - firstDate.getTime()) / (msOnDay));
           }
 
           if (period === "weekly") {
             const daysUntilMonday = ((7 - firstDate.getDay()) % 7) + 1;
-            const daysDiff = Math.round((lastDate.getTime() - firstDate.getTime()) / (1000 * 60 * 60 * 24));
+            const daysDiff = Math.round((lastDate.getTime() - firstDate.getTime()) / (msOnDay));
             return Math.floor(daysDiff / 7) + (daysDiff % 7 >= daysUntilMonday ? 1 : 0);
           }
 

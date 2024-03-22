@@ -11,12 +11,17 @@ import classes from './style.module.css'
 const Heatmap = () => {
   const {history, getDate} = useGlobalStore((state) => state);
   const currentDate = getDate()
+  console.log("current", currentDate);
+  
   const historyCompleted = history.filter((action) => action.isCompleted);
+
+  console.log(historyCompleted);
+  
 
   // Group by date and formatting
   const groupedByDate = historyCompleted.reduce((acc, action) => {
     const date = new Date(action.date);
-    const key = `${date.getFullYear()}/${date.getMonth()}/${date.getDate()}`;
+    const key = `${date.getFullYear()}/${date.getMonth()+1}/${date.getDate()}`;
     if (!acc[key]) {
       acc[key] = 0;
     }
@@ -40,8 +45,10 @@ const Heatmap = () => {
       currentDate.getMonth(),
       currentDate.getDate()
     );
-    const startLastYear = `${lastYear.getFullYear()}/${lastYear.getMonth()}/${lastYear.getDate()}`;
-    const endLastYear = `${currentDate.getFullYear()}/${currentDate.getMonth()}/${currentDate.getDate()}`;
+    
+    const startLastYear = `${lastYear.getFullYear()}/${lastYear.getMonth()+1}/${lastYear.getDate()}`;
+    const endLastYear = `${currentDate.getFullYear()}/${currentDate.getMonth()+1}/${currentDate.getDate()}`;
+    
     return [startLastYear, endLastYear];
   };
 
