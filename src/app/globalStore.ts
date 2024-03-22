@@ -15,6 +15,9 @@ export const useGlobalStore = create<GlobalState>()(
       avatar: defaultBase64Avatar(),
       setAvatar: (file: string) => set({ avatar: file }),
 
+      theme: "standard",
+      setTheme: (theme: string) => set({ theme }),
+
       currentDateCorrection: 0,
       getDate: () => new Date(new Date().getTime() + get().currentDateCorrection),
       setCurrentDateCorrection: (date: Date) => set({ currentDateCorrection: date.getTime() - new Date().getTime()}),

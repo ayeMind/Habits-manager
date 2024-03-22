@@ -5,10 +5,10 @@
 }
 
 .avatar {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
+    position: absolute !important;
+    width: 100% !important;
+    height: 100% !important;
+    cursor: pointer !important;
 }
 
 .file-input {
@@ -42,16 +42,16 @@
 }
 
 .skeleton-avatar {
-    width: 100%;
-    height: 100%;
-    position: absolute; 
+    width: 100% !important;
+    height: 100% !important;
+    position: absolute !important;
 }
 
 .skeleton-heatmap {
-    width: 720px;
-    height: 75%;
-    position: absolute; 
-    border-radius: 25px;
+    width: 720px !important;
+    height: 75% !important;
+    position: absolute !important;
+    border-radius: 25px !important;
 }
 
 .skeleton-hidden {

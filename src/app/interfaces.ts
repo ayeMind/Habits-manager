@@ -49,6 +49,9 @@ export interface GlobalState {
     avatar: string;
     setAvatar: (file: string) => void;
 
+    theme: string;
+    setTheme: (theme: string) => void;
+
     currentDateCorrection: number;
     setCurrentDateCorrection: (date: Date) => void;
     getDate: () => Date;

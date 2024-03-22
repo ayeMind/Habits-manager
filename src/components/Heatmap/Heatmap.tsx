@@ -1,14 +1,26 @@
 import HeatMap from "@uiw/react-heat-map";
 import { Tooltip, Text } from "@mantine/core";
 import { useGlobalStore } from "app/globalStore";
+
+import classes from './style.module.css'
 interface Value {
   date: string;
   count: number;
 }
 
-import classes from './style.module.css'
-
 const Heatmap = () => {
+
+  const panelColors = {
+    0: "#e9eeee",
+    1: "#9be9a8",
+    4: "#40c463",
+    10: "#30a14e",
+    15: "#216e39",
+  }
+  
+  const theme = useGlobalStore((state) => state.theme);
+  const textColor = (theme === "light") ? "#000" : "#fff";
+
   const {history, getDate} = useGlobalStore((state) => state);
   const currentDate = getDate()
   console.log("current", currentDate);
@@ -17,8 +29,6 @@ const Heatmap = () => {
 
   console.log(historyCompleted);
   
-
-  // Group by date and formatting
   const groupedByDate = historyCompleted.reduce((acc, action) => {
     const date = new Date(action.date);
     const key = `${date.getFullYear()}/${date.getMonth()+1}/${date.getDate()}`;
@@ -72,14 +82,8 @@ const Heatmap = () => {
         weekLabels={["", "Mon", "", "Wed", "", "Fri", ""]}
         monthLabels={['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']}
         width={725}
-        style={{ color: "white" }}
-        panelColors={{
-          0: "#fdfdfd",
-          1: "#9be9a8",
-          4: "#40c463",
-          10: "#30a14e",
-          15: "#216e39",
-        }}
+        style={{ color: textColor }}
+        panelColors={panelColors}
         rectRender={(props: React.SVGProps<SVGRectElement>, data: Value) => {
           return (
             <Tooltip
