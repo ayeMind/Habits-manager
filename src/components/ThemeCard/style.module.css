@@ -1,0 +1,11 @@
+.card {
+    cursor: pointer;
+    width: 80%;
+    border: 1px solid #aaa;
+}
+
+@media (max-width: 768px) {
+    .card {
+        width: 95%;
+    }
+}

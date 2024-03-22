@@ -18,9 +18,9 @@
 
 
 .active-card {
-    cursor: pointer;
+    cursor: pointer !important;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color: #0088e4;
+    background-color: #0088e4 !important;
 }

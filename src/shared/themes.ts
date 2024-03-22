@@ -9,16 +9,14 @@ export function getTheme(theme: string): MantineColorsTuple | "light" | "standar
     switch (theme) {
         case 'blue':
             return blueTheme();
-        case 'green':
-            return greenTheme();
         case 'red':
             return redTheme();
         case 'purple':
             return purpleTheme();
-        case 'yellow':
-            return yellowTheme();
         case 'light':
             return "light"
+        case 'grey':
+            return greyTheme();
         default: 
             return "standard"
     }
@@ -40,20 +38,6 @@ function blueTheme(): MantineColorsTuple {
         ]
 }
 
-function greenTheme(): MantineColorsTuple {
-    return [
-            '#d5e0d7',
-            '#ace0ae',
-            '#8fa38f',
-            '#668066',
-            '#4f664f',
-            '#346a34',
-            '#2c3d2c',
-            '#1e301e',
-            '#0d210d',
-            '#010a01',
-        ]
-}
 
 function redTheme(): MantineColorsTuple {
     return [
@@ -85,17 +69,17 @@ function purpleTheme(): MantineColorsTuple {
         ]
 }
 
-function yellowTheme(): MantineColorsTuple {
+function greyTheme(): MantineColorsTuple {
     return [
-            '#e0e0d5',
-            '#e0e0ac',
-            '#a3a38f',
-            '#808066',
-            '#66664f',
-            '#6a6a34',
-            '#3d3d2c',
-            '#30301e',
-            '#21210d',
-            '#0a0a01',
+            '#e0e0e0',
+            '#aeaeae',
+            '#8f8f8f',
+            '#666666',
+            '#4f4f4f',
+            '#343434',
+            '#2c2c2c',
+            '#1e1e1e',
+            '#0d0d0d',
+            '#010101',
         ]
 }

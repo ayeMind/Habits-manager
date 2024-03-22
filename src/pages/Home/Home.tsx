@@ -6,7 +6,7 @@ import {
   IconCalendarMonth,
   IconCalendarWeek,
 } from "@tabler/icons-react";
-import HabitsSection from "components/HabitsSection";
+import HabitsSection from "components/Habit/HabitsSection";
 
 function Home() {
 

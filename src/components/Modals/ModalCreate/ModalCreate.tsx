@@ -20,15 +20,15 @@ import {
 } from "@tabler/icons-react";
 
 interface Props {
-  defaultPeriod: "daily" | "weekly" | "monthly";
   close: () => void;
 }
 
-const ModalCreate: FC<Props> = ({ defaultPeriod, close }) => {
-  const [period, setPeriod] = useState(defaultPeriod);
+const ModalCreate: FC<Props> = ({ close }) => {
+  const [period, setPeriod] = useState("");
   const [checked, setChecked] = useState(false);
   const [targetValue, setTargetValue] = useState<string | number>("");
 
+  const [periodError, setPeriodError] = useState("");
   const [habitError, setHabitError] = useState("");
   const [categoryError, setCategoryError] = useState("");
   const [targetValueError, setTargetValueError] = useState("");
@@ -40,12 +40,18 @@ const ModalCreate: FC<Props> = ({ defaultPeriod, close }) => {
   const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
+    setPeriodError("");
     setHabitError("");
     setCategoryError("");
     setTargetValueError("");
 
     const formData = new FormData(event.currentTarget.form as HTMLFormElement);
     const data = Object.fromEntries(formData.entries());
+
+    if (!data.period) {
+      setPeriodError("Выберите период");
+      return;
+    }
 
     if (!data.habit) {
       setHabitError("Привычка не может быть пустой");
@@ -83,7 +89,11 @@ const ModalCreate: FC<Props> = ({ defaultPeriod, close }) => {
       <SegmentedControl
         visibleFrom="sm"
         value={period}
-        onChange={(value) => setPeriod(value as "daily" | "weekly" | "monthly")}
+        onChange={(value) => {
+          setPeriod(value as "daily" | "weekly" | "monthly")
+          setPeriodError("")
+        }
+        }
         name="period"
         data={[
           { label: "Ежедневная", value: "daily" },
@@ -96,7 +106,10 @@ const ModalCreate: FC<Props> = ({ defaultPeriod, close }) => {
       <SegmentedControl
         hiddenFrom="sm"
         value={period}
-        onChange={(value) => setPeriod(value as "daily" | "weekly" | "monthly")}
+        onChange={(value) => {
+          setPeriod(value as "daily" | "weekly" | "monthly")
+          setPeriodError("")
+        }}
         name="period"
         data={[
           { label: <IconCalendar />, value: "daily" },
@@ -105,6 +118,7 @@ const ModalCreate: FC<Props> = ({ defaultPeriod, close }) => {
         ]}
         fullWidth
       />
+      <label htmlFor="period" className={classes["period-error"]}>{periodError}</label>
 
       <TextInput
         type="text"

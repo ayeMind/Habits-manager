@@ -14,9 +14,10 @@ interface Props {
   children: React.ReactNode;
   title: string;
   defaultTab: string;
+  className?: string;
 }
 
-const PageLayout: FC<Props> = ({ children, title, defaultTab }) => {
+const PageLayout: FC<Props> = ({ children, title, defaultTab, className }) => {
   const [navBarOpened, { toggle }] = useDisclosure();
   const [modalOpened, { open, close }] = useDisclosure();  
 
@@ -79,7 +80,7 @@ const PageLayout: FC<Props> = ({ children, title, defaultTab }) => {
       >
         <Header title={title} opened={navBarOpened} toggle={toggle} />
         <SidePanel defaultTab={defaultTab} opened={navBarOpened} toggle={toggle} />
-        <AppShellMain>{children}</AppShellMain>
+        <AppShellMain className={className}>{children}</AppShellMain>
       </AppShell>
     </>
   );
