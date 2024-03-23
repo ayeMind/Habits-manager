@@ -6,11 +6,12 @@ import classes from "./style.module.css";
 interface Props {
   title: string;
   description: string;
+  price: number;
   image: string;
   onClick: () => void;
 }
 
-const StoreCard: FC<Props> = ({ title, description, image, onClick }) => {
+const StoreCard: FC<Props> = ({ title, description, price, image, onClick }) => {
   return (
     <Card onClick={onClick}
       className={classes["card"]}
@@ -24,6 +25,10 @@ const StoreCard: FC<Props> = ({ title, description, image, onClick }) => {
 
       <Text fw={500} size="lg" mt="md">
         {title}
+      </Text>
+
+      <Text size="sm">
+        {price} золотых
       </Text>
 
       <Text mt="xs" c="dimmed" size="sm">

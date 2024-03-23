@@ -1,7 +1,8 @@
 .habit-title {
    font-size: 16px;
-   word-break: break-word;
+   word-break: break-all;
    line-height: 1.1;
+   hyphens: auto;
 }
 
 .mobile-form {
@@ -34,9 +35,28 @@
 }
 
 @media (max-width: 768px) {
+
+    .habit-title {
+        font-size: 14px;
+    }
+
     .title-tooltip {
         max-width: 250px;
     }
+}
+
+
+@media (max-width: 425px) {
+    .habit-title {
+        font-size: 12px;
+        min-width: 75px;
+    }
+
+    .title-tooltip {
+        max-width: 200px;
+    }
+
+
 }
 
 

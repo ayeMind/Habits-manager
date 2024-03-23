@@ -99,6 +99,9 @@ export interface GlobalState {
     earned: number;
     spent: number;
 
+    templateDaily: Habit[];
+    setTemplateDaily: () => void;
+
     increaseExperienceAndGold: (value: number) => boolean; // Возвращает, происходит ли переход на новый уровень
 
     getCurrentLevelExperience: () => number;

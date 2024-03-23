@@ -42,6 +42,12 @@ export const useGlobalStore = create<GlobalState>()(
       gold: 0,
       earned: 0,
       spent: 0,
+
+      templateDaily: [],
+      setTemplateDaily: () => {
+        const habits = get().habits.filter((habit) => habit.period === 'daily');
+        set({ templateDaily: habits });
+      },
     
       increaseExperienceAndGold: (value: number) => {
 
@@ -300,7 +306,7 @@ export const useGlobalStore = create<GlobalState>()(
 
       achievements: [
         {id: 1, title: "Первый шаг", description: "Выполнить первую привычку", isCompleted: false},
-        {id: 2, title: "Полный день", description: "Выполнить все привычки за текущий период", isCompleted: false},
+        {id: 2, title: "Полный день", description: "Выполнить все привычки за предыдущий период", isCompleted: false},
         {id: 3, title: "Подающий надежды", description: "Выполнить 5 прывычек", isCompleted: false},
         {id: 4, title: "Знающий толк в привычках", description: "Выполнить 10 привычек", isCompleted: false},
         {id: 5, title: "Привыкающий", description: "Стрик 5 дней", isCompleted: false},

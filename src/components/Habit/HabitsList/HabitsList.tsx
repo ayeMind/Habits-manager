@@ -43,26 +43,23 @@ const HabitsList: FC<Props> = ({ period }) => {
     getLastHistoryId,
     level,
     currentDateCorrection,
+    theme,
   } = useGlobalStore((state: GlobalState) => state);
 
   const habits = getHabitsWithPeriod(period) as Habit[];
-
+  const editIconColor = (theme === "light") ? "black" : "white";
+  const removeIconColor = (theme === "light") ? "red" : "pink";
   const [opened, { open, close }] = useDisclosure(false);
-
   const handleOpen = (id: number) => {
     localStorage.setItem("habitToDelete", JSON.stringify(id));
     open();
   };
 
   const preHabitChange = (habit: Habit) => {    
-
     if (habit.isCompleted) {
-
       removeCurrentAction(habit.id);
     } else {
-
       const lastHistoryId = getLastHistoryId();
-
       let action = {} as HabitAction;
       if (habit.targetValue) {
         action = {
@@ -82,7 +79,6 @@ const HabitsList: FC<Props> = ({ period }) => {
           isCompleted: true,
         };
       }
-
       addAction(action);
     }
   };
@@ -205,7 +201,7 @@ const HabitsList: FC<Props> = ({ period }) => {
             multiline
             events={{ hover: true, focus: true, touch: true }}
           >
-            <Text className={classes["habit-title"]} lineClamp={4}>
+            <Text className={classes["habit-title"]} lineClamp={3}>
               {habit.title}
             </Text>
           </Tooltip>
@@ -256,7 +252,7 @@ const HabitsList: FC<Props> = ({ period }) => {
           <Popover>
             <Popover.Target>
               <ActionIcon bg="none">
-                <IconEdit stroke={1} />
+                <IconEdit stroke={1} color={editIconColor} />
               </ActionIcon>
             </Popover.Target>
             <Popover.Dropdown>
@@ -296,7 +292,7 @@ const HabitsList: FC<Props> = ({ period }) => {
           bg="none"
           onClick={() => handleOpen(habit.id)}
         >
-          <IconSquareRoundedMinus stroke={1} color="pink" />
+          <IconSquareRoundedMinus stroke={1} color={removeIconColor} />
         </ActionIcon>
       </Table.Td>
     </Table.Tr>
