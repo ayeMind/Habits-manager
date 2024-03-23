@@ -1,4 +1,4 @@
-import { SimpleGrid, Text, Modal, Button, ModalTitle } from "@mantine/core";
+import { SimpleGrid, Text, Modal, Button } from "@mantine/core";
 import { useDisclosure } from '@mantine/hooks';
 import { useState } from "react";
 import { useGlobalStore } from "app/globalStore";
