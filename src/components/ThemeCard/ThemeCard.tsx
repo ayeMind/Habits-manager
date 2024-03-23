@@ -9,7 +9,6 @@ import light from "../../assets/themes/light.png";
 import purple from "../../assets/themes/purple.png";
 import red from "../../assets/themes/red.png";
 
-
 import classes from "./style.module.css";
 
 interface Props {
@@ -17,7 +16,6 @@ interface Props {
 }
 
 const ThemeCard: FC<Props> = ({ theme }) => {
-
   const setTheme = useGlobalStore((state) => state.setTheme);
 
   const getThemeImage = (theme: string) => {
@@ -49,7 +47,10 @@ const ThemeCard: FC<Props> = ({ theme }) => {
       className={classes["card"]}
     >
       <Card.Section>
-        <Image src={getThemeImage(theme)} alt={`${theme} theme`} />
+        <Image
+          src={getThemeImage(theme)}
+          alt={`${theme} theme`}
+        />
       </Card.Section>
     </Card>
   );

@@ -16,8 +16,8 @@ const Themes = () => {
     <PageLayout title="Смена темы" defaultTab="themes" className={classes["page"]}>
       {cardsAmount === 0 && <Text>У вас нет доступных тем</Text>}
       {cards}
-      {cardsAmount < 7 && <Text>У вас заполучены не все темы. Вы можете приобрести больше в магазине</Text>}
-      {cardsAmount === 7 && <Text>Вы купили все темы!</Text>}
+      {cardsAmount < 6 && <Text>У вас заполучены не все темы. Вы можете приобрести больше в магазине</Text>}
+      {cardsAmount === 6 && <Text>Вы купили все темы!</Text>}
     </PageLayout>
   );
 };

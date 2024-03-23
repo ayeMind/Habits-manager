@@ -32,6 +32,7 @@ const ThemeProvider = () => {
 
   const darkTheme = createTheme({
     breakpoints: {
+      xxs: '24em',
       xs: '36em',
       sm: '48em',
       md: '62em',

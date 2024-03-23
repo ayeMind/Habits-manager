@@ -12,7 +12,7 @@ const Statistics = () => {
 
   const { getCurrentLevelExperience, userName, level,
    daysStreak, maxDaysStreak, earned, spent, avatar, setAvatar,
-   completedHabits, countMissingHabits, achievements} = useGlobalStore((state) => state);
+   completedHabits, countMissingHabits, achievements} = useGlobalStore(state => state);
 
   const experience = getCurrentLevelExperience();
   const maxExperience = (level-1) * 50 + 100;

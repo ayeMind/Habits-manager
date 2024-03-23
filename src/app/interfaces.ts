@@ -99,6 +99,8 @@ export interface GlobalState {
     earned: number;
     spent: number;
 
+    templateImportIsOpen: boolean;
+    openTemplateImport: () => void;
     templateDaily: Habit[];
     setTemplateDaily: () => void;
 

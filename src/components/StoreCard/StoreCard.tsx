@@ -20,7 +20,7 @@ const StoreCard: FC<Props> = ({ title, description, price, image, onClick }) => 
       component="button"
     >
       <Card.Section>
-        <Image src={image} h={160} alt={title} />
+        <Image className={classes["image"]} src={image} h={160} />
       </Card.Section>
 
       <Text fw={500} size="lg" mt="md">

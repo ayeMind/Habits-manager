@@ -15,7 +15,6 @@
     max-width: 500px;
 }
 
-
 @media (max-width: 1440px) {
 
     .title-tooltip {
@@ -46,7 +45,7 @@
 }
 
 
-@media (max-width: 425px) {
+@media (max-width: 384px) {
     .habit-title {
         font-size: 12px;
         min-width: 75px;
@@ -54,6 +53,10 @@
 
     .title-tooltip {
         max-width: 200px;
+    }
+
+    .slider {
+        width: 35px;
     }
 
 

@@ -21,8 +21,7 @@ export const useGlobalStore = create<GlobalState>()(
 
       savedThemes: ["standard", "light"],
       buyRandomTheme: () => {
-        const gold = get().gold;
-        if (gold < 150) return ""
+  
         set((state) => ({ gold: state.gold - 150, spent: state.spent + 150 }));
 
         const themes = themeStore.filter((theme) => !get().savedThemes.includes(theme));
@@ -42,6 +41,12 @@ export const useGlobalStore = create<GlobalState>()(
       gold: 0,
       earned: 0,
       spent: 0,
+
+      templateImportIsOpen: false,
+      openTemplateImport: () => {
+        set((state) => ({ gold: state.gold - 350, spent: state.spent + 350 }));
+        set({ templateImportIsOpen: true })
+      },
 
       templateDaily: [],
       setTemplateDaily: () => {

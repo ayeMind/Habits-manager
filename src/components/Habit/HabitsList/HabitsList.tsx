@@ -299,7 +299,7 @@ const HabitsList: FC<Props> = ({ period }) => {
   ));
 
   const ths = (
-    <Table.Tr>
+    <Table.Tr visibleFrom="xxs">
       <Table.Th>Привычка</Table.Th>
       <Table.Th>Прогресс</Table.Th>
     </Table.Tr>
