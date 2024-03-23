@@ -6,6 +6,7 @@ import { Habit, GlobalState, HabitActionCreate, CreateHabit, HabitAction } from 
 import { isPeriodChanged } from "actions/isPeriodChanged";
 import { defaultBase64Avatar } from "src/defaultBase64Avatar";
 
+const themeStore = ["blue", "grey", "purple", "red"];
 
 export const useGlobalStore = create<GlobalState>()(
   persist(
@@ -17,6 +18,20 @@ export const useGlobalStore = create<GlobalState>()(
 
       theme: "standard",
       setTheme: (theme: string) => set({ theme }),
+
+      savedThemes: ["standard", "light"],
+      buyRandomTheme: () => {
+        const gold = get().gold;
+        if (gold < 150) return ""
+        set((state) => ({ gold: state.gold - 150, spent: state.spent + 150 }));
+
+        const themes = themeStore.filter((theme) => !get().savedThemes.includes(theme));
+        if (themes.length === 0) return ""
+        const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+        set((state) => ({ savedThemes: [...state.savedThemes, randomTheme] }));
+
+        return randomTheme;
+      },
 
       currentDateCorrection: 0,
       getDate: () => new Date(new Date().getTime() + get().currentDateCorrection),
@@ -229,7 +244,6 @@ export const useGlobalStore = create<GlobalState>()(
         set({ habits });
       },
 
-      // Для проверки, закончилось ли время предыдущего периода (смотрит на соответствущую часть даты (день, неделя, месяц))
       isNewPeriod(period: "daily" | "weekly" | "monthly") {
         
         const history = get().history;

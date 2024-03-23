@@ -51,6 +51,8 @@ export interface GlobalState {
 
     theme: string;
     setTheme: (theme: string) => void;
+    savedThemes: string[];
+    buyRandomTheme: () =>  string; // Возвращает выпавшую тему
 
     currentDateCorrection: number;
     setCurrentDateCorrection: (date: Date) => void;
