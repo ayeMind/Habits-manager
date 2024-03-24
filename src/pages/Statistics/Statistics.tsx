@@ -17,7 +17,7 @@ const Statistics = () => {
   const experience = getCurrentLevelExperience();
   const maxExperience = (level-1) * 50 + 100;
 
-  const completedAchievements = achievements.filter((achievement) => achievement.isCompleted).length;
+  const completedAchievements = achievements.filter(achievement => achievement.isCompleted).length;
 
   const convertToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {

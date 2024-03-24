@@ -12,6 +12,43 @@ export default defineConfig({
       devOptions: {
         enabled: true,
       },
+      manifest: {
+        "name": "final-frontend",
+        "short_name": "final-frontend",
+        "start_url": "/",
+        "display": "standalone",
+        "background_color": "#696666",
+        "lang": "ru",
+        "scope": "/",
+        "theme_color": "#2e2e2e",
+        "id": "habits-manager",
+        "description": "Habits manager",
+        "orientation": "portrait-primary",
+        "icons": [
+          {
+            src: 'pwa-64x64.png',
+            sizes: '64x64',
+            type: 'image/png'
+          },
+          {
+            src: 'pwa-192x192.png',
+            sizes: '192x192',
+            type: 'image/png'
+          },
+          {
+            src: 'pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any'  
+          },
+          {
+            src: 'maskable-icon-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable'
+          }
+        ]
+      },
     }),
   ],
   resolve: {
