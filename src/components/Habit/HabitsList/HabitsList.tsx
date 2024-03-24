@@ -22,10 +22,12 @@ import {
   IconSquareRoundedMinus,
 } from "@tabler/icons-react";
 import { useGlobalStore } from "app/globalStore";
+import { isPeriodChanged } from "actions/isPeriodChanged";
 import { GlobalState, Habit, HabitAction } from "app/interfaces";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import classes from "./style.module.css";
 import ModalDelete from "../../Modals/ModalDelete";
+
 
 interface Props {
   period: "daily" | "weekly" | "monthly";
@@ -44,9 +46,25 @@ const HabitsList: FC<Props> = ({ period }) => {
     level,
     currentDateCorrection,
     theme,
+    lastTemplateImportDate,
+    templateDaily,
+    getDate,
+    changeTemplateDailyTargetValue,
+    toggleTemplateDaily,
+    completeAllDailyHabits,
   } = useGlobalStore((state: GlobalState) => state);
 
-  const habits = getHabitsWithPeriod(period) as Habit[];
+  let habits = getHabitsWithPeriod(period) as Habit[];
+  const isTemplateImported = (templateDaily.length > 0 && !isPeriodChanged(new Date(lastTemplateImportDate), getDate(), "daily"));
+  if (isTemplateImported && period === "daily") {
+    habits = templateDaily;
+  }
+
+  useEffect(() => {
+    if (!isTemplateImported || period !== "daily") return;
+    completeAllDailyHabits();
+  }, [isTemplateImported])
+  
   const editIconColor = (theme === "light") ? "black" : "white";
   const removeIconColor = (theme === "light") ? "red" : "pink";
   const [opened, { open, close }] = useDisclosure(false);
@@ -86,6 +104,17 @@ const HabitsList: FC<Props> = ({ period }) => {
   const handleIconClick = (habit: Habit) => {
     const id = habit.id;
     let maxTargetValue = habit.targetValue;
+
+    if (isTemplateImported) {
+      if (habit.isCompleted) {
+        changeTemplateDailyTargetValue(id, 0);
+      } else {
+        changeTemplateDailyTargetValue(id, habit.targetValue);
+      }
+      toggleTemplateDaily(habit);
+      return;
+    }
+
     if (!habit.isCompleted) {
       if (!maxTargetValue || maxTargetValue <= 1) maxTargetValue = 1;
     } else {
@@ -108,9 +137,24 @@ const HabitsList: FC<Props> = ({ period }) => {
 
   const progressChange = (habit: Habit, value: number) => {
     const id = habit.id;
+    if (isTemplateImported) {
+      changeTemplateDailyTargetValue(id, value);
+      if (value >= habit.targetValue && !habit.isCompleted) {
+        toggleTemplateDaily(habit);
+      } else if (value < habit.targetValue && habit.isCompleted) {
+        toggleTemplateDaily(habit);
+      }
+      return;
+    }
+
+    if (habit.targetValue <= habit.currentValue && value >= habit.targetValue) {
+      changeTargetValue(id, value);
+      return;
+    }
+
     changeTargetValue(id, value);
 
-    if (habit.targetValue === value) {
+    if (habit.targetValue <= value) {
       const isNextLevel = completeHabit(id);
       const action = {
         id: getLastHistoryId() + 1,
@@ -146,9 +190,7 @@ const HabitsList: FC<Props> = ({ period }) => {
     const progress = +data.progress;
 
     if (progress < 0) return;
-    if (habit.targetValue && progress > habit.targetValue) {
-      progressChange(habit, habit.targetValue);
-    } else if (habit.targetValue) {
+    if (habit.targetValue) {
       progressChange(habit, progress);
     } else if (!habit.targetValue && progress > 0) {
       progressChange(habit, 1);

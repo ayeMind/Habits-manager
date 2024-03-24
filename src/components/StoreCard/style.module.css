@@ -1,6 +1,9 @@
 .card {
     border: 0;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    items-align: center;
 }
 
 .card:hover {

@@ -81,7 +81,7 @@ const Heatmap = () => {
         endDate={new Date(endDate)}
         weekLabels={["", "Mon", "", "Wed", "", "Fri", ""]}
         monthLabels={['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']}
-        width={725}
+        width={730}
         style={{ color: textColor }}
         panelColors={panelColors}
         rectRender={(props: React.SVGProps<SVGRectElement>, data: Value) => {

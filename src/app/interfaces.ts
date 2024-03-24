@@ -65,6 +65,7 @@ export interface GlobalState {
     getHabitsWithPeriod: (period: 'daily' | 'weekly' | 'monthly') => Habit[];
     toggleHabit: (habit: Habit) => boolean; // Возвращает, происходит ли переход на новый уровень
     completeHabit: (id: number) => boolean // Возвращает, происходит ли переход на новый уровень
+    completeAllDailyHabits: () => void; // Для временного импорта
     changeTargetValue: (id: number, value: number) => void;
 
 
@@ -102,7 +103,11 @@ export interface GlobalState {
     templateImportIsOpen: boolean;
     openTemplateImport: () => void;
     templateDaily: Habit[];
-    setTemplateDaily: () => void;
+    setTemplateDaily: (habits: Habit[]) => void;
+    lastTemplateImportDate: Date;
+    setLastTemplateImportDate: (date: Date) => void;
+    toggleTemplateDaily: (habit: Habit) => void; // Привычки из временного импорта не влияют на статистику!
+    changeTemplateDailyTargetValue: (id: number, value: number) => void;
 
     increaseExperienceAndGold: (value: number) => boolean; // Возвращает, происходит ли переход на новый уровень
 

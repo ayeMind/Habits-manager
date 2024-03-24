@@ -28,7 +28,7 @@ const StoreCard: FC<Props> = ({ title, description, price, image, onClick }) => 
       </Text>
 
       <Text size="sm">
-        {price} золотых
+        {price} монет
       </Text>
 
       <Text mt="xs" c="dimmed" size="sm">

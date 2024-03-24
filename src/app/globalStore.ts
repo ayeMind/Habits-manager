@@ -49,9 +49,24 @@ export const useGlobalStore = create<GlobalState>()(
       },
 
       templateDaily: [],
-      setTemplateDaily: () => {
-        const habits = get().habits.filter((habit) => habit.period === 'daily');
-        set({ templateDaily: habits });
+      setTemplateDaily: (habits: Habit[]) => set({ templateDaily: habits }),
+      lastTemplateImportDate: new Date(0),
+      setLastTemplateImportDate: (date: Date) => set({ lastTemplateImportDate: date }),
+
+      toggleTemplateDaily(habit) {
+        const habits = get().templateDaily;
+        const newHabits = habits.map((h) =>
+          h.id === habit.id ? { ...h, isCompleted: !h.isCompleted } : h
+        );
+        set({ templateDaily: newHabits });
+      },
+
+      changeTemplateDailyTargetValue(id, value) {
+        const habits = get().templateDaily;
+        const newHabits = habits.map((h) =>
+          h.id === id ? { ...h, currentValue: value } : h
+        );
+        set({ templateDaily: newHabits });
       },
     
       increaseExperienceAndGold: (value: number) => {
@@ -197,6 +212,15 @@ export const useGlobalStore = create<GlobalState>()(
         }))
         return isNextLevel;
       },
+
+      completeAllDailyHabits: () => {
+        set((state) => ({
+          habits: state.habits.map((habit) =>
+            habit.period === "daily" ? { ...habit, isCompleted: true } : habit
+          ),
+        }));
+      },
+
 
       changeTargetValue: (id: number, value: number) =>
         set((state) => ({

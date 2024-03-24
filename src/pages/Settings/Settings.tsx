@@ -8,6 +8,9 @@ import PageLayout from "layouts/PageLayout";
 import ModalResetData from "components/Modals/ModalResetData";
 import ModalImport from "components/Modals/ModalImport";
 
+import classes from "./style.module.css";
+import ModalTemplateImport from "components/Modals/ModalTemplateImport";
+
 const Settings = () => {
   const { userName, currentDateCorrection, setCurrentDateCorrection } = useGlobalStore(
     (state) => state
@@ -16,6 +19,7 @@ const Settings = () => {
 
   const [resetModalOpened, resetModalActions] = useDisclosure();
   const [importModalOpened, importModalActions] = useDisclosure();
+  const [templateModalOpened, templateModalActions] = useDisclosure();
 
 
   const exportData = () => {
@@ -35,10 +39,11 @@ const Settings = () => {
   }
   
   return (
-    <PageLayout title="Настройки" defaultTab="settings">
+    <PageLayout title="Настройки" defaultTab="settings" className={classes["page"]}>
       
       <ModalResetData opened={resetModalOpened} close={resetModalActions.close} />
       <ModalImport opened={importModalOpened} close={importModalActions.close} />
+      <ModalTemplateImport opened={templateModalOpened} close={templateModalActions.close} />
 
       <Box mb="sm">
         <Text size="lg" mb="sm">
@@ -59,14 +64,17 @@ const Settings = () => {
           <Button onClick={() => setCurrentDateCorrection(date)}>Сменить</Button>
         </Flex>
       </Box>
-      <Flex mb="md" gap="sm">
+      <Flex mb="md" gap="lg">
             <Button onClick={exportData}>Экспорт данных</Button>
             <Button onClick={importModalActions.open}>Импорт данных</Button>
       </Flex>
 
-      <Button color="red" onClick={resetModalActions.open}>
-        Удалить все данные
-      </Button>
+      <Flex direction="column" gap="md" w={300}>
+        <Button variant="outline" onClick={templateModalActions.open}>Временный импорт</Button>
+        <Button variant="outline" color="red" onClick={resetModalActions.open}>
+          Удалить все данные
+        </Button>
+      </Flex>
     </PageLayout>
   );
 };
