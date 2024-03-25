@@ -39,6 +39,9 @@ export const useGlobalStore = create<GlobalState>()(
       experience: 0,
       level: 1,
       gold: 0,
+      cheatGold: () => {
+        set({ gold: 5000 })
+      },
       earned: 0,
       spent: 0,
 

@@ -1,4 +1,4 @@
-import { SimpleGrid, Text, Modal, Button } from "@mantine/core";
+import { SimpleGrid, Text, Modal, Button, Flex } from "@mantine/core";
 import { useDisclosure } from '@mantine/hooks';
 import { useState } from "react";
 import { useGlobalStore } from "app/globalStore";
@@ -10,7 +10,7 @@ import bought from '../../assets/store/bought.png';
 
 const Store = () => {
 
-  const { gold, savedThemes, buyRandomTheme, openTemplateImport, templateImportIsOpen } = useGlobalStore((state) => state);
+  const { gold, savedThemes, buyRandomTheme, openTemplateImport, templateImportIsOpen, cheatGold } = useGlobalStore((state) => state);
 
   const [opened, { open, close }] = useDisclosure(false);
   const [modalTitle, setModalTitle] = useState('');
@@ -51,8 +51,11 @@ const Store = () => {
        <Modal opened={opened} onClose={close} title={modalTitle}>
           <Text>{modalDescription}</Text>
           <Button onClick={close} mt={20}>Вернуться</Button>
-       </Modal>  
-      <Text size="lg">У вас {gold} монет!</Text>
+       </Modal>
+       <Flex gap="lg">
+        <Text size="lg">У вас {gold} монет!</Text>
+        <Button onClick={cheatGold} size="xs">Начитерить монет</Button>
+       </Flex>  
         <SimpleGrid mt={30} cols={{ base: 1, xs: 2, lg: 3, xl: 4, xxxl: 6 }}>
           <StoreCard title="Покупка темы" description="Выпавшие темы не будут повторятся" price={150}
                      image={themeImage} onClick={handleBuyTheme} />

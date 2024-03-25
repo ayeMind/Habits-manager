@@ -99,6 +99,7 @@ export interface GlobalState {
     experience: number;
     level: number;
     gold: number;
+    cheatGold: () => void;
     earned: number;
     spent: number;
 
