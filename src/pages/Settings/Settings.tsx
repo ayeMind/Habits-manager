@@ -35,9 +35,6 @@ const Settings = () => {
     a.href = URL.createObjectURL(file);
     a.download = "data.json";
     a.click();
-
-    console.log(file.text());
-    
   }
   
   return (

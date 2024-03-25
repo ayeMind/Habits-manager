@@ -23,11 +23,9 @@ const Heatmap = () => {
 
   const {history, getDate} = useGlobalStore((state) => state);
   const currentDate = getDate()
-  console.log("current", currentDate);
   
   const historyCompleted = history.filter((action) => action.isCompleted);
 
-  console.log(historyCompleted);
   
   const groupedByDate = historyCompleted.reduce((acc, action) => {
     const date = new Date(action.date);

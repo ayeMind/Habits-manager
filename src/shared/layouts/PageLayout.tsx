@@ -38,6 +38,7 @@ const PageLayout: FC<Props> = ({ children, title, defaultTab, className }) => {
     daysStreak,
     achievements,
     completeAchievement,
+
   } = useGlobalStore((state) => state);
 
   const intervalRef = useRef<number | null>(null);
@@ -50,10 +51,10 @@ const PageLayout: FC<Props> = ({ children, title, defaultTab, className }) => {
      const dailyHabits = getHabitsWithPeriod("daily")
      if (dailyHabits.every(habit => habit.isCompleted)) return;
     
-     let title = "Давненько ты не выполнял привычки!";
+     let title = `${userName}, вы всё ещё не выполнили все привычки на сегодня!`;
      const completedHabitsAmount = dailyHabits.filter(habit => habit.isCompleted).length
      if (userTarget && userTarget > completedHabitsAmount) {
-      title = `Тебе ещё осталось выполнить ${userTarget - completedHabitsAmount} привычек до достижения цели!`
+      title = `${userName}, вам ещё осталось выполнить ${userTarget - completedHabitsAmount} привычек до достижения цели!`
      } else if (userTarget) {
       return;
      }
