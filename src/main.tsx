@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { Notifications } from 'react-push-notification';
 
 import ThemeProvider from 'app/ThemeProvider';
 
@@ -11,6 +12,7 @@ import '@mantine/code-highlight/styles.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
+    <Notifications position='bottom-right' />
     <ThemeProvider />
   </React.StrictMode>,
 )
