@@ -34,6 +34,10 @@ const Statistics = () => {
   
   const handleUploadAvatar = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
+    if (event.target.files[0].size > 1024*1024*4) {
+      alert('Размер файла превышен, выберите картинку меньше 4МБ')
+      return;
+    }
     const file = event.target.files[0];
     const base64 = await convertToBase64(file);
     setAvatar(base64);

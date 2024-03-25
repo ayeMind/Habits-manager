@@ -229,6 +229,9 @@ export const useGlobalStore = create<GlobalState>()(
           ),
         })),
 
+        userTarget: 0,
+        setUserTarget: (target: number) => set({ userTarget: target }),
+
 
       lastStreakUpdateDate: new Date(),
       setLastStreakUpdateDate: (date: Date) => set({ lastStreakUpdateDate: date }),
@@ -242,6 +245,19 @@ export const useGlobalStore = create<GlobalState>()(
         const periodIsOk = (period: "daily" | "weekly" | "monthly") => {
          
           if (!isPeriodChanged(lastDate, currentDate, period)) return true;
+
+          if (period === "daily") {
+            const userTarget = get().userTarget;
+            const completedDailyHabitsAmount = get().getHabitsWithPeriod("daily").filter(habit => habit.isCompleted).length;
+            if (userTarget && (completedDailyHabitsAmount < userTarget)) {
+              const newExperience = Math.round(get().experience * 0.95);
+              const currentLevel = get().level;
+              set({ experience: newExperience });
+              if (newExperience < (currentLevel-1) * (200 + (currentLevel-2) * 50) / 2) {
+                set({ level: currentLevel - 1})                
+              }
+            }
+          }
                   
           const periodHabits = habits.filter((habit) => habit.period === period);
           if (periodHabits.every((habit) => habit.isCompleted)) {

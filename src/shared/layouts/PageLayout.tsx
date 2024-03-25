@@ -1,14 +1,16 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useRef } from "react";
 import { AppShell, AppShellMain, Modal, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Notifications, notifications } from "@mantine/notifications";
 import { useGlobalStore } from "app/globalStore";
+import addNotification from "react-push-notification";
 
 import Header from "components/AppShell/Header";
 import SidePanel from "components/AppShell/SidePanel";
 import UserNameInput from "components/UserNameInput";
 import { checkAchievements } from "actions/checkAchievements";
 import { IconTrophy } from "@tabler/icons-react";
+import logo from "/logo.svg";
 
 interface Props {
   children: React.ReactNode;
@@ -19,11 +21,56 @@ interface Props {
 
 const PageLayout: FC<Props> = ({ children, title, defaultTab, className }) => {
   const [navBarOpened, { toggle }] = useDisclosure();
-  const [modalOpened, { open, close }] = useDisclosure();  
+  const [modalOpened, { open, close }] = useDisclosure();
 
-  const {userName, isNewPeriod, updateHabits,
-     setLastUpdateHabitsDate, updateStreak, getDate,
-     gold, spent, completedHabits, daysStreak, achievements, completeAchievement } = useGlobalStore((state) => state);
+  const {
+    userName,
+    isNewPeriod,
+    updateHabits,
+    userTarget,
+    getHabitsWithPeriod,
+    setLastUpdateHabitsDate,
+    updateStreak,
+    getDate,
+    gold,
+    spent,
+    completedHabits,
+    daysStreak,
+    achievements,
+    completeAchievement,
+  } = useGlobalStore((state) => state);
+
+  const intervalRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const delay = 1000 * 60 * 30;
+
+    const showNotification = () => {
+      
+     const dailyHabits = getHabitsWithPeriod("daily")
+     if (dailyHabits.every(habit => habit.isCompleted)) return;
+    
+     let title = "Давненько ты не выполнял привычки!";
+     const completedHabitsAmount = dailyHabits.filter(habit => habit.isCompleted).length
+     if (userTarget && userTarget > completedHabitsAmount) {
+      title = `Тебе ещё осталось выполнить ${userTarget - completedHabitsAmount} привычек до достижения цели!`
+     } else if (userTarget) {
+      return;
+     }
+
+      addNotification({
+        title: title,
+        native: true,
+        icon: logo,
+        duration: 4000,
+      });
+    };
+
+    intervalRef.current = setInterval(showNotification, delay);
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     if (!userName) {
@@ -37,7 +84,7 @@ const PageLayout: FC<Props> = ({ children, title, defaultTab, className }) => {
       updateHabits("daily");
     }
     if (isNewPeriod("weekly")) {
-      updateHabits("weekly");      
+      updateHabits("weekly");
     }
     if (isNewPeriod("monthly")) {
       updateHabits("monthly");
@@ -45,10 +92,16 @@ const PageLayout: FC<Props> = ({ children, title, defaultTab, className }) => {
     setLastUpdateHabitsDate(getDate());
   }, []);
 
-  const completed = checkAchievements(achievements, completedHabits, daysStreak, gold, spent);
+  const completed = checkAchievements(
+    achievements,
+    completedHabits,
+    daysStreak,
+    gold,
+    spent
+  );
 
   useEffect(() => {
-    completed.forEach(achievement => {
+    completed.forEach((achievement) => {
       completeAchievement(achievement.id);
       notifications.show({
         title: achievement.title,
@@ -63,9 +116,19 @@ const PageLayout: FC<Props> = ({ children, title, defaultTab, className }) => {
     <>
       <Notifications w={500} visibleFrom="sm" />
       <Notifications w={300} hiddenFrom="sm" />
-      <Modal opened={modalOpened} onClose={close} centered withCloseButton={false} closeOnClickOutside={false} closeOnEscape={false} title="Добро пожаловать в менеджер привычек!">
+      <Modal
+        opened={modalOpened}
+        onClose={close}
+        centered
+        withCloseButton={false}
+        closeOnClickOutside={false}
+        closeOnEscape={false}
+        title="Добро пожаловать в менеджер привычек!"
+      >
         <UserNameInput close={close} />
-        <Text size="sm" mt="xs">Сменить имя можно будет в настройках</Text>
+        <Text size="sm" mt="xs">
+          Сменить имя можно будет в настройках
+        </Text>
       </Modal>
       <AppShell
         layout="alt"
@@ -79,7 +142,11 @@ const PageLayout: FC<Props> = ({ children, title, defaultTab, className }) => {
         padding="md"
       >
         <Header title={title} opened={navBarOpened} toggle={toggle} />
-        <SidePanel defaultTab={defaultTab} opened={navBarOpened} toggle={toggle} />
+        <SidePanel
+          defaultTab={defaultTab}
+          opened={navBarOpened}
+          toggle={toggle}
+        />
         <AppShellMain className={className}>{children}</AppShellMain>
       </AppShell>
     </>
@@ -87,4 +154,3 @@ const PageLayout: FC<Props> = ({ children, title, defaultTab, className }) => {
 };
 
 export default PageLayout;
- 

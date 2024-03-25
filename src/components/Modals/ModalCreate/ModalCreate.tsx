@@ -18,7 +18,6 @@ import {
   IconCalendarMonth,
   IconCalendarWeek,
 } from "@tabler/icons-react";
-import addNotification from "react-push-notification";
 
 interface Props {
   close: () => void;
@@ -81,11 +80,6 @@ const ModalCreate: FC<Props> = ({ close }) => {
     if (!categories.includes(data.category as string)) {
       addCategory(data.category as string);
     }
-
-    addNotification({
-      title: 'hello man!',
-      native: true,
-  });
 
     close();
   };

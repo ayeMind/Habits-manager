@@ -10,9 +10,10 @@ import ModalImport from "components/Modals/ModalImport";
 
 import classes from "./style.module.css";
 import ModalTemplateImport from "components/Modals/ModalTemplateImport";
+import ModalTargetSettings from "components/Modals/ModalTargetSettings";
 
 const Settings = () => {
-  const { userName, currentDateCorrection, setCurrentDateCorrection } = useGlobalStore(
+  const { userName, currentDateCorrection, setCurrentDateCorrection, templateImportIsOpen } = useGlobalStore(
     (state) => state
   );
   const [date, setDate] = useState(new Date(new Date().getTime() + currentDateCorrection));
@@ -20,6 +21,7 @@ const Settings = () => {
   const [resetModalOpened, resetModalActions] = useDisclosure();
   const [importModalOpened, importModalActions] = useDisclosure();
   const [templateModalOpened, templateModalActions] = useDisclosure();
+  const [targetModalOpened, targetModalActions] = useDisclosure();
 
 
   const exportData = () => {
@@ -44,6 +46,7 @@ const Settings = () => {
       <ModalResetData opened={resetModalOpened} close={resetModalActions.close} />
       <ModalImport opened={importModalOpened} close={importModalActions.close} />
       <ModalTemplateImport opened={templateModalOpened} close={templateModalActions.close} />
+      <ModalTargetSettings opened={targetModalOpened}  close={targetModalActions.close} />
 
       <Box mb="sm">
         <Text size="lg" mb="sm">
@@ -70,7 +73,11 @@ const Settings = () => {
       </Flex>
 
       <Flex direction="column" gap="md" w={300}>
-        <Button variant="outline" onClick={templateModalActions.open}>Временный импорт</Button>
+        <Button variant="outline" onClick={targetModalActions.open}>Настройка цели</Button>
+        {templateImportIsOpen && (
+          <Button variant="outline" onClick={templateModalActions.open}>Временный импорт</Button>
+        )}
+        
         <Button variant="outline" color="red" onClick={resetModalActions.open}>
           Удалить все данные
         </Button>

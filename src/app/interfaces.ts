@@ -68,6 +68,8 @@ export interface GlobalState {
     completeAllDailyHabits: () => void; // Для временного импорта
     changeTargetValue: (id: number, value: number) => void;
 
+    userTarget: number;
+    setUserTarget: (target: number) => void;
 
     completedHabits: number;
     increaseCompletedHabits: () => void;

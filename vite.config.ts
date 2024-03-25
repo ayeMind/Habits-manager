@@ -12,6 +12,9 @@ export default defineConfig({
       devOptions: {
         enabled: true,
       },
+      workbox: {
+        globPatterns: ['**/*.{js,css}', 'index.html'],
+      },
       manifest: {
         "name": "final-frontend",
         "short_name": "final-frontend",
