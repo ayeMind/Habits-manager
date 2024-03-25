@@ -320,22 +320,26 @@ const HabitsList: FC<Props> = ({ period }) => {
         </Container>
       </Table.Td>
       <Table.Td>
-        <Button
-          color="red"
-          variant="outline"
-          visibleFrom="md"
-          onClick={() => handleOpen(habit.id)}
-        >
-          Удалить
-        </Button>
-        <ActionIcon
-          type="submit"
-          hiddenFrom="md"
-          bg="none"
-          onClick={() => handleOpen(habit.id)}
-        >
-          <IconSquareRoundedMinus stroke={1} color={removeIconColor} />
-        </ActionIcon>
+        {(period !== "daily" || isPeriodChanged(new Date(lastTemplateImportDate), getDate(), "daily")) && (
+          <>
+            <Button
+              color="red"
+              variant="outline"
+              visibleFrom="md"
+              onClick={() => handleOpen(habit.id)}
+            >
+              Удалить
+            </Button>
+          <ActionIcon
+            type="submit"
+            hiddenFrom="md"
+            bg="none"
+            onClick={() => handleOpen(habit.id)}
+          >
+            <IconSquareRoundedMinus stroke={1} color={removeIconColor} />
+          </ActionIcon>
+          </>
+        )}
       </Table.Td>
     </Table.Tr>
   ));

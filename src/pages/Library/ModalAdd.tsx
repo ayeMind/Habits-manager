@@ -57,9 +57,13 @@ const ModalAdd:FC<Props> = ({close}) => {
         >
 
         </TextInput>
+        {displayedHabits.length === 0 && (
+            <Text>У вас нет своих привычек</Text>
+        )}
        <SimpleGrid spacing={15}>
          {displayedHabits}
        </SimpleGrid>
+
     </>
    )
 }
