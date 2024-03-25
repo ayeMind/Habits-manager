@@ -217,13 +217,24 @@ export const useGlobalStore = create<GlobalState>()(
       },
 
       completeAllDailyHabits: () => {
-        set((state) => ({
-          habits: state.habits.map((habit) =>
-            habit.period === "daily" ? { ...habit, isCompleted: true } : habit
+        set(state => ({
+          habits: state.habits.map((habit) => {
+            if (!habit.isCompleted) {
+              set(state => ({
+                history: [...state.history, {
+                  id: get().getLastHistoryId() + 1,
+                  habit_id: habit.id,
+                  isCompleted: true,
+                  habit_period: habit.period,
+                  date: get().getDate()
+                }]
+              }))
+            }
+            return habit.period === "daily" ? { ...habit, isCompleted: true } : habit
+          }
           ),
         }));
       },
-
 
       changeTargetValue: (id: number, value: number) =>
         set((state) => ({
