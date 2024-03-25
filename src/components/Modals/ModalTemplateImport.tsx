@@ -2,6 +2,7 @@ import { Flex, Modal, Text, FileButton, Button } from "@mantine/core";
 import { useGlobalStore } from "app/globalStore";
 import { Habit } from "app/interfaces";
 import { FC } from "react"
+import { useNavigate } from "react-router-dom";
 
 interface Props {
     opened: boolean;
@@ -9,6 +10,8 @@ interface Props {
 }
 
 const ModalTemplateImport:FC<Props> = ({opened, close}) => {
+
+    const navigate = useNavigate();
 
     const { setTemplateDaily, setLastTemplateImportDate, getDate } = useGlobalStore((state) => state);
 
@@ -29,6 +32,7 @@ const ModalTemplateImport:FC<Props> = ({opened, close}) => {
             setTemplateDaily(daily);
             setLastTemplateImportDate(getDate());
             close()
+            navigate('/home')
         }
         reader.readAsText(file);
     }
