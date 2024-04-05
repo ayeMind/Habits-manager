@@ -19,7 +19,7 @@ const StoreCard: FC<Props> = ({ title, description, price, image, onClick }) => 
       padding="xl"
       component="button"
     >
-      <Card.Section>
+      <Card.Section className={classes["image-section"]}>
         <Image className={classes["image"]} src={image} h={160} />
       </Card.Section>
 

@@ -1,8 +1,6 @@
 import { Box, Button, Flex, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { DateTimePicker } from "@mantine/dates";
 import { useGlobalStore } from "app/globalStore";
-import { useState } from "react";
 import UserNameInput from "components/UserNameInput";
 import PageLayout from "layouts/PageLayout";
 import ModalResetData from "components/Modals/ModalResetData";
@@ -13,10 +11,9 @@ import ModalTemplateImport from "components/Modals/ModalTemplateImport";
 import ModalTargetSettings from "components/Modals/ModalTargetSettings";
 
 const Settings = () => {
-  const { userName, currentDateCorrection, setCurrentDateCorrection, templateImportIsOpen } = useGlobalStore(
+  const { userName, templateImportIsOpen } = useGlobalStore(
     (state) => state
   );
-  const [date, setDate] = useState(new Date(new Date().getTime() + currentDateCorrection));
 
   const [resetModalOpened, resetModalActions] = useDisclosure();
   const [importModalOpened, importModalActions] = useDisclosure();
@@ -51,7 +48,7 @@ const Settings = () => {
         </Text>
         <UserNameInput />
       </Box>
-      <Box mb="md">
+      {/* <Box mb="md">
         <label htmlFor="date">Сменить текущее время:</label>
         <Flex mt={5} gap="sm" align="center">
           <DateTimePicker
@@ -63,7 +60,7 @@ const Settings = () => {
           />
           <Button onClick={() => setCurrentDateCorrection(date)}>Сменить</Button>
         </Flex>
-      </Box>
+      </Box> */}
       <Flex mb="md" gap="lg">
             <Button onClick={exportData}>Экспорт данных</Button>
             <Button onClick={importModalActions.open}>Импорт данных</Button>
