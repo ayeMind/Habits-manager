@@ -6,7 +6,7 @@
 
 Техническое задание: https://centraluniversity.notion.site/Frontend-71498a423396498ea874cd9cd7c48bd0
 
-Ссылка на сайт: https://habits-manager-ayemind.vercel.app/
+Ссылка на сайт: https://ayemind-habitmanager.vercel.app/
 
 Стек технологий: React - основная библиотека, Zustand - управление состояниями, Mantine - компоненты.
 
