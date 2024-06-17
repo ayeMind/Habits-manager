@@ -1,4 +1,4 @@
-import { Group, Tabs, Text } from "@mantine/core";
+import { Flex, Group, Tabs, Text } from "@mantine/core";
 import PageLayout from "layouts/PageLayout";
 
 import {
@@ -9,19 +9,27 @@ import {
 import HabitsSection from "components/Habit/HabitsSection";
 
 function Home() {
-
   return (
     <PageLayout title="Трекер привычек" defaultTab="home">
       <Tabs variant="pills" defaultValue="daily">
         <Tabs.List>
-          <Tabs.Tab value="daily" leftSection={<IconCalendar />}>
-            <Text visibleFrom="sm">Ежедневные</Text>
+          <Tabs.Tab value="daily">
+            <Flex gap="sm">
+              <IconCalendar />
+              <Text visibleFrom="sm">Ежедневные</Text>
+            </Flex>
           </Tabs.Tab>
-          <Tabs.Tab value="weekly" leftSection={<IconCalendarWeek />}>
-            <Text visibleFrom="sm">Еженедельные</Text>
+          <Tabs.Tab value="weekly">
+            <Flex gap="sm">
+              <IconCalendarWeek />
+              <Text visibleFrom="sm">Еженедельные</Text>
+            </Flex>
           </Tabs.Tab>
-          <Tabs.Tab value="monthly" leftSection={<IconCalendarMonth />}>
-            <Text visibleFrom="sm">Ежемесячные</Text>
+          <Tabs.Tab value="monthly">
+            <Flex gap="sm">
+              <IconCalendarMonth />
+              <Text visibleFrom="sm">Ежемесечные</Text>
+            </Flex>
           </Tabs.Tab>
         </Tabs.List>
 

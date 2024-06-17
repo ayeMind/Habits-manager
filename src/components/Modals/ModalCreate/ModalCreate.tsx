@@ -90,10 +90,9 @@ const ModalCreate: FC<Props> = ({ close }) => {
         visibleFrom="sm"
         value={period}
         onChange={(value) => {
-          setPeriod(value as "daily" | "weekly" | "monthly")
-          setPeriodError("")
-        }
-        }
+          setPeriod(value as "daily" | "weekly" | "monthly");
+          setPeriodError("");
+        }}
         name="period"
         data={[
           { label: "Ежедневная", value: "daily" },
@@ -107,8 +106,8 @@ const ModalCreate: FC<Props> = ({ close }) => {
         hiddenFrom="sm"
         value={period}
         onChange={(value) => {
-          setPeriod(value as "daily" | "weekly" | "monthly")
-          setPeriodError("")
+          setPeriod(value as "daily" | "weekly" | "monthly");
+          setPeriodError("");
         }}
         name="period"
         data={[
@@ -118,7 +117,9 @@ const ModalCreate: FC<Props> = ({ close }) => {
         ]}
         fullWidth
       />
-      <label htmlFor="period" className={classes["period-error"]}>{periodError}</label>
+      <label htmlFor="period" className={classes["period-error"]}>
+        {periodError}
+      </label>
 
       <TextInput
         type="text"
@@ -134,12 +135,13 @@ const ModalCreate: FC<Props> = ({ close }) => {
         label="Категория"
         name="category"
         placeholder="Введи категорию"
-        limit={5}
         comboboxProps={{
           position: "top",
           middlewares: { flip: false, shift: false },
         }}
         data={categories}
+        withScrollArea={true}
+        styles={{ dropdown: { maxHeight: 200, overflowY: "auto" } }}
         onChange={() => setCategoryError("")}
         error={categoryError}
       />

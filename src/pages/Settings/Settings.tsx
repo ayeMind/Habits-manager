@@ -11,36 +11,48 @@ import ModalTemplateImport from "components/Modals/ModalTemplateImport";
 import ModalTargetSettings from "components/Modals/ModalTargetSettings";
 
 const Settings = () => {
-  const { userName, templateImportIsOpen } = useGlobalStore(
-    (state) => state
-  );
+  const { userName, templateImportIsOpen } = useGlobalStore((state) => state);
 
   const [resetModalOpened, resetModalActions] = useDisclosure();
   const [importModalOpened, importModalActions] = useDisclosure();
   const [templateModalOpened, templateModalActions] = useDisclosure();
   const [targetModalOpened, targetModalActions] = useDisclosure();
 
-
   const exportData = () => {
     const data: { [key: string]: unknown } = {};
     for (const [key, value] of Object.entries(localStorage)) {
       data[key] = JSON.parse(value);
     }
-  
+
     const file = new Blob([JSON.stringify(data)], { type: "application/json" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(file);
     a.download = "data.json";
     a.click();
-  }
-  
+  };
+
   return (
-    <PageLayout title="Настройки" defaultTab="settings" className={classes["page"]}>
-      
-      <ModalResetData opened={resetModalOpened} close={resetModalActions.close} />
-      <ModalImport opened={importModalOpened} close={importModalActions.close} />
-      <ModalTemplateImport opened={templateModalOpened} close={templateModalActions.close} />
-      <ModalTargetSettings opened={targetModalOpened}  close={targetModalActions.close} />
+    <PageLayout
+      title="Настройки"
+      defaultTab="settings"
+      className={classes["page"]}
+    >
+      <ModalResetData
+        opened={resetModalOpened}
+        close={resetModalActions.close}
+      />
+      <ModalImport
+        opened={importModalOpened}
+        close={importModalActions.close}
+      />
+      <ModalTemplateImport
+        opened={templateModalOpened}
+        close={templateModalActions.close}
+      />
+      <ModalTargetSettings
+        opened={targetModalOpened}
+        close={targetModalActions.close}
+      />
 
       <Box mb="sm">
         <Text size="lg" mb="sm">
@@ -48,6 +60,8 @@ const Settings = () => {
         </Text>
         <UserNameInput />
       </Box>
+
+      {/* CHANGE CURRENT DATE FOR TESTING */}
       {/* <Box mb="md">
         <label htmlFor="date">Сменить текущее время:</label>
         <Flex mt={5} gap="sm" align="center">
@@ -61,17 +75,19 @@ const Settings = () => {
           <Button onClick={() => setCurrentDateCorrection(date)}>Сменить</Button>
         </Flex>
       </Box> */}
-      <Flex mb="md" gap="lg">
-            <Button onClick={exportData}>Экспорт данных</Button>
-            <Button onClick={importModalActions.open}>Импорт данных</Button>
-      </Flex>
 
       <Flex direction="column" gap="md" w={300}>
-        <Button variant="outline" onClick={targetModalActions.open}>Настройка цели</Button>
+        <Button onClick={exportData}>Экспорт данных</Button>
+        <Button onClick={importModalActions.open}>Импорт данных</Button>
+        <Button variant="outline" onClick={targetModalActions.open}>
+          Настройка цели
+        </Button>
         {templateImportIsOpen && (
-          <Button variant="outline" onClick={templateModalActions.open}>Временный импорт</Button>
+          <Button variant="outline" onClick={templateModalActions.open}>
+            Временный импорт
+          </Button>
         )}
-        
+
         <Button variant="outline" color="red" onClick={resetModalActions.open}>
           Удалить все данные
         </Button>
